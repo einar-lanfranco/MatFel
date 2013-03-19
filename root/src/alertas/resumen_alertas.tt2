@@ -1,0 +1,340 @@
+[% META title = 'Resumen de Alertas generadas para el servidor' %]
+
+<script type="text/javascript">
+function dec2dot (address) {
+	d = address % 256; 
+        address -= d; 
+        address /= 256;
+	c = address % 256; 
+        address -= c; 
+        address /= 256;
+	b = address % 256; 
+        address -= b; 
+        address /= 256;
+	a = address;
+	dotted=a+'.'+b+'.'+c+'.'+d;
+	return dotted;
+}
+
+function enviarRango(){
+  $('#form_rango').attr("action","[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [id_servidor]) %]"+"/"+$('#rango').val()+"/"+$('#rango_historico').val() );
+  return true;
+}
+function enviarRangoHistorico(){
+  $('#form_rango_historico').attr("action","[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [id_servidor]) %]"+"/"+$('#rango').val()+"/"+$('#rango_historico').val() );
+  return true;
+}
+function drawPercentBar(percent, v_color, id)
+  {
+    var width = 200;
+
+    var color = v_color;
+    var background = "#FFFFFF";
+    var border = "#4C0039";
+
+    if (!color) { 
+        if (percent > 75) {color="red";}
+                else { if (percent > 50){color = "yellow"; }
+                      else { if (color >25){ color="green";} 
+                            else { color= "#B0B0B0";}}}
+                }
+    if (!background) { background = "none"; }
+    if (!border) { border = "#000000"; }
+
+    var pixels = width * (percent / 100);
+
+    var newdiv = document.createElement('div');
+    newdiv.setAttribute('style',"position: relative; line-height: 1em; background-color: "+background+"; border: 1px solid "+border+"; width: "+width+"px");
+
+    var innerdiv1 = document.createElement('div');
+    innerdiv1.setAttribute('style',"height: 1em; width: "+pixels+"px; background-color: "+color+";");
+
+    var innerdiv2 = document.createElement('div');  
+    innerdiv2.setAttribute('style',"position: absolute; text-align: center; padding-top: .075em; width: "+width+"px; top: 0; left: 0");
+    var txtNode = document.createTextNode(percent);
+    innerdiv2.appendChild(txtNode);
+    newdiv.appendChild(innerdiv1);
+    newdiv.appendChild(innerdiv2);
+    document.getElementById(id).appendChild(newdiv);
+  }
+
+</script>
+<script type="text/javascript" src="[% c.uri_for('/static/chart/json2.js') %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/chart/swfobject.js') %]"></script>
+<script type='text/javascript' src='http://www.google.com/jsapi'></script>
+
+<div class="renglon">
+<fieldset>
+<legend>Actualidad Alertas: [% servidor.nombre_dir %]
+           <a href="[% c.uri_for(c.controller('trafico').action_for('listar_trafico'), [servidor.id]) %]" title="Tráfico"><img src="/static/images/arrow_inout.png" alt="Tráfico" /></a>
+           <a href="[% c.uri_for(c.controller('escaneos').action_for('lista_servidor')) %]/[% servidor.id %]"  title="Escaneos"><img src="/static/images/bug.png" alt="Escaneos" /></a>
+           <a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [servidor.id],30,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a>
+ </legend>
+<div class="busqueda">
+<form action="?" method="post" id="form_rango" onsubmit="return enviarRango()">
+<p>Alertas registradas para el servidor en los últimos <input id="rango" type="text" size="4" value="[% rango %]" /> días <input type="submit" class="submit" value="Mostrar" /></p>
+</form>
+</div>
+[% IF altas + medias + bajas > 0 %]
+
+<div class="renglon">
+<fieldset id='resumen_severidad'  class="fieldset_izquierda">
+<legend>Estadisticas por severidad</legend>
+<ul>
+<li><img src="/static/images/severity/1.png" alt="Cantidad de eventos de severidad Alta " />  De severidad Alta <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_severidad'),[id_servidor],rango,1,10,1) %]"> [% altas %] </a>
+</li><li><img src="/static/images/severity/2.png" alt="Cantidad de eventos de severidad Media " />De severidad Media <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_severidad'),[id_servidor],rango,2,10,1) %]"> [% medias %]</a>
+</li><li><img src="/static/images/severity/3.png" alt="Cantidad de eventos de severidad Baja " />De severidad Baja <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_severidad'),[id_servidor],rango,3,10,1) %]"> [% bajas %]</a>
+</li></ul>
+</fieldset>
+
+<fieldset class="fieldset_derecha">
+<legend> Estadisticas por eventos</legend>
+<ul>
+<li><img src="/static/images/icon_favourites.gif" alt="Sumatoria de eventos" />Eventos totales <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_todos'),[id_servidor],rango,1,10,1) %]">  [% altas + medias + bajas %] </a>
+</li><li><img src="/static/images/icon_favourites.gif" alt="Eventos de distinta naturaleza" />Eventos de distinta naturaleza <a href="#eventos_unicos">[% eventos_unicos %]</a>
+</li><li><img src="/static/images/icon_favourites.gif" alt="Cantidad de IPS que atacaron al servidor" />IPs distintas que generaron eventos hacia el servidor <a href="#hacia_mi"> [% ip_distintas_llegaron %]</a>
+</li><li><img src="/static/images/flag_red.gif" alt="Cantidad de IPS que el servidor ataco" />IPs distintas a las que el servidor generó eventos <a href="#desde_mi">[% ip_distintas_fue %]</a>
+</li></ul>
+</fieldset>
+</div>
+<div class="renglon">
+<fieldset  class="fieldset_izquierda">
+<legend> Eventos por severidad - torta</legend>
+<script type="text/javascript">
+swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc_line_chart", "285", "150",
+"9.0.0", "", {"data-file":"/ofc/alertas_por_nivel_torta/[% id_servidor %]/[% rango %]","loading":"Cargando datos..."});
+</script>
+
+<div id='ofc_line_chart'></div>
+</fieldset>
+
+<fieldset class="fieldset_derecha">
+<legend> Eventos por severidad - Barra</legend>
+
+<script type="text/javascript">
+swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc_line_chart2", "285", "150",
+"9.0.0", "", {"data-file":"/ofc/alertas_por_nivel_barras/[% id_servidor %]/[% rango %]","loading":"Cargando datos..."});
+</script>
+
+<div id='ofc_line_chart2'></div>
+</fieldset>
+</div>
+<br /><br /><br />
+<div class="renglon">
+<fieldset  class="fieldset_completo">
+<legend> Eventos por signature</legend>
+<a name="eventos_unicos"></a>
+<table>
+<thead>
+<tr>
+     <th>Nivel</th>
+     <th>Nombre</th>
+     <th>Cantidad de eventos</th>
+     <th>Porcentaje del total</th>
+</tr>
+</thead>
+[% nro_linea = 0 %]
+[% FOREACH linea IN resumen_por_tipo  %]
+    <tr>
+    <td class="centrado">  <img src="/static/images/severity/[% linea.get_column('sig_priority') %].png" alt="Severidad [% linea.get_column('sig_priority') %]" /> </td>
+    <td>  [% linea.get_column('sig_name') %] </td>
+    <td class="centrado">  <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_por_signature'),[id_servidor],rango,linea.get_column('sig_id'),10,1) %]"> [% linea.get_column('COUNT(*) as cuenta') %]</a> </td>
+    <td class="centrado" id="percent_bar_[% nro_linea %]">
+       <script type="text/javascript"> drawPercentBar([% (linea.get_column('COUNT(*) as cuenta')*100)/(altas + medias + bajas) FILTER format('%.2f') %],'','percent_bar_[% nro_linea %]')</script>
+    </td>
+     </tr>
+[% nro_linea=nro_linea+1 %]
+[% END -%]
+</table>
+</fieldset>
+</div>
+<div class="renglon">
+
+<a name="hacia_mi"></a>
+  <script type='text/javascript'>
+   var geo_src_long =[];
+   var geo_src_lat =[];
+   var alertas_src=[];
+   var ciudades_src=[];
+  </script>
+
+<fieldset  class="fieldset_completo">
+<legend> Eventos detectados hacia el server agrupados por origen </legend>
+    <div id='map_alertas_hacia_mi' class="centrado"></div>
+
+<table>
+    <thead>
+     <tr>
+     <th class="w40">IP origen</th>
+     <th class="w40">Lugar</th>
+     <th class="w20">Cantidad de eventos</th>
+      </tr>
+     </thead>
+      [% FOREACH linea IN alertas_hacia_mi %]
+      <tr>
+          <td class="centrado">
+          <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_por_ip_origen'),[id_servidor],rango,linea.get_column('origen'),10,1) %]">  <script type="text/javascript">document.write(dec2dot([% linea.get_column('origen') %]));</script></a>
+          </td>
+        <td >[% IF linea.evento.ip_header.get_geo_ip_src.country_code %]<img src="/static/images/flags/[% linea.evento.ip_header.get_geo_ip_src.country_code FILTER lower %].png" alt="[% linea.evento.ip_header.get_geo_ip_src.country_code3 %]" /> [% IF linea.evento.ip_header.get_geo_ip_src.city %][% linea.evento.ip_header.get_geo_ip_src.city %], [% END %][% linea.evento.ip_header.get_geo_ip_src.country_name %]
+
+          <script type='text/javascript'>
+            geo_src_lat.push("[% linea.evento.ip_header.get_geo_ip_src.latitude %]");
+            geo_src_long.push("[% linea.evento.ip_header.get_geo_ip_src.longitude %]");
+            alertas_src.push("[% linea.get_column('cuenta') %]");
+            ciudades_src.push("[% IF linea.evento.ip_header.get_geo_ip_src.city %][% linea.evento.ip_header.get_geo_ip_src.city %], [% END %][% linea.evento.ip_header.get_geo_ip_src.country_name %]");
+          </script>
+        [% ELSE %]-------[% END %]
+        </td>
+          <td class="centrado">[% linea.get_column('cuenta') %]</td>
+          
+      </tr>
+    [% END -%]
+ </table>
+ </fieldset>
+</div>
+<div class="renglon">
+<a name="desde_mi"></a>
+
+  <script type='text/javascript'>
+   var geo_dst_long =[];
+   var geo_dst_lat =[];
+   var alertas_dst=[];
+   var ciudades_dst=[];
+  </script>
+
+<fieldset class="fieldset_completo">
+<legend>  Eventos generados desde el server agrupados por destino</legend>
+    <div id='map_alertas_desde_mi' class="centrado"></div>
+<table>
+  <thead>
+     <tr>
+     <th class="w40">IP destino</th>
+     <th class="w40">Lugar</th>
+     <th class="w20">Cantidad de eventos</th>
+     </tr>
+  </thead>  
+   
+    [% FOREACH linea IN alertas_desde_mi  -%]
+      <tr>
+          <td class="centrado">
+        <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_por_ip_destino'),[id_servidor],rango,linea.get_column('destino'),10,1) %]">  <script type="text/javascript">document.write(dec2dot([% linea.get_column('destino') %]));</script></a>
+         </td>
+        <td>
+         [% IF linea.evento.ip_header.get_geo_ip_dst.country_code %]<img src="/static/images/flags/[% linea.evento.ip_header.get_geo_ip_dst.country_code FILTER lower %].png" alt="[% linea.evento.ip_header.get_geo_ip_dst.country_code3 %]" /> [% IF linea.evento.ip_header.get_geo_ip_dst.city %][% linea.evento.ip_header.get_geo_ip_dst.city %], [% END %][% linea.evento.ip_header.get_geo_ip_dst.country_name %]
+
+          <script type='text/javascript'>
+            geo_dst_lat.push("[% linea.evento.ip_header.get_geo_ip_dst.latitude %]");
+            geo_dst_long.push("[% linea.evento.ip_header.get_geo_ip_dst.longitude %]");
+            alertas_dst.push("[% linea.get_column('cuenta') %]");
+            ciudades_dst.push("[% IF linea.evento.ip_header.get_geo_ip_dst.city %][% linea.evento.ip_header.get_geo_ip_dst.city %], [% END %][% linea.evento.ip_header.get_geo_ip_dst.country_name %]");
+          </script>
+
+        [% ELSE %]-------[% END %]
+        </td>
+          <td class="centrado">[% linea.get_column('cuenta') %]</td>
+          
+      </tr>
+    [% END -%]
+ </table>
+</fieldset>
+
+  <script type='text/javascript'>
+    if ((geo_dst_long.length>0)||(geo_src_long.length>0)){
+      google.load('visualization', '1', {'packages': ['geomap']});
+    }
+
+    if (geo_dst_long.length>0){
+      google.setOnLoadCallback(drawDstMap);
+    }
+
+    if (geo_src_long.length>0){
+      google.setOnLoadCallback(drawSrcMap);
+    }
+
+    function drawDstMap() {
+      var data = new google.visualization.DataTable();
+      data.addRows(geo_dst_long.length);
+      data.addColumn('number', 'Latitud');
+      data.addColumn('number', 'Longitud');
+      data.addColumn('number', 'Alertas');
+      data.addColumn('string', 'Ciudad');
+
+      for(var i=0;i < geo_dst_long.length; i++){ 
+             data.setValue(i,0,parseFloat(geo_dst_lat[i])); 
+             data.setValue(i,1,parseFloat(geo_dst_long[i]));
+             data.setValue(i,2,parseInt(alertas_dst[i]));
+             data.setValue(i,3,ciudades_dst[i]);
+      }
+
+      var options = {};
+      options['region'] = 'world';
+      options['colors'] = [0xF0F647, 0xFF9900, 0xF64747]; // colors
+      options['dataMode'] = 'markers';
+
+      var container = document.getElementById('map_alertas_desde_mi');
+      var geomap = new google.visualization.GeoMap(container);
+      geomap.draw(data, options);
+    };
+
+    function drawSrcMap() {
+      var data = new google.visualization.DataTable();
+      data.addRows(geo_src_long.length);
+      data.addColumn('number', 'Latitud');
+      data.addColumn('number', 'Longitud');
+      data.addColumn('number', 'Alertas');
+      data.addColumn('string', 'Ciudad');
+
+     for(var i=0;i < geo_src_long.length; i++){ 
+             data.setValue(i,0,parseFloat(geo_src_lat[i])); 
+             data.setValue(i,1,parseFloat(geo_src_long[i]));
+             data.setValue(i,2,parseInt(alertas_src[i]));
+             data.setValue(i,3,ciudades_src[i]);
+      }
+
+      var options = {};
+      options['region'] = 'world';
+      options['colors'] = [0xF0F647, 0xFF9900, 0xF64747]; // colors
+      options['dataMode'] = 'markers';
+
+      var container = document.getElementById('map_alertas_hacia_mi');
+      var geomap = new google.visualization.GeoMap(container);
+      geomap.draw(data, options);
+    };
+
+  </script>
+
+
+</div>
+[% ELSE %]
+<div class="renglon">
+<p class="aviso"> No hay eventos registrados para el rango de fechas solicitado!!</p>
+</div>
+[% END %]
+</fieldset>
+</div>
+
+<div class="renglon">
+
+<fieldset id='resumen_historico'>
+<legend> Histórico de Eventos por severidad</legend>
+
+<div class="busqueda">
+<form action="?" method="post" id="form_rango_historico" onsubmit="return enviarRangoHistorico()">
+<p>Ver últimas <input id="rango_historico" type="text" size="4" value="[% rango_historico %]" /> semanas <input type="submit" class="submit" value="Mostrar" /></p>
+</form>
+</div>
+
+
+<script type="text/javascript">
+swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc_line_chart_historico", "600", "350",
+"9.0.0", "", {"data-file":"/ofc/alertas_historico_barras/[% id_servidor %]/[% rango_historico %]","loading":"Cargando datos..."});
+</script>
+
+<div id='ofc_line_chart_historico'></div>
+</fieldset>
+
+<div class="renglon_izquierda" >
+   <p><a href="[% c.uri_for(c.controller('servidores').action_for('lista')) %]" title="Volver a la lista de servidores"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>
+</div>
+

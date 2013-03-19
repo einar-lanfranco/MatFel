@@ -1,0 +1,30 @@
+[% # This is a TT comment.  The '-' at the end "chomps" the newline.  You won't -%]
+[% # see this "chomping" in your browser because HTML ignores blank lines, but  -%]
+[% # it WILL eliminate a blank line if you view the HTML source.  It's purely   -%]
+[%- # optional, but both the beginning and the ending TT tags support chomping. -%]
+    
+[% # Provide a title -%]
+[% META title = 'Lista de Preferencias del sistema' -%]
+
+<div class="renglon">    
+<table>
+   <caption>Preferencias</caption>
+    <thead>
+    <tr>
+    <th>Nombre</th><th>Valor</th><th>Decripción</th><th></th>
+    </tr>
+    </thead>
+    <tbody>
+    [% FOREACH preferencia IN preferencias -%]
+      <tr>
+        <td>[% preferencia.nombre %]</td>
+        <td>[% preferencia.valor %]</td>
+        <td>[% preferencia.descripcion %]</td>
+        <td>
+            <a href="[% c.uri_for(c.controller.action_for('edit'), [preferencia.id]) %]" title='Editar'><img src="/static/images/pencil.png" alt="Editar" /></a>
+        </td>
+     </tr>
+    [% END -%]
+    </tbody>
+ </table>
+ </div>

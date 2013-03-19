@@ -1,0 +1,144 @@
+
+
+[% SWITCH linea.evento.ip_header.ip_proto.nombre %]
+[%   CASE 'TCP' %]
+<fieldset>
+        <legend>Datos [% linea.evento.ip_header.ip_proto.nombre FILTER upper %]</legend><fieldset>
+<legend>Header</legend>
+<table>
+<tr>
+<th>Puerto Origen</th>
+<th>Puerto Destino</th>
+<th>C<br>W<br>R</th>
+<th>E<br>C<br>N</th>
+<th>U<br>R<br>G</th>
+<th>A<br>C<br>K</th>
+<th>P<br>S<br>H</th>
+<th>R<br>S<br>T</th>
+<th>S<br>Y<br>N</th>
+<th>F<br>I<br>N</th>
+<th>Window</th>
+<th>seq #</th>
+<th>ack</th>
+<th>offset</th>
+<th>res</th>
+
+<th>urp</th>
+<th>chksum</th>
+</tr>   
+<tr>
+
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_sport %]<br>
+<a href="http://isc.sans.org/port.html?port=[% linea.evento.ip_header.obtener_pdu_superior.tcp_sport %]">SANS</a> 
+<a href="http://ports.tantalo.net/?q=[% linea.evento.ip_header.obtener_pdu_superior.tcp_sport %]">Tantalos</a>
+<!-- <a href="http://www.securitystats.com/tools/portsearch.php?type=port&select=any&Submit=Submit&input=[% linea.evento.ip_header.obtener_pdu_superior.tcp_sport %]">SSTATS</a> -->
+</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_dport %]<br>
+<a href="http://isc.sans.org/port.html?port=[% linea.evento.ip_header.obtener_pdu_superior.tcp_dport %]">SANS</a> 
+<a href="http://ports.tantalo.net/?q=[% linea.evento.ip_header.obtener_pdu_superior.tcp_dport %]">Tantalos</a>
+<!-- <a href="http://www.securitystats.com/tools/portsearch.php?type=port&select=any&Submit=Submit&input=[% linea.evento.ip_header.obtener_pdu_superior.tcp_dport %]">SSTATS</a> -->
+</td><td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(7,1)%]</td>
+<td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(6,1)%]</td>
+<td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(5,1)%]</td>
+<td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(4,1)%]</td>
+<td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(3,1)%]</td>
+<td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(2,1)%]</td>
+<td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(1,1)%]</td>
+<td>[% auxiliar= linea.evento.ip_header.obtener_pdu_superior.tcp_flags FILTER format('%08b') %]
+    [% auxiliar.substr(0,1)%]</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_win %] </td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_seq %] </td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_ack %] </td>
+<td><script>document.write([% linea.evento.ip_header.obtener_pdu_superior.tcp_off %]*4); </script></td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_res%]  </td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_urp %]</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.tcp_csum%] </td>
+</tr>
+</table>
+</fieldset>
+[% IF linea.evento.ip_header.obtener_pdu_superior.opt_proto.size > 0 %] 
+<fieldset>
+<legend>Opciones </legend>
+<table> 
+<tr>
+<th>Código</th>
+<th>Largo</th>
+<th>Datos</th>
+</tr>
+[% FOREACH opcion IN linea.evento.ip_header.obtener_pdu_superior.opt_proto %]
+<tr>
+<td>
+[% opcion.opt_code.string %]
+</td>
+<td>
+[% opcion.opt_len %]
+</td>
+<td>
+ [% opcion.opt_data %]
+</td>
+</tr>
+[% END %]
+</table>   
+</fieldset>
+[% END %]
+[%   CASE 'UDP' %]
+<fieldset>
+        <legend>Datos [% linea.evento.ip_header.ip_proto.nombre FILTER upper %]</legend><fieldset>
+<fieldset>
+<legend>Header</legend>
+<table>
+<tr>
+<th>Puerto Origen</th>
+<th>Puerto Destino</th>
+<th>UDP length</th>
+<th>Checksum</th>
+</tr>   
+<tr>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.udp_sport %]<br>
+<a href="http://isc.sans.org/port.html?port=[% linea.evento.ip_header.obtener_pdu_superior.udp_sport %]">SANS</a> 
+<a href="http://ports.tantalo.net/?q=[% linea.evento.ip_header.obtener_pdu_superior.udp_sport %]">TantaloS</a>
+</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.udp_dport %] <br>
+<a href="http://isc.sans.org/port.html?port=[% linea.evento.ip_header.obtener_pdu_superior.udp_dport %]">SANS</a> 
+<a href="http://ports.tantalo.net/?q=[% linea.evento.ip_header.obtener_pdu_superior.udp_dport %]">TantaloS</a>
+</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.udp_len %]</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.udp_csum%] </td>
+</tr>
+</table>
+</fieldset>
+</fieldset>
+       ...
+[%   CASE 'ICMP' %]
+
+<fieldset>
+        <legend>Datos [% linea.evento.ip_header.ip_proto.nombre FILTER upper %]</legend><fieldset>
+<table>
+<tr>
+<th>ICMP Type</th>
+<th>IMCP Code</th>
+<th>ID</th>
+<th># Seq</th>
+<th>Checksum</th>
+</tr>   
+<tr>
+<td>([% linea.evento.ip_header.obtener_pdu_superior.icmp_type.id %])[% linea.evento.ip_header.obtener_pdu_superior.icmp_type.string %]
+</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.icmp_code %]
+</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.icmp_id %]</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.icmp_seq %]</td>
+<td>[% linea.evento.ip_header.obtener_pdu_superior.icmp_csum %]</td>
+</tr>
+</table>
+</fieldset>
+[% END %]
+
+

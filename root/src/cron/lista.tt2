@@ -1,0 +1,11 @@
+<table>
+   <caption>Reglas</caption>
+ <tbody>
+    [% FOREACH regla IN reglas %]
+      <tr>
+        <td>[% regla %]</td>
+     </tr>
+    [% END %]
+    </tbody>
+ </table>
+  

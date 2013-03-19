@@ -1,0 +1,654 @@
+body { 
+	padding: 0; 
+	margin: 0; 
+	font: 0.7em Tahoma, sans-serif; 
+	line-height: 1.5em;
+	background: #fff; 
+	color: #454545; 
+}
+a {	color: #E0691A;	background: inherit;}
+a:hover { color: #6C757A; background: inherit; }
+h1 { font: normal 2.1em Arial, Sans-Serif; letter-spacing: -1px; padding: 7px 0 0 8px; margin: 0; }
+.dark  { color: #737373; background: inherit; font-weight: bold; }
+h1 a, h2 a { text-decoration: none; }
+h1 a:hover, h2 a:hover { color: #FF6600; background: inherit; }
+h2 { margin: 0; padding: 0; font: bold 1.7em Arial, Sans-Serif; letter-spacing: -1px; }
+h2 { font-size: 1.5em; margin-bottom: 5px; color: #000; background: inherit; }
+
+p {	margin: 0 0 5px 0; }
+
+ul { margin: 0; padding : 0; list-style : none; }
+
+form { 	margin: 0; }
+
+input.search { 
+	width: 292px; 
+	background: #FFF url(input.gif) no-repeat;
+	color: #E0691A;
+	font-weight: bold;
+}
+
+input.submit {
+	background: #E0691A url(submit.gif) no-repeat;
+	border: 0;
+	padding: 4px 0;
+	width: 65px;
+	margin: 0 15px 1px 0;
+	color: #FFF;
+	font: bold 1em Arial, Sans-Serif;
+}
+
+input.login { 
+	width: 150px;
+}
+
+/* layout
+   ------ */
+
+.content { 
+	margin: 0 auto;
+	width: 780px;
+	padding: 10px; 
+}
+
+.header { 
+	height: 55px;
+	background: #eee;
+	color: #808080;
+	margin: 3px 0;
+	padding: 10px 0 0 0;
+	border-bottom: 1px solid #ccc;
+}
+
+.top_info {
+	float: right;
+	width: 555px;
+	padding: 5px 0 4px 0;
+	border-bottom: 1px solid #eee;
+	background: #eee;
+	color: #808080;
+}
+
+	.top_info_left {
+		width: 200px;
+		float: left;
+	}
+
+	.top_info_right {
+		float: right;
+		width: 290px;
+		padding: 0 0 0 35px;
+		border-left: 1px solid #eee;
+	}
+
+.browse_category  {
+	font-size: 0.9em;
+	width: 190px;
+	color: #FFF;
+	background: inherit;
+}
+
+.bar { 
+	clear: both;
+	font-size: 1.1em;
+	height: 30px; 
+	color: #FFF;
+	margin: 0 0 0 0px; 
+	background: #FF9148;
+}
+
+	.bar li { 
+		margin: 0; 
+		padding: 7px 12px 5px 12px;
+		color: #FFEADC;
+		background: #FF9148;
+		float: left; 
+	}
+	
+	.bar li.active { 
+		background: #E0691A url(bar.gif) no-repeat center top; 
+		color: #fff;
+		font-weight: bold; 
+		padding: 7px 10px 6px 10px;
+	}
+	
+	.bar li a { 
+		font-weight: bold;
+		color: #FFF; 
+		background: inherit;
+		text-decoration: none;
+	} 
+	
+	.bar li a:hover { 
+		color: #E0691A; 
+		background: inherit;
+	} 
+
+.search_field { 
+	background: #fff url(searchbg.gif) no-repeat right; 
+	color: #808080;
+	clear: both;
+	font-weight: bold;
+	padding: 7px 25px 10px 10px;
+	margin: 5px 0;
+}
+
+.grey {
+	color: #808080;
+	background: inherit;
+	font-weight: normal;
+}
+
+.search_form { float: right; }
+
+.subheader {
+	margin: 0px 0 10px 0;
+	border-bottom: 1px solid #eee;
+	padding: 5px 0 5px 0;
+	background: #A4A4A4;
+	color: #fff;
+}
+
+/* left side
+   --------- */
+
+.left {
+	float: left;
+	width: 65%;
+	margin: 0 0 10px 0;
+}
+
+.left h3 {
+	clear: both;
+	background: #A9C0CE url(corner.gif) no-repeat top right;
+	color: #FFF;
+	padding: 7px 0 7px 5px;
+	font: bold 1em Tahoma, Arial, Sans-Serif;
+	margin: 0 0 0px 0;
+}
+	.left_side {
+		float: left;
+		width: 180px;
+		padding: 0 0 0 10px;
+		margin: 10px 0;
+	}
+		
+	.left_side a, .right_side a { color: #414141; background: #FFF; }
+		
+	.right_side {
+		float: right;
+		width: 220px;
+		background: #FFF url(dotted.gif) repeat-y;
+		color: #414141;
+		padding: 0 0 0 40px;
+		margin: 10px 0;
+	}
+		
+	.left_box { margin: 0 0 10px 0; color: #000; background: #FFF; padding: 3px 0; }
+	
+		
+/* right side
+   ---------- */
+		
+.right {
+	float: right;
+	width: 34.6%;
+	margin: 0 0 10px 0;
+}
+
+.right h3 {
+	background: #6C757A  url(corner.gif) no-repeat top right;;
+	color: #FFF;
+	padding: 7px 0 7px 5px;
+	font: bold 1em Tahoma, Arial, Sans-Serif;
+	margin: 0 0 3px 0;
+}
+
+	.right_articles {
+		background: #f5f5f5;
+		color: #414141;
+		padding: 8px;
+                min-height: 60px;	
+		margin: 0 0 3px 0;
+	}
+	
+.image {
+	float: left;
+	margin: 0 9px 3px 0;
+}
+
+/* footer
+   ------ */
+
+.footer { 
+	clear: both;
+	text-align: center;
+	padding: 10px 0 10px 0;
+	margin: 0;
+	border-top: 1px solid #ccc;
+	line-height: 1.8em;
+}
+
+.footer a { color: #808080; background: #fff; }
+
+
+/* Tabla de resultado */
+
+table { 
+        background:#FFE699;
+        border:1px solid gray;
+        border-collapse:collapse;
+        color:#fff;
+        font:1em Tahoma, sans-serif;
+        width:95%;
+        margin-top:10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+caption { 
+        border:1px solid #5C443A;
+        color:#5C443A;
+        font-weight:bold;
+        letter-spacing:20px;
+        padding:6px 4px 8px 0px;
+        text-align:center;
+        text-transform:uppercase;
+}
+td, th { color:#363636;
+         padding:.4em;
+}
+tr {    
+        border:1px dotted gray;
+}
+thead th, tfoot th { 
+        background:#5C443A;
+        color:#FFFFFF;
+        padding:3px 10px 3px 10px;
+        text-align:center;
+        text-transform:uppercase;
+}
+tbody td a { 
+        color:#363636;
+        text-decoration:none;
+}
+tbody td a:visited { 
+        color:gray;
+}
+tbody td a:hover { 
+        text-decoration:underline;
+}
+tbody th a { 
+        color:#363636;
+        font-weight:normal;
+        text-decoration:none;
+}
+tbody th a:hover { 
+        color:#363636;
+}
+tbody td+td+td+td a { 
+        background-position:left center;
+        background-repeat:no-repeat;
+        color:#03476F;
+
+}
+tbody td+td+td+td a:visited { 
+        background-position:left center;
+        background-repeat:no-repeat;
+}
+tbody th, tbody td { 
+        vertical-align:top;
+}
+tfoot td { 
+        background:#5C443A;
+        color:#FFFFFF;
+        padding-top:3px;
+}
+
+.lista_links
+{
+    text-align: center;
+}
+
+.lista_links li
+{
+    display: inline;
+}
+
+
+.centrado {
+        text-align:center;
+}
+.odd { 
+        background:#fff;
+}
+tbody tr:hover { 
+        background:#FFCC99;
+        border:1px solid #03476F;
+        color:#000000;
+}
+
+/* Vulnerabilidades */
+table.vulnerabilidades { 
+       width:100%;
+}
+
+tbody.vulnerabilidades { 
+        background:#0000CC;
+        border:1px solid #03476F;
+        color:#000000;
+}
+
+tr.description { 
+        background:#FFCC99;
+}
+
+tr.prioridad-1 { 
+        background:#F64747;
+}
+tr.prioridad-2 { 
+        background:#FF9900;
+
+}
+tr.prioridad-3 { 
+        background:#F0F647;
+}
+tr.prioridad-7 { 
+        background:#FFFFCC;
+}
+tr.prioridad-10 { 
+        background:#FFFFCC;
+}
+
+
+td.prioridad_actual { 
+        text-align: center;
+        background:#5C443A;
+        color:#FFFFFF;
+        font-weight:bold;
+        text-transform:uppercase;
+} 
+/* Para los formularios  */
+
+
+fieldset {
+	padding: 1em;
+}
+
+fieldset .button,
+fieldset .checkbox,
+fieldset .contentbutton,
+fieldset .date,
+fieldset .file,
+fieldset .image,
+fieldset .multi,
+fieldset .password,
+fieldset .radio,
+fieldset .recaptcha,
+fieldset .reset,
+fieldset .select,
+fieldset .submit,
+fieldset .text,
+fieldset .textarea
+{
+	display: block;
+	clear: left;
+	border: 0;
+	margin: 1px;
+	/* when no label */
+	margin-left: 12em;
+}
+
+/* make the noscript textarea sit below the iframe
+*/
+fieldset .recaptcha noscript textarea {
+    display: block;
+}
+
+/* override the iframe's height="" - it's seems a bit big
+*/
+fieldset .recaptcha iframe {
+    height: 230px ! important;
+}
+
+fieldset .button.label,
+fieldset .checkbox.label,
+fieldset .contentbutton.label,
+fieldset .date.label,
+fieldset .file.label,
+fieldset .image.label,
+fieldset .multi.label,
+fieldset .password.label,
+fieldset .radio.label,
+fieldset .recaptcha.label,
+fieldset .reset.label,
+fieldset .select.label,
+fieldset .submit.label,
+fieldset .text.label,
+fieldset .textarea.label
+{
+	margin-left: 1px;
+}
+
+fieldset .error.label {
+	/* border + margin swap values with above, to ensure rows align */
+	border: 1px #fff;
+	margin: 0;
+}
+
+form .form_error_message {
+	padding: 0.5em;
+	border: 1px solid #ff0000;
+	background-color: #ffdddd;
+}
+
+fieldset .error_message {
+       display: block;
+       color: #ff0000;
+}
+
+fieldset .label .error_message {
+       /* padding-left eq label width + padding-right */
+       padding-left: 12em;
+}
+
+fieldset .error input,
+fieldset .error textarea,
+fieldset .error select {
+       background-color: #ffdddd;
+}
+
+fieldset .button label,
+fieldset .contentbutton label,
+fieldset .checkbox label,
+fieldset .date label,
+fieldset .file label,
+fieldset .image label,
+fieldset .multi label,
+fieldset .password label,
+fieldset .radio label,
+fieldset .radiogroup label,
+fieldset .recaptcha label,
+fieldset .select label,
+fieldset .text label,
+fieldset .textarea label
+{
+	display: inline;
+	float: left;
+	width: 11em;
+	text-align: right;
+	padding-right: 1em;
+}
+
+fieldset .radiogroup span label {
+	/* undo the above style */
+	float: none;
+	width: auto;
+	text-align: left;
+	padding-right: 0;
+}
+
+fieldset .multi .elements {
+	display: block;
+	float: left;
+}
+
+fieldset .multi .elements label {
+	display: block;
+	width: auto;
+	padding-right: 0.25em;
+}
+
+fieldset .multi input,
+fieldset .multi select {
+	display: block;
+	float: left;
+	margin-right: 0.5em;
+}
+
+fieldset.checkboxgroup,
+fieldset.radiogroup
+{
+	margin: 0;
+	margin-left: 12em;
+	padding: 0;
+	width: auto;
+}
+
+fieldset.radiogroup.label {
+	border: 0;
+	margin-left: 0em;
+}
+
+fieldset .comment .comment {
+	/* when no label */
+	display: block;
+	margin-left: 0em;
+}
+
+fieldset .label .comment {
+	display: block;
+	margin-left: 12em;
+}
+
+/*** Alternative Layouts ***/
+
+fieldset .notes {
+	float: right;
+	width: 30%;
+	border: 1px dotted;
+}
+
+fieldset .multi.vertical input,
+fieldset.checkboxgroup .vertical input,
+fieldset.radiogroup .vertical input
+{
+	display: block;
+	float: left;
+	clear: left;
+	margin-right: 0.5em;
+}
+
+fieldset .multi.vertical select {
+	display: block;
+	float: left;
+	clear: right;
+}
+
+fieldset.checkboxgroup .vertical label,
+fieldset.radiogroup .vertical label
+{
+	display: block;
+	clear: right;
+}
+
+fieldset.radiogroup .vertical .subgroup {
+	float: left;
+}
+
+fieldset .fullwidth label
+{
+	display: block;
+	float: left;
+	width: auto;
+	text-align: left;
+}
+
+fieldset .fullwidth .error_message {
+       padding-left: 0em;
+}
+
+fieldset .fullwidth textarea
+{
+	display: block;
+	clear: left;
+	width: 30em;
+}
+
+fieldset .dojoeditor2 .RichTextEditable { /* Dojo::Editor2 */
+	display: inline;
+	float: left;
+	background-color: #ffc;
+	padding-bottom: 0.1em;
+}
+
+.fieldset_derecha {
+    float: right;
+    width: 45%;
+}
+.fieldset_izquierda {
+    float: left;
+    width: 45%;
+}
+.renglon {
+    clear:both;
+    margin-bottom: 30px;
+}
+
+.renglon_derecha {
+    float: right;
+}
+.renglon_izquierda {
+    float: left;
+}
+
+legend {
+    font-weight: bold;
+}
+.busqueda input {
+    margin:0 0 1em;
+    display: inline;
+}
+p.aviso{
+    font: bold 1.7em Arial, Sans-Serif;
+    color:red;
+    }
+.horizontal li{
+display: inline;
+list-style-type: none;
+padding-right: 20px;
+}
+
+table.paginador td a {
+vertical-align:middle;
+text-align:center;
+color:white;}
+
+.listaalertas td{
+vertical-align:middle;
+text-align:center;}
+
+.listaalertas .image{
+float:none;
+margin:0 0 0 0;}
+img {
+border:0;}
+.w10 {
+width:10%;}
+.w15 {
+width:15%;}
+.w20 {
+width:20%;}
+.w30 {
+width:30%;}
+.w40 {
+width:40%;}

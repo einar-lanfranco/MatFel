@@ -1,0 +1,189 @@
+[% META title = 'Resultado de Escaneo' -%]
+<h2> Resultado de Escaneo </h2>
+[% USE String %]
+
+
+<script type="text/javascript" src="[% c.uri_for('/static/chart/json2.js') %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/chart/swfobject.js') %]"></script>
+
+<div class="renglon_general">
+<fieldset>
+<legend>Actualidad Escaneo: [% escaneo.id_servidor.nombre_dir %] 
+           <a href="[% c.uri_for(c.controller('trafico').action_for('listar_trafico'), [escaneo.id_servidor.id]) %]" title="Tráfico"><img src="/static/images/arrow_inout.png" alt="Tráfico" /></a>
+           <a href="[% c.uri_for(c.controller('escaneos').action_for('lista_servidor')) %]/[% escaneo.id_servidor.id %]"  title="Escaneos"><img src="/static/images/bug.png" alt="Escaneos" /></a>
+           <a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [escaneo.id_servidor.id],30,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a>
+</legend>
+<div class="renglon">
+<fieldset id='detalle'  class="fieldset_izquierda">
+<legend>Detalle</legend>
+    <ul>
+      <li> Servidor: <b>[% escaneo.id_servidor.ipv4 %]/[% escaneo.id_servidor.mascarav4 %]</b></li>
+      <li> Frecuencia: <b>[% escaneo.frecuencia.descripcion %]</b></li>
+      <li> Estado: <b>[% escaneo.estado.descripcion %]</b></li>
+      <li> Último Escaneo: <b>[% ultimo_dia %]</b></li>
+    </ul>
+
+</fieldset>
+<fieldset id='resumen_severidad'  class="fieldset_derecha">
+[% cant_prioridad = 0 %]
+<legend>Estadisticas por severidad</legend>
+    <ul>
+        [% FOREACH estado IN escaneo.estado_actual -%]
+      <li >  <img src="/static/images/severity/[% estado.key %].png"  alt="[% estado.key %]" />
+          [% SWITCH estado.key %]
+            [%   CASE 1 %] De severidad Alta
+            [%   CASE 2 %] De severidad Media
+            [%   CASE 3 %] De severidad Baja
+          [% END %]
+          [% IF estado.value > 0 %]
+          <a href="#prioridad_[% estado.key %]">[% estado.value %]</a>
+           [% ELSE %]
+            [% estado.value %]
+           [% END %]
+      </li>
+           [% cant_prioridad = cant_prioridad + estado.value %]
+        [% END -%]
+    </ul>
+
+</fieldset>
+</div>
+
+[% IF cant_prioridad > 0 %]
+<div class="renglon">
+<fieldset id='resumen_eventos_izquierda' class="fieldset_izquierda">
+<legend> Vulnerabilidades por severidad - Torta</legend>
+<script type="text/javascript">
+swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc_pie_chart", "285", "150",
+"9.0.0", "",  {"data-file":"/ofc/vulnerabilidades_torta/[% escaneo.id %]","loading":"Cargando datos..."});
+</script>
+<div id='ofc_pie_chart'></div>
+</fieldset>
+
+<fieldset id='resumen_eventos_derecha' class="fieldset_derecha">
+<legend> Vulnerabilidades por severidad - Barras</legend>
+<script type="text/javascript">
+swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc_bar_chart", "285", "150",
+"9.0.0", "", {"data-file":"/ofc/vulnerabilidades_barras/[% escaneo.id %]","loading":"Cargando datos..."});
+</script>
+
+<div id='ofc_bar_chart'></div>
+</fieldset>
+</div>
+ [% END %]
+
+<div class="renglon">
+<fieldset id='resultado_escaneo' class="fieldset_completo">
+<legend> Resultado del Último Escaneo ([% ultimo_dia %])</legend>
+<table class="vulnerabilidades" id="vuln_table">
+    <thead>
+    <tr>
+    <th  class="w10">IP</th>
+    <th  class="w10">Puerto</th>
+    <th  class="w20">OID</th>
+    <th  class="w20">Tipo</th>
+    <th  class="w10">Riesgo</th>
+    <th  class="w10">CVE</th>
+    <th  class="w10"></th>
+    <th  class="w10"></th>
+    </tr>
+    </thead>
+    <tbody>
+    [% prioridad_actual = 0 %]
+    [% info = 0 %]
+    [% FOREACH resultado IN ultimo_escaneo -%]
+      [% IF prioridad_actual != resultado.risk.prioridad && resultado.risk.prioridad <= 3 %]
+        <tr class='prioridad_actual'><td colspan='8'  class='prioridad_actual'>
+           <a name='prioridad_[% resultado.risk.prioridad %]'></a>
+          <img src="/static/images/severity/[% resultado.risk.prioridad %].png"  alt="[% resultado.risk.prioridad %]" />
+          [% SWITCH resultado.risk.prioridad %]
+            [%   CASE 1 %] De severidad Alta
+            [%   CASE 2 %] De severidad Media
+            [%   CASE 3 %] De severidad Baja
+          [% END %]
+         </td></tr>
+      [% ELSIF prioridad_actual != resultado.risk.prioridad && resultado.risk.prioridad > 3 && info == 0  %]
+        <tr class='prioridad_actual'><td colspan='8'  class='prioridad_actual'>
+          Información
+         </td></tr>
+        [% info = 1 %]
+      [% END %]
+      [% prioridad_actual = resultado.risk.prioridad %]
+
+      <tr class="prioridad-[% resultado.risk.prioridad %]">
+        <td>[% resultado.ip %]</td>
+        <td>[% resultado.port %]</td>
+        <td><a href="[% oid_url %][% resultado.OID %]">[% resultado.OID %]</a></td>
+  	<td>[% resultado.type %]</td>
+	<td>[% resultado.risk.descripcion %]</td>
+	<td>
+   	[% FOREACH res IN resultado.CVE.split('\|') %]
+		<a href="[% cve_url %][% res %]">[% res %]</a>
+    	[% END %]
+	</td>
+	<td>
+        [% IF resultado.risk.prioridad <= 3 %]
+          [% IF resultado.trafico_entrante_bloqueado %]
+            <a href="[% c.uri_for(c.controller('trafico_bloqueado_entrada').action_for('borrar'), [resultado.trafico_entrante_bloqueado]) %]" id='go-[% resultado.id %]'  title="Desloquear Tr&aacute;fico Entrante">
+            <img src="/static/images/go.png" alt="Desbloquear Tr&aacute;fico Entrante" />
+            </a>
+          [% ELSE %]
+            <a href="[% c.uri_for(c.controller('trafico').action_for('bloquear_trafico_entrante'), [ escaneo.id_servidor.id ], resultado.puerto , resultado.protocolo) %]" id='stop-[% resultado.id %]'  title="Bloquear Tr&aacute;fico Entrante">
+            <img src="/static/images/stop.png" alt="Bloquear Tr&aacute;fico Entrante" />
+            </a>
+          [% END %]
+        [% END %]
+    </td>
+
+    <td>
+	<a href="#" id='mas-[% resultado.id %]'>+</a>
+	<a href="#" id='menos-[% resultado.id %]'>-</a>
+	</td>
+     </tr>
+    <tr id='informacion-[% resultado.id %]' class='description'>
+    <td colspan='8'>
+      [% FILTER html_line_break %]
+        [% FILTER html %]
+            [% resultado.description %]
+        [% END %]
+    [% END %]
+    <script type="text/javascript">
+	    $(document).ready(function() {
+		  $('#informacion-[% resultado.id %]').hide();
+		  $('a#menos-[% resultado.id %]').hide();
+
+		  $('a#mas-[% resultado.id %]').click(
+		    function() {
+		      $('#informacion-[% resultado.id %]').show();
+		      $('a#menos-[% resultado.id %]').show();
+		      $('a#mas-[% resultado.id %]').hide();
+		      return false;
+		    }
+		  );
+
+		  $('a#menos-[% resultado.id %]').click(
+		    function() {
+		      $('#informacion-[% resultado.id %]').hide();
+		      $('a#mas-[% resultado.id %]').show();
+		      $('a#menos-[% resultado.id %]').hide();
+		      return false;
+		    }
+		  );
+
+	    });
+
+  </script>
+    </td>
+    </tr>
+    [% END -%]
+    </tbody>
+ </table>
+</fieldset>
+ </div>
+
+</fieldset>
+
+
+<div class="renglon_izquierda" >
+ <p><a href="[% c.uri_for(c.controller.action_for('lista')) %]" title="Volver a la lista de escaneos"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>
+ </div>

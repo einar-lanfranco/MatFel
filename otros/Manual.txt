@@ -1,0 +1,13 @@
+Manual de uso:
+
+En el firewall hay que poner un cron que requiera al server la lista de reglas actualizada cada cierto tiempo, lo que hay que poner en la tarea programada es el script consultar_reglas.sh que esta en la carpeta otros (si se va a poner directamente el script en alguno de los directorios de cron tengan en cuenta quitar la extension .sh y darle permisos de ejecución). 
+
+Ese script lo que hace es traer las nuevas reglas y aplicarlas en el firewall local.
+
+Contenido del script:
+#!/bin/sh
+http://192.168.56.101:3000/cron/generar_reglas -O iptables
+sudo sh iptables
+
+
+Para que el sistema nos deje bajar las reglas tiene que estar la ip de nuestro firewall en la preferencia del sistema "ip_firewall".

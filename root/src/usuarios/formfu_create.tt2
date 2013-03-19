@@ -1,0 +1,12 @@
+   [% META title = 'ABM de Usuarios' %]
+    
+    [%# Render the HTML::FormFu Form %]
+<div class="renglon">
+    <fieldset>
+    <legend>Usuario</legend>
+    [% form %]
+    </fieldset>
+<div class="renglon_izquierda" >
+ <p><a href="[% c.uri_for(c.controller.action_for('lista')) %]"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>
+</div>

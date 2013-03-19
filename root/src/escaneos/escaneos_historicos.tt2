@@ -1,0 +1,149 @@
+[% META title = 'Escaneos Históricos' -%]
+<h2> Escaneos Históricos </h2>
+<script type="text/javascript" src="[% c.uri_for('/static/chart/json2.js') %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/chart/swfobject.js') %]"></script>
+[% USE String %]
+<script type="text/javascript" src="[% c.uri_for('/static/js/date.js') %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/js/date_es.js') %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/js/jquery.datePicker.js') %]"></script>
+
+
+<div class="renglon">
+<fieldset>
+<legend>Histórico: [% escaneo.id_servidor.nombre_dir %]
+           <a href="[% c.uri_for(c.controller('trafico').action_for('listar_trafico'), [escaneo.id_servidor.id]) %]" title="Tráfico"><img src="/static/images/arrow_inout.png" alt="Tráfico" /></a>
+           <a href="[% c.uri_for(c.controller('escaneos').action_for('lista_servidor')) %]/[% escaneo.id_servidor.id %]"  title="Escaneos"><img src="/static/images/bug.png" alt="Escaneos" /></a>
+           <a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [escaneo.id_servidor.id],30,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a>
+</legend>
+<div class="renglon">
+<fieldset id='resumen_severidad'  class="fieldset_izquierda">
+[% cant_prioridad = 0 %]
+<legend>Vulnerabilidades actuales</legend>
+    <ul>
+        [% FOREACH estado IN escaneo.estado_actual -%]
+      <li >  <img src="/static/images/severity/[% estado.key %].png"  alt="[% estado.key %]" />
+          [% SWITCH estado.key %]
+            [%   CASE 1 %] De severidad Alta
+            [%   CASE 2 %] De severidad Media
+            [%   CASE 3 %] De severidad Baja
+          [% END %]
+            [% estado.value %]
+      </li>
+           [% cant_prioridad = cant_prioridad + estado.value %]
+        [% END -%]
+    </ul>
+</fieldset>
+
+<fieldset id='calendario_escaneos' class="fieldset_derecha">
+<legend> Calendario de Escaneos</legend>
+
+<script type="text/javascript">
+function dateToIso(da){
+    dy = da.getFullYear();  // Get full year (as opposed to last two digits only)
+    dm = da.getMonth() + 1;     // Get month and correct it (getMonth() returns 0 to 11)
+    dd = da.getDate();  // Get date within month
+    if ( dy < 1970 ) dy = dy + 100;     // We still have to fix the millennium bug
+    ys = new String(dy);    // Convert year, month and date to strings
+    ms = new String(dm);     
+    ds = new String(dd);     
+    if ( ms.length == 1 ) ms = "0" + ms;    // Add leading zeros to month and date if required
+    if ( ds.length == 1 ) ds = "0" + ds;     
+    diso = ys + "-" + ms + "-" + ds;    // Combine year, month and date in ISO format
+    return diso;
+}
+
+$(function()
+{
+    var callback = function($td, thisDate, month, year)
+    {
+            var d = thisDate.getDate();
+            $td.bind(
+                'click',
+                function()
+                {
+                    dp = thisDate.asString();
+                    $('#datepicker').dpSetSelected(dp);
+
+                    var selectedDates = $('#datepicker').dpGetSelected();
+                    for (x in selectedDates)
+                    {
+                      if (selectedDates[x].asString() == dp) { //Es una de las fechas marcadas!!!
+
+                          //llamada a Ajax
+                          $.ajax({
+                              url: "[% c.uri_for(c.controller('escaneos').action_for('escaneo_dia'), [escaneo.id]) %]/" + dateToIso(thisDate),
+                              success: function(html){
+                                $("#resultado_escaneo").html(html);
+                              }
+
+                            });
+                      }
+                    }
+
+                }
+            )
+    }
+
+    $('#datepicker')
+        .datePicker(
+            {
+            inline:true,
+            closeOnSelect:false,
+            selectMultiple:true,
+            numSelectable:'[% cantidad_dias %]',
+            startDate: '[% primer_dia %]',
+            endDate: '[% ultimo_dia %]',
+            renderCallback:callback
+            }
+        );
+    [% FOREACH dia IN dias_escaneos -%]
+    $('#datepicker').dpSetSelected('[% dia %]');
+    [% END -%]
+});
+
+</script>
+
+<div id="datepicker" ></div>
+
+</fieldset>
+
+</div>
+
+[% IF cant_prioridad > 0 %]
+<div class="renglon">
+<fieldset id='resumen_eventos' class="fieldset_completo">
+<legend> Vulnerabilidades en el tiempo </legend>
+<script type="text/javascript">
+function enviarRango(){
+  $('#form_rango').attr("action",$('#rango_historico').val() );
+    return true;
+}
+</script>
+<div class="busqueda">
+<form action="?" method="post" id="form_rango" onsubmit="return enviarRango()"> 
+<p>
+Ver &uacute;ltimos <input id="rango_historico" type="text" size="4" value="[% rango_historico %]" /> escaneos <input type="submit" class="submit" value="Mostrar" />
+</p>
+</form>
+</div>
+
+<script type="text/javascript">
+swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc_line_chart", "720", "400",
+"9.0.0", "", {"data-file":"/ofc/historico_vulnerabilidades/[% escaneo.id %]/[% rango_historico %]","loading":"Cargando datos..."});
+</script>
+
+<div id='ofc_line_chart'></div>
+
+</fieldset>
+</div>
+[% END %]
+<div class="renglon">
+<div id="resultado_escaneo"></div>
+</div>
+</fieldset>
+
+
+<div class="renglon_izquierda" >
+ <p><a href="[% c.uri_for(c.controller.action_for('lista')) %]" title="Volver a la lista de escaneos"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>
+</div>

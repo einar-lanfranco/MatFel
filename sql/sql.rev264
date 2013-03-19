@@ -1,0 +1,18 @@
+TRUNCATE TABLE `preferencia`;
+INSERT INTO `preferencia` ( `nombre`, `valor`, `descripcion`) VALUES
+( 'reload_firewall', '0', 'Variable booleana que indica si hay que hacer reload del firewall- Uso interno'),
+( 'openvas-server', 'localhost', 'IP del servidor de openvas'),
+( 'openvas-port', '9390', 'Puerto del servidor de openvas'),
+( 'openvas-user', 'matiasp', 'Usuario para conectarnos al servidor de openvas'),
+( 'openvas-pass', 'passdelopenvas', 'Password para conectarnos al servidor de openvas'),
+( 'openvas-client', '/usr/bin/OpenVAS-Client', 'Ejecutable del cliente de openvas'),
+( 'report-dir', '/var/www/tesis/root/static/reportes/', 'Directorio donde van los reportes de Openvas'),
+( 'log', '/var/log/tesis/openvas.log', 'Directorio donde van los logs de Openvas'),
+( 'OIDs-url', 'http://www.openvas.org/?oid=', 'url para los plugins de openvas'),
+( 'CVEs-url', 'http://cve.mitre.org/cgi-bin/cvename.cgi?name=', 'url a la descripción de los CVEs'),
+( 'send_report', '1', 'enviar reportes?'),
+( 'mail_dir', 'matiasp@linti.unlp.edu.ar', 'mail de contacto?'),
+( 'ip_firewall', '127.0.0.1', 'IP desde donde dejaremos bajar las reglas para el firewall'),
+( 'ultima_actualizacion', '2010-8-11 14:28:1', 'La ultima vez que se procesaron las alertas del Snort'),
+( 'geoip-db', '/var/www/tesis/root/static/GeoIP/GeoLiteCity.dat', 'Ubicación de la base de Geolocalización'),
+( 'rss_server', 'http://sl.linti.unlp.edu.ar/feed/rss/', 'Los servidores de RSS, para poner varios separar por coma (,)');

@@ -1,0 +1,1 @@
+UPDATE `preferencia` SET `valor` = '1' WHERE `preferencia`.`nombre` ='reload_firewall';

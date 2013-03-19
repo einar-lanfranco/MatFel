@@ -1,0 +1,22 @@
+# m h  dom mon dow   command
+
+#Ejecutar escaneos inmediatos
+* * * * * wget -q -O /dev/null http://127.0.0.1:3000/cron/procesar_openvas 2>&1
+
+#Actualizar Alertas
+* * * * * wget -q -O /dev/null http://127.0.0.1:3000/cron/actualizar_alertas 2>&1
+
+#Generar Reglas
+* * * * * sh /home/soporte/Tesis/svn/desarrollo/otros/actualizar_reglas.sh 2>&1
+
+#Ejecutar escaneos  Diarios
+0 21 * * * wget -q -O /dev/null http://127.0.0.1:3000/cron/procesar_openvas/D 2>&1
+
+#Ejecutar escaneos  Semanales
+0 22 * * 5 wget -q -O /dev/null http://127.0.0.1:3000/cron/procesar_openvas/S 2>&1
+
+#Ejecutar escaneos  Mensuales
+0 23 1 * * wget -q -O /dev/null http://127.0.0.1:3000/cron/procesar_openvas/M 2>&1
+
+#Actualizacion del archivo de configuracion de openVAS
+0 0 * * * openvas-nvt-sync&  > /dev/null 2>&1

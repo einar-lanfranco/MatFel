@@ -1,0 +1,35 @@
+
+[% META title = 'Listado de Alertas' %]
+
+<script type="text/javascript">
+
+function enviarRango(){
+  $('#form_rango').attr("action","[% c.uri_for(c.controller('alertas').action_for('listar_ultimas_alertas')) %]"+"/"+$('#rango').val());
+  return true;
+}
+</script>
+
+<div class="busqueda">
+<form action="?" method="post" id="form_rango" onsubmit="return enviarRango()">
+<p>Alertas registradas en los últimos <input id="rango" type="text" size="4" value="[% rango %]" /> días <input type="submit" class="submit" value="Mostrar" /></p>
+</form>
+</div>
+
+<table class="listaalertas">
+   <caption> Alertas de los &Uacute;ltimo/s [% rango %] d&iacute;a/s </caption>
+    <thead><tr>
+    <th width="40%"> Eventos </th>
+    <th width="40%"> Servidor </th>
+    <th width="20%"> Ver Alertas </th>
+    </tr></thead>
+
+    <tbody>
+    [% FOREACH alerta IN alertas_entre_logins %]
+     <tr>
+      <td> [% alerta.get_column('cuenta') %]</td>
+      <td> [% alerta.get_column('server_nombre') %] </td>
+      <td><a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [alerta.get_column('id_servidor')],rango,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a> </td>
+     </tr>
+    [% END %]
+    </tbody>
+ </table>

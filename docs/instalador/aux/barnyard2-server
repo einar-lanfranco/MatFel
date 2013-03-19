@@ -1,0 +1,2 @@
+#!/bin/sh
+barnyard2 -c /etc/barnyard2.conf -d /var/log/snort -f snortunifed2.log -w /var/log/snort/snort.waldo > /dev/null 2>/var/log/tesis/tesis.log &

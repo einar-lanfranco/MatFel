@@ -1,0 +1,6 @@
+ CREATE TABLE `url_reference` (
+`ref_system_name` VARCHAR(255) NOT NULL ,
+`url` VARCHAR(255) NOT NULL ,
+PRIMARY KEY ( `ref_system_name` )
+) ENGINE = MYISAM;
+INSERT INTO `url_reference` (`ref_system_name`, `url`) VALUES ('bugtraq','http://www.securityfocus.com/bid/$'),('snort', 'http://www.snort.org/pub-bin/sigs.cgi?sid=$'), ('cve', 'http://cve.mitre.org/cgi-bin/cvename.cgi?name=$'), ('mcafee', 'http://vil.nai.com/vil/content/v_$.html'), ('icat', 'http://nvd.nist.gov/nvd.cfm?cvename=CAN-$'), ('nessus', 'http://www.nessus.org/plugins/index.php?view=single&id=$');

@@ -1,0 +1,33 @@
+<div class="top_info">
+<div class="top_info_right">
+<p><b>You are not Logged in!</b> <a href="#">Log in</a> to check your messages.<br />
+Do you want to <a href="#">Log in</a> or <a href="#">register</a>?</p>
+</div>
+<div class="top_info_left">
+<p><b>28. March, 2006</b> - Tuesday<br />
+Check todays <a href="#">hot topics</a> or <a href="#">new products</a></p>
+</div>
+</div>
+<div class="logo">
+<h1><a href="#" title="Centralized Internet Services"><span class="dark">Internet</span>Services</a></h1>
+</div>
+</div>
+
+<div class="bar">
+<ul>
+<li class="browse_category">Select Search Category:</li>
+<li><a href="#" accesskey="i">Internet</a></li>
+<li class="active">People</li>
+<li><a href="#" accesskey="m">Music</a></li>
+<li><a href="#" accesskey="p">Pictures</a></li>
+<li><a href="#" accesskey="s">Services</a></li>
+<li><a href="#" accesskey="r">Products</a></li>
+</ul>
+</div>
+<div class="search_field">
+<form method="post" action="?">
+<div class="search_form">
+<p>Search the Web: <input type="text" name="search" class="search" /> <input type="submit" value="Search" class="submit" /> <a class="grey" href="#">Advanced</a></p>
+</div>
+</form>
+<p>Please <a href="#">Sign in</a> or <a href="#">Register</a></p>

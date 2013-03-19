@@ -1,0 +1,26 @@
+ALTER TABLE `ov_scanresults` ADD `id_scan` INT NOT NULL AFTER `id` ;
+UPDATE `tesis`.`ov_frecuencia` SET `descripcion` = 'Una Vez' WHERE CONVERT( `ov_frecuencia`.`id` USING utf8 ) = 'U' LIMIT 1 ;
+ALTER TABLE `ov_scanresults` CHANGE `id` `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ;
+
+
+-- Nuevas Preferencias para que funcione el OpenVas
+
+TRUNCATE TABLE `preferencia`;
+
+INSERT INTO `preferencia` (`id`, `nombre`, `valor`) VALUES
+(1, 'reload_firewall', 'true'),
+(2, 'openvas-server', 'localhost'),
+(3, 'openvas-port', '9390'),
+(4, 'openvas-user', 'matiasp'),
+(5, 'openvas-pass', 'passdelopenvas'),
+(6, 'openvas-client', '/usr/local/bin/OpenVAS-Client'),
+(7, 'report-dir', '/home/soporte/Tesis/svn/desarrollo/root/static/reportes/'),
+(8, 'log', '/var/log/tesis/openvas.log'),
+(10, 'OIDs-url', 'http://www.openvas.org/?oid='),
+(11, 'CVEs-url', 'http://cve.mitre.org/cgi-bin/cvename.cgi?name='),
+(12, 'send_report', '1'),
+(13, 'mail_dir', 'matiasp@linti.unlp.edu.ar'),
+(14, 'ip_firewall', '192.168.56.109'),
+(15, 'ultima_actualizacion', '2010-6-26 7:23:39');
+
+

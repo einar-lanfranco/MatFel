@@ -1,0 +1,36 @@
+INSERT INTO `role` (`id`, `role`) VALUES ('3', 'Usuario');
+DELETE FROM `user_role` WHERE `user_role`.`user_id` = 1 AND `user_role`.`role_id` = 2 LIMIT 1;
+--
+-- Estructura de tabla para la tabla `preferencia`
+--
+DROP TABLE IF EXISTS preferencia;
+CREATE TABLE IF NOT EXISTS `preferencia` (
+  `id` int(11) NOT NULL auto_increment,
+  `nombre` varchar(255) NOT NULL,
+  `valor` varchar(255) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+
+--
+-- Volcar la base de datos para la tabla `preferencia`
+--
+
+INSERT INTO `preferencia` (`id`, `nombre`, `valor`, `descripcion`) VALUES
+(1, 'reload_firewall', 'true', 'Variable booleana que indica si hay que hacer reload del firewall- Uso interno'),
+(2, 'openvas-server', 'localhost', 'IP del servidor de openvas'),
+(3, 'openvas-port', '1241', 'Puerto del servidor de openvas'),
+(4, 'openvas-user', 'matiasp', 'Usuario para conectarnos al servidor de openvas'),
+(5, 'openvas-pass', 'passdelopenvas', 'Password para conectarnos al servidor de openvas'),
+(6, 'openvas-client', '/usr/bin/openvas-client', 'Ejecutable del cliente de openvas'),
+(7, 'report-dir', '/var/www/nessusw/cgi-bin/reports/', 'Directorio donde van los reportes de Openvas'),
+(8, 'log', '/var/log/nw/openvas.log', 'Directorio donde van los logs de Openvas'),
+(9, 'cfg', '/var/www/nessusw/cgi-bin/.nessusrc', 'no se que  es esto'),
+(10, 'OIDs-url', 'http://www.openvas.org/?oid=', 'no se que  es esto'),
+(11, 'CVEs-url', 'http://cve.mitre.org/cgi-bin/cvename.cgi?name=', 'no se que  es esto'),
+(12, 'send_report', '1', 'no se que  es esto'),
+(13, 'mail_dir', 'matiasp@linti.unlp.edu.ar', 'no se que  es esto'),
+(14, 'ip_firewall', '192.168.56.109', 'IP desde donde dejaremos bajar las reglas para el firewall'),
+(15, 'ultima_actualizacion', '2010-8-4 20:44:54', 'La ultima vez que se procesaron las alertas del Snort'),
+(21, 'geoip-db', '/home/soporte/Tesis/svn/desarrollo/root/static/GeoIP/GeoLiteCity.dat', 'no se q es esto'),
+(20, 'rss_server', 'http://sl.linti.unlp.edu.ar/feed/rss/', 'Los servidores de RSS, para poner varios separar por coma (,)');

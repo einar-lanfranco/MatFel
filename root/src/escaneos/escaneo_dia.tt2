@@ -1,0 +1,68 @@
+
+<table class="vulnerabilidades">
+   <caption>Resultado de Escaneo <br> [% dia %]</caption>
+    <thead>
+    <tr>
+    <th class="w10">IP</th>
+    <th class="w10">Puerto</th>
+    <th class="w20">OID</th>
+    <th class="w20">Tipo</th>
+    <th class="w10">Riesgo</th>
+    <th class="w10">CVE</th>
+    <th class="w10"></th>
+    </tr>
+    </thead>
+    <tbody>
+    [% FOREACH resultado IN escaneo -%]
+      <tr class="prioridad-[% resultado.risk.prioridad %]">
+        <td>[% resultado.ip %]</td>
+        <td>[% resultado.port %]</td>
+        <td><a href="[% oid_url %][% resultado.OID %]">[% resultado.OID %]</a></td>
+  	<td>[% resultado.type %]</td>
+	<td>[% resultado.risk.descripcion %]</td>
+	<td>
+   	[% FOREACH res IN resultado.CVE.split('\|') %]
+		<a href="[% cve_url %][% res %]">[% res %]</a>
+    	[% END %]
+	</td>
+	<td>
+	<a href="#" id='mas-[% resultado.id %]'>+</a>
+	<a href="#" id='menos-[% resultado.id %]'>-</a>
+	</td>
+     </tr>
+    <tr id='informacion-[% resultado.id %]' class='description'>
+    <td colspan='7'>
+      [% FILTER html_line_break %]
+        [% FILTER html %]
+            [% resultado.description %]
+        [% END %]
+      [% END %]
+    <script lang='javascript'>
+	    $(document).ready(function() {
+		  $('#informacion-[% resultado.id %]').hide();
+		  $('a#menos-[% resultado.id %]').hide();
+
+		  $('a#mas-[% resultado.id %]').click(
+		    function() {
+		      $('#informacion-[% resultado.id %]').show();
+		      $('a#menos-[% resultado.id %]').show();
+		      $('a#mas-[% resultado.id %]').hide();
+		      return false;
+		    }
+		  );
+
+		  $('a#menos-[% resultado.id %]').click(
+		    function() {
+		      $('#informacion-[% resultado.id %]').hide();
+		      $('a#mas-[% resultado.id %]').show();
+		      $('a#menos-[% resultado.id %]').hide();
+		      return false;
+		    }
+		  );
+	    });
+  </script>
+    </td>
+    </tr>
+    [% END -%]
+    </tbody>
+ </table>

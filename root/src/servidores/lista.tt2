@@ -1,0 +1,86 @@
+[% META title = 'Lista de Servidores' -%]
+<script>
+function cambiarRango(){
+  $('#form_rango').attr("action","[% c.uri_for(c.action) %]/"+ $('#rows').val()+"/"+"[% pages %]"); 
+  return true;
+}
+</script>
+<div class="renglon">
+      [% IF busqueda %] 
+	<script type="text/javascript">
+	$('#search').val('[% busqueda %]');
+	</script>
+      [% END %]
+<table>
+  <caption>Servidores</caption>
+ <thead>
+    <tr><th>Nombre</th><th>Direccion IP</th><th>Alta</th><th  width='25%'>Examinado</th><th>Detalles</th><th>Habilitado</th><th>Acciones</th></tr>
+ </thead>
+<TFOOT>
+    <tr>
+    <th colspan="7">
+    <table class="paginador"><tbody><tr> 
+    <td width="25%">[% IF rows %] 
+    [% IF pages > 1 %] <a class="paginador" href="[% c.uri_for(c.action,rows,(pages+(-1))) %]"><img src="/static/images/arrow_left.png" alt="Anterior" /></a> [% ELSE %]  [% END %]</td><td width="45%">
+    <form action="?" method="post" id="form_rango" onSubmit="return cambiarRango()">Resultados por hoja: <input id="rows" type="text" size="4" 
+value="[% rows %]"> <input type="submit" class="submit" value="Mostrar"> </td><td width="25%">
+[% IF servidores.size == rows %] <a class="paginador" href="[% c.uri_for(c.action,rows,(pages+1)) %]"><img src="/static/images/arrow_right.png" alt="Siguiente" /> </a>[% ELSE %]  [% END %]
+    </form>
+[% END %]</td>
+    </tr>
+    </tbody></table>
+    </TFOOT>
+    [% # Display each book in a table row %]
+    <tbody>
+    [% FOREACH servidor IN servidores -%]
+      <tr>
+    
+     <td>[% servidor.nombre %]</td>
+    <td>[% servidor.ipv4 %]/[% servidor.mascarav4 %]</td>
+	<td>[% servidor.alta %]</td>
+	<td class='centrado lista_links'>[% IF servidor.examinado != "0000-00-00 00:00:00" && servidor.escaneo_con_resultados %]
+                <ul>
+                <li>  <img src="/static/images/severity/1.png"  alt="1" />[% servidor.escaneo_con_resultados.1 %]</li>
+                <li>  <img src="/static/images/severity/2.png"  alt="2" />[% servidor.escaneo_con_resultados.2 %]</li>
+                <li>  <img src="/static/images/severity/3.png"  alt="3" />[% servidor.escaneo_con_resultados.3 %]</li>
+                </ul>
+           <a href="[% c.uri_for(c.controller('escaneos').action_for('ultimo_escaneo'), [servidor.escaneo_con_resultados.id_ov_scan]) %]">Reporte</a>
+	 [% ELSE %]
+	   Sin examinar
+	[% END %]</td>
+	
+        <td class='centrado lista_links'>
+          <ul>
+           <li> <a href="[% c.uri_for(c.controller('trafico').action_for('listar_trafico'), [servidor.id]) %]" title="Tráfico"><img src="/static/images/arrow_inout.png" alt="Tráfico" /></a></li>
+           <li> <a href="[% c.uri_for(c.controller('escaneos').action_for('lista_servidor')) %]/[% servidor.id %]"  title="Escaneos"><img src="/static/images/bug.png" alt="Escaneos" /></a></li>
+           <li> <a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [servidor.id],30,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a></li>
+          </ul>
+       </td>
+
+    <td class="centrado">
+      [% IF servidor.habilitado %] 
+           <a href="[% c.uri_for(c.controller.action_for('habilitar'), [servidor.id],0) %]" title="Deshabilitar"> <img src="/static/images/flag_green.gif" alt="Habilitado" /></a>
+      [% ELSE %]
+           <a href="[% c.uri_for(c.controller.action_for('habilitar'), [servidor.id],1) %]" title="Habilitar"> <img src="/static/images/flag_red.gif" alt="Deshabilitado" /></a>
+      [% END %]
+    </td>
+        <td class="centrado lista_links">
+        <ul>
+          <li> 
+          <a href="[% c.uri_for(c.controller.action_for('formfu_edit'), [servidor.id]) %]" title="Editar"><img src="/static/images/server_edit.png" alt="Editar" /></a>
+          </li>
+          <li> 
+          <a href="[% c.uri_for(c.controller.action_for('borrar'), [servidor.id]) %]" title="Borrar" onclick="return confirm('¿Está seguro? Se eliminarán todos los resultados.');"><img src="/static/images/server_delete.png" alt="Borrar" /></a>
+          </li>
+        </ul>
+       </td>
+     </tr>
+    [% END -%]
+    </tbody>
+ </table>
+
+<div class="renglon_derecha">
+<a href="[% c.uri_for(c.controller.action_for('formfu_create')) %]"><img src="/static/images/server_add.png" alt="Alta Nuevos Servidores" /></a>
+</div>
+ </div>
+
