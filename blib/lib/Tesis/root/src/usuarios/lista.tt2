@@ -1,0 +1,56 @@
+[% # This is a TT comment.  The '-' at the end "chomps" the newline.  You won't -%]
+[% # see this "chomping" in your browser because HTML ignores blank lines, but  -%]
+[% # it WILL eliminate a blank line if you view the HTML source.  It's purely   -%]
+[%- # optional, but both the beginning and the ending TT tags support chomping. -%]
+    
+[% # Provide a title -%]
+[% META title = 'Lista de Usuarios' -%]
+ 
+<div class="renglon">
+<table>
+   <caption>Usuarios</caption>
+    <thead>
+    <tr>
+    <th>Nombre</th><th>Apellido</th><th>Username</th><th>Perfil</th><th>Acción</th>
+    </tr>
+    </thead>
+    [% # Display each book in a table row %]
+    <tbody>
+    [% FOREACH usuario IN usuarios -%]
+      <tr>
+        <td>[% usuario.first_name %]</td>
+        <td>[% usuario.last_name %]</td>
+        <td>[% usuario.username %]</td>
+        <td>
+
+            <ul>
+            [% FOREACH rol IN usuario.roles %]
+                <li>[% rol.role %]</li>
+            [% END %]
+            </ul>
+        </td>
+        <td class='centrado lista_links'>
+         <ul>
+            <li>
+            <a href="[% c.uri_for(c.controller.action_for('formfu_edit'), [usuario.id]) %]"><img src="/static/images/user_edit.png"  alt="Editar" /></a>
+            </li>
+
+            [% IF c.user.id != usuario.id %]
+               <li>
+                <a href="[% c.uri_for(c.controller.action_for('borrar'), [usuario.id]) %]" onclick="return confirm('¿Está seguro? Se eliminarán el usuario');">
+                    <img src="/static/images/user_delete.png" alt="Borrar" />
+                </a>
+               </li>
+            [% END %]
+         </ul>
+       </td>
+     </tr>
+    [% END -%]
+    </tbody>
+ </table>
+
+<div class="renglon_derecha">
+<a href="[% c.uri_for(c.controller.action_for('formfu_create')) %]" title='Crear Nuevo Usuario'><img src="/static/images/user_add.png" alt="Alta Nuevos Usuario" /></a>
+</div>
+   </div>
+

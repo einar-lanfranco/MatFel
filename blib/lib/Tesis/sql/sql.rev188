@@ -1,0 +1,2 @@
+INSERT INTO sig_class (sig_class_id ,sig_class_name) VALUES (0, 'SIN CLASIFICAR');
+UPDATE sig_class SET sig_class_id = '0' WHERE sig_class.sig_class_id=3 LIMIT 1 ;

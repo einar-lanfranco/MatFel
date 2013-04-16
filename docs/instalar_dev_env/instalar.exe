@@ -1,0 +1,75 @@
+#!/bin/bash
+FECHA=$(date +%y%m%d%H%m)
+echo "A continuacion solicitaremos algunos parámetros q se necesitan para la instalación"
+read -p  "Ingrese el path donde vamos a instalar el sistema, por defecto será /var/www/MatFel :" PATH_INSTALL
+if [ -z $PATH_INSTALL ]
+	then
+		PATH_INSTALL="/var/www/MatFel"
+	fi
+echo "Necesitamos un nombre para la base de datos, por defecto ser MatFel."
+read -p  "Ingrese el host donde estará la base de datos, por defecto será localhost :" HOST_BASE
+if [ -z $HOST_BASE ]
+	then
+		HOST_BASE="localhost"
+	fi
+echo "Necesitamos un nombre para la base de datos, por defecto ser MatFel."
+read -p "Ingrese el nombre de la base:" BASE
+if [ -z $BASE ]
+	then
+		BASE="MatFel"
+	fi
+OK=0
+while [ $OK -ne 1 ]
+do
+	echo "Necesitamos un usuario con privilegios para crear la base de datos, por defecto ser root"
+	read -p "Ingrese el usuario privilegiado:" USER
+	if [ -z $USER ]
+	then
+		USER="root"
+	fi
+	stty -echo
+	echo "Necesitamos un password para acceder a la base con el usuario $USER."
+	read -p "Ingreselo:" PASSWORD
+	stty echo
+	mysql -u $USER --password=$PASSWORD -e exit
+	if [ $? -ne 0 ]
+	then
+		echo 'No fue posible conecatarse a la base de datos con los datos suministrados'
+	else
+		OK=1
+	fi
+done
+#############Instalar dependencias
+echo "Instalando"
+
+echo "Vas a instalar para producción o ambiente de desarrollo?"
+        select sn in "Fuente" "Debian"; do
+            case $sn in
+                Debian ) echo "Ambiente de Producción - Debian";
+                        TIPO="debian";
+                        break;;
+                Fuente ) TIPO="fuente";
+                        echo "Ambiente de desarrollo - Instalando desde las Fuente";
+                        break;;
+            esac
+        done
+
+
+#################Bajar el arbol
+if [ -d $PATH_INSTALL ]
+	then
+		echo "exite"
+		#mv $PATH_INSTALL $PATH_INSTALL$FECHA
+	fi
+#mkdir -p $PATH_INSTALL
+
+git --version
+GIT_IS_AVAILABLE=$?
+if [ $GIT_IS_AVAILABLE -eq 0 ]; then
+	#git clone https://github.com/einar-lanfranco/MatFel.git  $PATH_INSTALL
+	bash instalaraplicaciones.sh $PATH_INSTALL $USER $PASSWORD $HOST_BASE $BASE $TIPO $(uname -m)
+else
+	echo "Imposible obtener el código, no esta instalado git, instalalo y reintenta"
+fi
+
+

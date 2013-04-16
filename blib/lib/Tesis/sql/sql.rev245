@@ -1,0 +1,1 @@
+INSERT INTO preferencia (`id`, `nombre`, `valor`) VALUES (NULL, 'geoip-db', '/home/soporte/Tesis/svn/desarrollo/root/static/GeoIP/GeoLiteCity.dat');

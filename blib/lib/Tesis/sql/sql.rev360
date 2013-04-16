@@ -1,0 +1,34 @@
+ALTER TABLE `tesis`.`event` DROP FOREIGN KEY `event_ibfk_1`, DROP FOREIGN KEY `event_ibfk_2`;;
+ALTER TABLE `tesis`.`signature` DROP FOREIGN KEY `signature_ibfk_1`;
+ALTER TABLE `tesis`.`signature` DROP FOREIGN KEY `signature_ibfk_1`;
+ALTER TABLE `tesis`.`sig_reference` DROP FOREIGN KEY `sig_reference_ibfk_2`;
+ALTER TABLE `tesis`.`sig_reference` DROP FOREIGN KEY `sig_reference_ibfk_1`;
+ALTER TABLE `tesis`.`reference_system` DROP FOREIGN KEY `reference_system_ibfk_1`;
+ALTER TABLE `tesis`.`reference` DROP FOREIGN KEY `reference_ibfk_1`;
+ALTER TABLE `tesis`.`data` DROP FOREIGN KEY `data_ibfk_1`;
+ALTER TABLE `tesis`.`opt` DROP FOREIGN KEY `opt_ibfk_2`;
+ALTER TABLE `tesis`.`opt` DROP FOREIGN KEY `opt_ibfk_1`;
+ALTER TABLE `tesis`.`iphdr` DROP FOREIGN KEY `iphdr_ibfk_1`;
+ALTER TABLE `tesis`.`icmphdr` DROP FOREIGN KEY `icmphdr_ibfk_1`, DROP FOREIGN KEY `icmphdr_ibfk_2`;
+ALTER TABLE `tesis`.`event` DROP FOREIGN KEY `event_ibfk_1`;
+ALTER TABLE `tesis`.`event` DROP FOREIGN KEY `event_ibfk_2`;
+ALTER TABLE `tesis`.`alerta` DROP FOREIGN KEY `alerta_ibfk_2`;
+ALTER TABLE `tesis`.`sensor` DROP FOREIGN KEY `sensor_ibfk_1`, DROP FOREIGN KEY `sensor_ibfk_2`;
+
+
+ALTER TABLE  data ENGINE=myisam;
+ALTER TABLE  detail ENGINE=myisam;
+ALTER TABLE  encoding ENGINE=myisam;
+ALTER TABLE  event ENGINE=myisam;
+ALTER TABLE  icmphdr ENGINE=myisam;
+ALTER TABLE  iphdr ENGINE=myisam;
+ALTER TABLE  opt ENGINE=myisam;
+ALTER TABLE  reference ENGINE=myisam;
+ALTER TABLE  reference_system ENGINE=myisam;
+ALTER TABLE  tesis.schema ENGINE=myisam;
+ALTER TABLE  sensor ENGINE=myisam;
+ALTER TABLE  signature ENGINE=myisam;
+ALTER TABLE  sig_class ENGINE=myisam;
+ALTER TABLE  sig_reference  ENGINE=myisam;
+ALTER TABLE  tcphdr  ENGINE=myisam;
+ALTER TABLE  udphdr  ENGINE=myisam;

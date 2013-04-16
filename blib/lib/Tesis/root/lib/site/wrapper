@@ -1,4 +1,4 @@
-[% IF template.name.match('\.(css|js|txt)');
+[% IF no_wrapper or template.name.match('\.(css|js|txt)');
      debug("Passing page through as text: $template.name");
      content;
    ELSE;

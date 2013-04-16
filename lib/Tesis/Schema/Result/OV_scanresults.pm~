@@ -4,7 +4,11 @@ use strict;
 use warnings;
 
 use base qw/DBIx::Class/;
-    
+
+#Para detectar las uris
+use CGI qw(escapeHTML);
+use URI::Find;
+
 # Load required DBIC stuff
 __PACKAGE__->load_components(qw/PK::Auto Core/);
 # Set the table name
@@ -50,20 +54,22 @@ sub protocolo {
   return $2 ;
 }
 
-
- 
-sub description_escaped {
-  my $self = shift;
-  my $text=$self->description;
-  $text =~ s/&/&amp;/g;
-  return $text ;
-}
-
-
 sub trafico_entrante_bloqueado {
 my ($self)=@_;
 
 return Tesis::Controller::Utilidades::esta_trafico_entrada_bloqueado( $self->result_source->schema , $self->id_scan->id_servidor->id, $self->puerto, $self->protocolo);
+}
 
+sub getDescriptionUri {
+  my $self = shift;
+  my $text=$self->description;
+
+  my $finder = URI::Find->new(sub {
+      my($uri, $orig_uri) = @_;
+      return qq|<b><a href="$uri" onclick="this.target='_blank'">$orig_uri</a></b>|;
+  });
+  $finder->find(\$text, \&escapeHTML);
+
+  return $text;
 }
 1;

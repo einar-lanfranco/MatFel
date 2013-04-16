@@ -1,33 +1,51 @@
 <div class="top_info">
 <div class="top_info_right">
-<p><b>You are not Logged in!</b> <a href="#">Log in</a> to check your messages.<br />
-Do you want to <a href="#">Log in</a> or <a href="#">register</a>?</p>
 </div>
 <div class="top_info_left">
-<p><b>28. March, 2006</b> - Tuesday<br />
-Check todays <a href="#">hot topics</a> or <a href="#">new products</a></p>
 </div>
 </div>
 <div class="logo">
-<h1><a href="#" title="Centralized Internet Services"><span class="dark">Internet</span>Services</a></h1>
+<h1><a href="[% c.uri_for('/') %]" title="Servidor centralizado para la Tesis"><span class="dark">Mat</span>Fel</a></h1>
 </div>
 </div>
 
 <div class="bar">
+[% IF c.user_exists %]
 <ul>
-<li class="browse_category">Select Search Category:</li>
-<li><a href="#" accesskey="i">Internet</a></li>
-<li class="active">People</li>
-<li><a href="#" accesskey="m">Music</a></li>
-<li><a href="#" accesskey="p">Pictures</a></li>
-<li><a href="#" accesskey="s">Services</a></li>
-<li><a href="#" accesskey="r">Products</a></li>
+<li><a href="[% c.uri_for('/usuarios/lista') %]" accesskey="u">Usuarios</a></li>
+<li><a href="[% c.uri_for('/usuarios/id'c.user.id'formfu_edit') %]" accesskey="i">Mis Datos</a></li>
+<li><a href="[% c.uri_for('/servidores/lista') %]" accesskey="s">Servidores</a></li>
+<li><a href="[% c.uri_for('/escaneos/lista') %]" accesskey="e">Escaneos</a></li>
+<li><a href="[% c.uri_for('/alerta/listar_ultimas_alertas/1') %]" accesskey="a">Alertas</a></li>
+<li><a href="[% c.uri_for('/preferencias/lista') %]" accesskey="p">Preferencias</a></li>
+<li><a href="[% c.uri_for('/ayuda') %]" accesskey="h">Ayuda</a></li>
 </ul>
+[% END %]
 </div>
 <div class="search_field">
-<form method="post" action="?">
+[% IF c.user_exists %]
+<form id='form_busqueda' method="post" action="?">
+
+<script type="text/javascript">
+function enviarBusqueda(){
+  if($('#search').val()){
+    $('#form_busqueda').attr("action","[% c.uri_for(c.controller('servidores').action_for('buscar')) %]"+"/"+$('#search').val() );
+  }else{
+    $('#form_busqueda').attr("action","[% c.uri_for(c.controller('servidores').action_for('lista')) %]");
+  }
+
+  $('#form_busqueda').submit();
+}
+</script>
+
 <div class="search_form">
-<p>Search the Web: <input type="text" name="search" class="search" /> <input type="submit" value="Search" class="submit" /> <a class="grey" href="#">Advanced</a></p>
+<p>Buscar servidor: 
+<input type="text" name="search" id="search" class="search" />
+<input type="submit" value="Buscar" class="submit" onclick="return enviarBusqueda()" />
+<a class="grey" href="[% c.uri_for('/servidores/lista') %]">Todos</a></p>
 </div>
 </form>
-<p>Please <a href="#">Sign in</a> or <a href="#">Register</a></p>
+<p>Bienvenido [% c.user.first_name %] [% c.user.last_name %] <a href="[% c.uri_for('/logout') %]">Salir</a></p>
+[% ELSE %]
+<!--<p>Bienvenido <a href="[% c.uri_for('login') %]">Entrar</a></p>-->
+[% END %]

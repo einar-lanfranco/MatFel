@@ -1,0 +1,3 @@
+ALTER TABLE `ov_scanresults` ADD PRIMARY KEY ( `id` );
+ALTER TABLE `ov_scanresults` CHANGE `id` `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `ov_scanresults` CHANGE `timestamp` `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
