@@ -1,125 +1,75 @@
 #!/bin/bash
 FECHA=$(date +%y%m%d%H%m)
-echo "Comprobando parametros"
-if [ $# -ne 3 ]; then
-	echo "FALLO  Utiliza: $(basename $0) directorio_donde_lo_queremos_instalar usuario_de_la_base nombre_de_la_base"
-fi
-mysql -u $2 -p -e exit
-if [ $? -ne 0 ]; then
-	exit 1
-fi
-
-
-#############Variables!!
-PATH_INSTALL=$1
-USER=$2
-BASE=$3
-
-
+echo "A continuacion solicitaremos algunos parámetros q se necesitan para la instalación"
+read -p  "Ingrese el path donde vamos a instalar el sistema, por defecto será /var/www/MatFel :" PATH_INSTALL
+if [ -z $PATH_INSTALL ]
+	then
+		PATH_INSTALL="/var/www/MatFel"
+	fi
+echo "Necesitamos un nombre para la base de datos, por defecto ser MatFel."
+read -p  "Ingrese el host donde estará la base de datos, por defecto será localhost :" HOST_BASE
+if [ -z $HOST_BASE ]
+	then
+		HOST_BASE="localhost"
+	fi
+echo "Necesitamos un nombre para la base de datos, por defecto ser MatFel."
+read -p "Ingrese el nombre de la base:" BASE
+if [ -z $BASE ]
+	then
+		BASE="MatFel"
+	fi
+OK=0
+while [ $OK -ne 1 ]
+do
+	echo "Necesitamos un usuario con privilegios para crear la base de datos, por defecto ser root"
+	read -p "Ingrese el usuario privilegiado:" USER
+	if [ -z $USER ]
+	then
+		USER="root"
+	fi
+	stty -echo
+	echo "Necesitamos un password para acceder a la base con el usuario $USER."
+	read -p "Ingreselo:" PASSWORD
+	stty echo
+	mysql -u $USER --password=$PASSWORD -e exit
+	if [ $? -ne 0 ]
+	then
+		echo 'No fue posible conecatarse a la base de datos con los datos suministrados'
+	else
+		OK=1
+	fi
+done
 #############Instalar dependencias
 echo "Instalando"
 
 echo "Vas a instalar para producción o ambiente de desarrollo?"
-
-        select sn in "Si" "No"; do
+        select sn in "Fuente" "Debian"; do
             case $sn in
-                Si ) echo "Ambiente de Producción";
-                        TIPO=1;
+                Debian ) echo "Ambiente de Producción - Debian";
+                        TIPO="debian";
                         break;;
-                No ) TIPO=0;
-                        echo "Ambiente de desarrollo";
+                Fuente ) TIPO="fuente";
+                        echo "Ambiente de desarrollo - Instalando desde las Fuente";
                         break;;
             esac
         done
-if [ $TIPO = 1 ]
-	then
-		echo "Instalando ambiente de producción"
-		bash dependenciasProduccion.sh
-	else
-		echo "Instalando ambiente de desarrollo"
-		bash dependenciasDesarrollo.sh
 
-#################Instalar lo que no esta en paquete de debian
-cpan -i Catalyst::Plugin::Unicode::Encoding
-cpan -i Chart::OFC2 
 
 #################Bajar el arbol
 if [ -d $PATH_INSTALL ]
 	then
+		echo "exite"
 		mv $PATH_INSTALL $PATH_INSTALL$FECHA
 	fi
-mkdir -p $PATH_INSTALL
-cd $PATH_INSTALL
-git co https://github.com/einar-lanfranco/MatFel.git 
+#mkdir -p $PATH_INSTALL
 
-echo "Procesando la base de datos"
-mysql -u $USER --password=$PASSWD < $PATH_INSTALL/sql/tesis.sql
-
-#Crear la base de datos
-for i in $(seq 130 289); do
-          if [ -e $PATH_INSTALL/sql/sql.rev$i ]; then
-                echo "Aplicando sql.rev$i";
-                mysql --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $PATH_INSTALL/sql/sql.rev$i;
-          fi;
-done;
-
-mkdir /var/log/tesis
+git --version
+GIT_IS_AVAILABLE=$?
+if [ $GIT_IS_AVAILABLE -eq 0 ]; then
+	git clone https://github.com/einar-lanfranco/MatFel.git  $PATH_INSTALL
+	bash instalaraplicaciones.sh $PATH_INSTALL $USER $PASSWORD $HOST_BASE $BASE $TIPO $(uname -m)
+else
+	echo "Imposible obtener el código, no esta instalado git, instalalo y reintenta"
+fi
 
 
-echo "Procesando Wapiti"
-#Wapiti - Web application vulnerability scanner / security auditor --> 2
-cd $tesis/script
-wget http://ufpr.dl.sourceforge.net/project/wapiti/wapiti/wapiti-2.2.1/wapiti-2.2.1.tar.bz2
-tar xjvf wapiti-2.2.1.tar.bz2
-
-#Crear un script /usr/bin/wapiti
-echo '#!/bin/sh' > /usr/bin/wapiti
-echo 'cd $PATH_INSTALL/script/wapiti-2.2.1/src/' >> /usr/bin/wapiti
-echo 'python wapiti.py $*' >> /usr/bin/wapiti
-chmod +x /usr/bin/wapiti
-
-#Nikto - a web server scanning and testing tool
-nikto -update
-
-cd /usr/src/
-wget http://www.securixlive.com/download/barnyard2/barnyard2-1.8.tar.gz
-tar xzvf barnyard2-1.8.tar.gz
-cd barnyard2-1.8/
-./configure --with-mysql-libraries=/usr/lib/
-make
-make install
-
-#Luego configurar y ejecutar barnyard2:
-cp $PATH_INSTALL/docs/instalador/aux/snort.conf /etc/snort/
-cp $PATH_INSTALL/docs/instalador/aux/barnyard2.conf /etc/
-mkdir /var/log/barnyard2
-
-#Configurar FW
-#IPv6
-cp $PATH_INSTALL/docs/instalador/aux/ip6tables /etc/network/if-up.d/
-chmod +x /etc/network/if-up.d/ip6tables
-
-#IPv4
-cp $PATH_INSTALL/docs/instalador/aux/iptables /etc/network/if-up.d/
-chmod +x /etc/network/if-up.d/iptables
-
-#Poner el script para que arranque automaticamente
-cp $PATH_INSTALL/docs/instalador/aux/barnyard2 /etc/init.d/
-
-#cp $PATH_INSTALL/docs/instalador/aux/tesisWeb /etc/init.d/
-
-#Apache ###############################################################
-cp $PATH_INSTALL/docs/instalador/monitoreo /etc/apache2/sites-available
-echo NameVirtualHost *:3000 >> /etc/apache2/ports.conf
-echo Listen 3000 >> /etc/apache2/ports.conf
-a2dissite 000-default
-a2ensite monitoreo
-a2enmod fcgid
-/etc/init.d/apache2 restart
-
-################################################################
-chmod +x /etc/init.d/barnyard2
-chmod +x $PATH_INSTALL/script/tesis_server.pl
-chown www-data $PATH_INSTALL/script/tesis_fastcgi.pl
-
-update-rc.d barnyard2 defaults

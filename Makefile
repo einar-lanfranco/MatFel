@@ -21,7 +21,7 @@
 #     NAME => q[Tesis]
 #     NO_META => q[1]
 #     PL_FILES => {  }
-#     PREREQ_PM => { Catalyst::Plugin::ConfigLoader=>q[0], XML::RSS=>q[0], Catalyst::Plugin::Session::Store::FastMmap=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Text::Report=>q[0], Config::General=>q[0], Catalyst::Controller::HTML::FormFu=>q[0], DBIx::Class::EncodedColumn=>q[0], Chart::OFC2=>q[0], Catalyst::View::TT=>q[0], parent=>q[0], Catalyst::Plugin::Static::Simple=>q[0], ExtUtils::MakeMaker=>q[6.42], Catalyst::Plugin::StackTrace=>q[0], Catalyst::Plugin::Session=>q[0], Geo::IP=>q[0], Catalyst::Action::RenderView=>q[0], Catalyst::Plugin::Unicode::Encoding=>q[0], Catalyst::Plugin::Authentication=>q[0], Catalyst::Authentication::Realm::SimpleDB=>q[0], CPAN=>q[1.9], Catalyst::Runtime=>q[5.7014], Net::SMTP::SSL=>q[0], Date::Manip=>q[0] }
+#     PREREQ_PM => { DateTime=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], XML::RSS=>q[0], Net::SMTP::TLS=>q[0], Catalyst::Plugin::Session::Store::FastMmap=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Text::Report=>q[0], Config::General=>q[0], Catalyst::Controller::HTML::FormFu=>q[0], DBIx::Class::EncodedColumn=>q[0], Chart::OFC2=>q[0], Catalyst::View::TT=>q[0], parent=>q[0], Catalyst::Plugin::Static::Simple=>q[0], ExtUtils::MakeMaker=>q[6.42], DBIx::Class::TimeStamp=>q[0], Catalyst::Plugin::StackTrace=>q[0], Catalyst::Plugin::Session=>q[0], Catalyst::Action::RenderView=>q[0], Geo::IP=>q[0], Date::Calc=>q[0], URI::Find=>q[0], Catalyst::Plugin::Unicode::Encoding=>q[0], Catalyst::Plugin::Authentication=>q[0], Mail::Sendmail=>q[0], XML::RSSLite=>q[0], Catalyst::Authentication::Realm::SimpleDB=>q[0], CPAN=>q[1.9], Catalyst::Runtime=>q[5.7014], Net::SMTP::SSL=>q[0], Date::Manip=>q[0] }
 #     TEST_REQUIRES => {  }
 #     VERSION => q[0.01]
 #     dist => {  }
@@ -1209,12 +1209,19 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Chart::OFC2" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Config::General" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::EncodedColumn" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::TimeStamp" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Date::Calc" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Date::Manip" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DateTime::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="ExtUtils::MakeMaker" VERSION="6.42" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Geo::IP" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Mail::Sendmail" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::SMTP::SSL" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::SMTP::TLS" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Text::Report" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="URI::Find" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="XML::RSS" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="XML::RSSLite" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="parent::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="i486-linux-gnu-thread-multi-5.10" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd

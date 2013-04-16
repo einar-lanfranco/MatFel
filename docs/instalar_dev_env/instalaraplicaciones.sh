@@ -21,6 +21,8 @@ function instalarConCpan(){
 
 function crearBaseDeDatos(){
     #Crear la base de datos
+    mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS'";
+    
     mysql -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/matfel.sql
     for i in `130 $VERSION_ACTUAL`; do
           if [ -e $LUGAR/sql/sql.rev$i ]; then

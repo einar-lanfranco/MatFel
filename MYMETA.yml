@@ -35,12 +35,19 @@ requires:
   Chart::OFC2: 0
   Config::General: 0
   DBIx::Class::EncodedColumn: 0
+  DBIx::Class::TimeStamp: 0
+  Date::Calc: 0
   Date::Manip: 0
+  DateTime: 0
   ExtUtils::MakeMaker: 6.42
   Geo::IP: 0
+  Mail::Sendmail: 0
   Net::SMTP::SSL: 0
+  Net::SMTP::TLS: 0
   Text::Report: 0
+  URI::Find: 0
   XML::RSS: 0
+  XML::RSSLite: 0
   parent: 0
 resources:
   license: http://dev.perl.org/licenses/

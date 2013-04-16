@@ -9,7 +9,8 @@ apt-get -y install sqlite3 libdbd-sqlite3-perl libcatalyst-perl \
     libgdchart-gd2-noxpm libnet-smtp-ssl-perl libnet-smtp-tls-perl\
     libapache2-mod-perl2 libapache2-mod-fcgid\
     libglib2.0-0 libgpgme11 libopenvas3 libpcap0.8\
-    mysql-server subversion bzip2 nmap nikto w3af smbclient
+    mysql-server subversion bzip2 nmap nikto w3af smbclient\
+    libmail-sendmail-perl  liburi-find-perl
 
 
 apt-get clean
@@ -31,6 +32,12 @@ openvas-adduser
 
 #Bajar los plugins
 openvas-nvt-sync
+
+
+### Perl text/report
+### http://search.cpan.org/~davidius/Text-Report-1.004/
+
+
 
 ####FIN Instalar OpenVas 4 ###########
 
