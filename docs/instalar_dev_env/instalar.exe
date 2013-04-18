@@ -39,15 +39,15 @@ do
 		OK=1
 	fi
 done
-echo "Necesitamos un usuario para la base de datos, por defecto ser UserMatFel."
-read -p "Ingrese el nombre de la base:" USUARIOBASE
+echo "Necesitamos un usuario para que la aplicación se conecte a la base de datos la base de datos, por defecto ser UserMatFel."
+read -p "Ingrese el nombre del usuario para conectarse a la base:" USUARIOBASE
 if [ -z $USUARIOBASE ]
 	then
 		USUARIOBASE="UserMatFel"
 	fi
-USUARIOPASSTEMP=$( < /dev/urandom tr -dc A-Za-z0-9_ | head -c8)
-echo "Necesitamos un nombre para la base de datos, por defecto ser $USUARIOPASSTEMP."
-read -p "Ingrese el nombre de la base:" USUARIOPASS
+USUARIOPASSTEMP=$(< /dev/urandom tr -dc A-Za-z0-9_ | head -c8)
+echo "Necesitamos una pass para que $USUARIOBASE se conecte a la base de datos, por defecto ser $USUARIOPASSTEMP."
+read -p "Ingrese la pass de $USUARIOBASE:" USUARIOPASS
 if [ -z $USUARIOPASS ]
 	then
 		USUARIOPASS=$USUARIOPASSTEMP
@@ -74,14 +74,14 @@ echo "Vas a instalar para producción o ambiente de desarrollo?"
 if [ -d $PATH_INSTALL ]
 	then
 		echo "exite"
-		mv $PATH_INSTALL $PATH_INSTALL$FECHA
+		#mv $PATH_INSTALL $PATH_INSTALL$FECHA
 	fi
 #mkdir -p $PATH_INSTALL
 
 git --version
 GIT_IS_AVAILABLE=$?
 if [ $GIT_IS_AVAILABLE -eq 0 ]; then
-	git clone https://github.com/einar-lanfranco/MatFel.git  $PATH_INSTALL
+	echo "git clone https://github.com/einar-lanfranco/MatFel.git  $PATH_INSTALL"
 	bash instalaraplicaciones.sh $PATH_INSTALL $USER $PASSWORD $HOST_BASE $BASE $TIPO $(uname -m) $USUARIOPASS $USUARIOBASE
 else
 	echo "Imposible obtener el código, no esta instalado git, instalalo y reintenta"
