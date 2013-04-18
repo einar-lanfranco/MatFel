@@ -22,8 +22,7 @@ function instalarConCpan(){
 function crearBaseDeDatos(){
     #Crear la base de datos
     mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS'";
-    
-    mysql -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/matfel.sql
+    mysql $BASE -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/matfel.sql
     for i in `130 $VERSION_ACTUAL`; do
           if [ -e $LUGAR/sql/sql.rev$i ]; then
                 echo "Aplicando sql.rev$i";
@@ -221,9 +220,9 @@ function dependencias(){
 
 
 
-if [ $# -ne 7 ]
+if [ $# -ne 9 ]
 then
-    echo $# $1 $2 $3 $4 $5 $6 $7
+    echo $# $1 $2 $3 $4 $5 $6 $7 $8 $9
     echo "FALLO  Utiliza: $(basename $0) directorio_donde_lo_queremos_instalar usuario_de_la_base password_de_la_base"
     exit 1
 else
@@ -237,6 +236,9 @@ else
     BASE=$5
     TIPO=$6
     ARCH=$7
+    USUARIOPASS=$8
+    USUARIOBASE=$9
+    
     VERSION_ACTUAL=$(cat $LUGAR/version)
     dependencias
 

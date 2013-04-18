@@ -1,7 +1,4 @@
 set names utf8;
-create database tesis;
-grant all on tesis.* to tesis@localhost identified by 'test';
-use tesis;
 
 -- MySQL dump 10.11
 --
