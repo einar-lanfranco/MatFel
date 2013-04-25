@@ -60,11 +60,11 @@ echo "Instalando"
 echo "Vas a instalar para producción o ambiente de desarrollo?"
         select sn in "Fuente" "Debian"; do
             case $sn in
-                Debian ) echo "Ambiente de Producción - Debian";
+                Debian ) echo "Instaladando desde los paquetes de Debian";
                         TIPO="debian";
                         break;;
                 Fuente ) TIPO="fuente";
-                        echo "Ambiente de desarrollo - Instalando desde las Fuente";
+                        echo "Instalando desde las Fuentes, vamos a compilar todo";
                         break;;
             esac
         done

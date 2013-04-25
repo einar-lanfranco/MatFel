@@ -1,15 +1,9 @@
 #!/bin/bash 
 
 
-
-
 ###############
 ## Funciones ##
 ###############
-
-function instalarParaCompilar(){
- apt-get install perl build-essential libexpat1-dev libgeo-ip-perl libssl-dev
-}
 
 
 function instalarConCpan(){
@@ -19,29 +13,6 @@ function instalarConCpan(){
 }
 
 
-function crearBaseDeDatos(){
-    #Crear la base de datos
-    mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS';"
-    mysql $BASE -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/matfel.sql
-    echo "la version actual es ".$VERSION_ACTUAL
-    for i in $(seq 130 $VERSION_ACTUAL); do
-          if [ -e $LUGAR/sql/sql.rev$i ]; then
-                echo "Aplicando sql.rev$i";
-                mysql -h$HOST_BASE --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;
-          fi;
-    done;
-}
-
-function actualizarbasededatos(){
-    #Actualizar la base de datos
-    VERSION_INSTALADA=$(mysql $BASE -h$HOST_BASE -u$USER --password=$PASSWD -e "select valor from preferencia where nombre = 'version'")
-    for i in `$VERSION_INSTALADA $VERSION_ACTUAL`; do
-          if [ -e $LUGAR/sql/sql.rev$i ]; then
-                echo "Aplicando sql.rev$i";
-                mysql --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;
-          fi;
-    done;
-}
 
 function desarrollo(){
     mkdir /var/log/matfel
@@ -52,50 +23,8 @@ function desarrollo(){
 }
 
 
-function openvas(){
-    ######################
-    ## Instalar OpenVas ##
-    ######################
-    mkdir -p $LUGAR/openvas
-    pushd $LUGAR/openvas
-
-    wget http://download.opensuse.org/repositories/security:/OpenVAS:/STABLE:/v3/Debian_6.0/$ARCH/libopenvas3_3.1.4-1_$ARCH.deb
-    wget http://download.opensuse.org/repositories/security:/OpenVAS:/STABLE:/v3/Debian_6.0/$ARCH/openvas-client_3.0.3-1_$ARCH.deb
-    wget http://download.opensuse.org/repositories/security:/OpenVAS:/STABLE:/v3/Debian_6.0/$ARCH/openvas-scanner_3.1.1-1_$ARCH.deb
-    dpkg -i *.deb
-    popd
-    
-    ########################
-    ## Configurar OpenVas ##
-    ########################
-    
-    #Crear certificado del servidor
-    openvas-mkcert
-    
-    #Agregar un usuario
-    openvas-adduser
-
-    #Bajar los plugins
-    openvas-nvt-sync
 
 
-    #Nikto - a web server scanning and testing tool
-    nikto -update
-}
-
-function wapiti(){
-    #Wapiti - Web application vulnerability scanner / security auditor --> 2
-    echo "Procesando Wapiti"
-    cd $LUGAR/script
-    wget http://ufpr.dl.sourceforge.net/project/wapiti/wapiti/wapiti-2.2.1/wapiti-2.2.1.tar.bz2
-    tar xjvf wapiti-2.2.1.tar.bz2
-    
-    #Crear un script /usr/bin/wapiti
-    echo '#!/bin/sh' > /usr/bin/wapiti
-    echo "cd $LUGAR/script/wapiti-2.2.1/src/" >> /usr/bin/wapiti
-    echo 'python wapiti.py $*' >> /usr/bin/wapiti
-    chmod +x /usr/bin/wapiti
-}
 
 function snortbarnyard(){
 
@@ -154,10 +83,96 @@ function agregarInicio(){
 
 
 
+###LO QUE ESTA ABAJO DE ESTA LINEA ESTA LISTO
+
+function instalarOpenVAS(){
+    echo "Tener en cuenta que este paso puede tener inconventientes ya que el openvas va cambiando al igual q las versiones disponibles para Debian"    
+    #########################
+    ##Montar el repositorio##
+    #########################
+    echo "deb http://download.opensuse.org/repositories/security:/OpenVAS:/UNSTABLE:/v5/Debian_6.0/ ./" > /etc/apt/sources.list.d/openvas5.list
+    ######################
+    ## Instalar OpenVas ##
+    ######################
+	apt-get update
+    apt-get install openvas-scanner openvas-cli libopenvas5 nikto
+    ########################
+    ## Configurar OpenVas ##
+    ########################
+    
+    #Crear certificado del servidor
+    openvas-mkcert
+    
+    #Agregar un usuario
+    openvas-adduser
+
+    #Bajar los plugins
+    read "AVISO!!! Se actualizarán los plugins de openvas, esto puede demorar un buen rato (Presione Enter para continuar)" ESPERA
+    openvas-nvt-sync
+    
+
+    #Nikto - a web server scanning and testing tool
+    nikto -update
+    instalarWapiti
+}
+
+
+function configurarInicio(){
+	if [ $ITIPO = "prod" ]; then
+    
+    else
+		#Entonces es para desarrollo
+		
+		
+    fi
+	}
+
+function instalarParaCompilar(){
+ apt-get install perl build-essential libexpat1-dev libgeo-ip-perl libssl-dev
+}
 
 
 
+function crearBaseDeDatos(){
+    #Crear la base de datos
+    mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS';"
+    mysql $BASE --default-character-set=utf8 -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/matfel.sql
+    echo "la version actual es ".$VERSION_ACTUAL
+    for i in $(seq 130 $VERSION_ACTUAL); do
+          if [ -e $LUGAR/sql/sql.rev$i ]; then
+                echo "Aplicando sql.rev$i";
+                mysql -h$HOST_BASE --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;
+          fi;
+    done;
+}
 
+function actualizarbasededatos(){
+    #Actualizar la base de datos
+    VERSION_INSTALADA=$(mysql $BASE -h$HOST_BASE -u$USER --password=$PASSWD -e "select valor from preferencia where nombre = 'version'")
+    for i in `$VERSION_INSTALADA $VERSION_ACTUAL`; do
+          if [ -e $LUGAR/sql/sql.rev$i ]; then
+                echo "Aplicando sql.rev$i";
+                mysql -h$HOST --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;
+          fi;
+    done;
+    mysql $BASE -h$HOST_BASE -u$USER --password=$PASSWD -e "update preferencia set valor="$VERSION_ACTUAL" where nombre = 'version'"
+    
+}
+
+
+function instalarWapiti(){
+    #Wapiti - Web application vulnerability scanner / security auditor --> 2
+    echo "Procesando Wapiti"
+    cd $LUGAR/script
+    wget http://ufpr.dl.sourceforge.net/project/wapiti/wapiti/wapiti-2.2.1/wapiti-2.2.1.tar.bz2
+    tar xjvf wapiti-2.2.1.tar.bz2
+    
+    #Crear un script /usr/bin/wapiti
+    echo '#!/bin/sh' > /usr/bin/wapiti
+    echo "cd $LUGAR/script/wapiti-2.2.1/src/" >> /usr/bin/wapiti
+    echo 'python wapiti.py $*' >> /usr/bin/wapiti
+    chmod +x /usr/bin/wapiti
+}
 
 
 
@@ -211,11 +226,12 @@ function dependencias(){
 
     
         instalarConCpan
-        openvas
-        wapiti
+        
+        
         snortbarnyard
-    fi               
-	aptitude clean
+    fi     
+    instalarOpenVAS          
+	aptitude cleansnortbarnyard
 	
 }
 
@@ -246,8 +262,19 @@ else
     #############################
     ## Agregar configuraciones ##
     #############################
-    echo "por llamar a la base"
     crearBaseDeDatos
+    echo "¿Usted quiere instalar MatFel como un sistema en producción o lo va a utilizar para desarrollar sobre el?"
+    select sn in "Producción" "Desarrollo"; do
+            case $sn in
+                Producción ) echo "Ambiente de Producción - Debian";
+                        ITIPO="prod";
+                        break;;
+                Desarrollo ) ITIPO="des";
+                        echo "Ambiente de desarrollo ";
+                        break;;
+            esac
+        done
+	configurarInicio	
     firewall
     agregarInicio
 fi
