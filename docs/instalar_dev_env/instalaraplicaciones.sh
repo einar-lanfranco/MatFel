@@ -26,7 +26,7 @@ function desarrollo(){
 
 
 
-function snortbarnyard(){
+function instalarSnort(){
 
     cd /usr/src/
     wget http://www.securixlive.com/download/barnyard2/barnyard2-1.9.tar.gz
@@ -77,12 +77,6 @@ function agregarInicio(){
 
 
 
-
-
-
-
-
-
 ###LO QUE ESTA ABAJO DE ESTA LINEA ESTA LISTO
 
 function instalarOpenVAS(){
@@ -118,8 +112,11 @@ function instalarOpenVAS(){
 
 
 function configurarInicio(){
-	if [ $ITIPO = "prod" ]; then
+	
     
+    agregarInicio
+	if [ $ITIPO = "prod" ]; then
+		echo "Configuraremos el apache para que ejecute todo" 
     else
 		#Entonces es para desarrollo
 		
@@ -226,11 +223,8 @@ function dependencias(){
 
     
         instalarConCpan
-        
-        
-        snortbarnyard
     fi     
-    instalarOpenVAS          
+              
 	aptitude cleansnortbarnyard
 	
 }
@@ -267,16 +261,37 @@ else
     select sn in "Producción" "Desarrollo"; do
             case $sn in
                 Producción ) echo "Ambiente de Producción - Debian";
-                        ITIPO="prod";
+                        configurarInicio
                         break;;
                 Desarrollo ) ITIPO="des";
-                        echo "Ambiente de desarrollo ";
+                        desarrollo
                         break;;
             esac
         done
-	configurarInicio	
-    firewall
-    agregarInicio
+    echo "Para cumplimentar su funcionamiento MatFel utiliza OpenVAS y Snort, estas que pueden instalarse locales o remotas."
+    select sn in "Instalar Snort" "Sin Snort"; do
+            case $sn in
+                Instalar\ Snort ) echo "Con Snort";
+                        instalarSnort
+                        break;;
+                Sin\ Snort ) 
+                        echo "No instalaremos Snort ";
+                        break;;
+            esac
+        done
+     
+	select sn in "Instalar OpenVAS" "Sin OpenVAS"; do
+            case $sn in
+                Instalar\ OpenVAS ) echo "Instalaermos OpenVAS";
+                        instalarOpenVAS
+                        break;;
+                Sin\ OpenVAS ) 
+                        echo "No instalaremos OpenVAS";
+                        break;;
+            esac
+        done
+    
+    
 fi
 
     
