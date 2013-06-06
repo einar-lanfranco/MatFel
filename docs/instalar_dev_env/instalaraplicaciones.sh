@@ -158,7 +158,15 @@ function instalarWapiti(){
 }
 
 
+########################################################
+#Estas dependencias hay que forzarlas para que instalen#
+########################################################
 
+funcion dependenciasConProblemas(){
+	#Esto es para los reportes del Cron pero no se cambia el modulo desde el 2007, y ahora los test falla 1, por eso hay q forzarlo
+	cpan -i -f Text::Report
+	
+	}
 
 
 ###########################
@@ -166,24 +174,18 @@ function instalarWapiti(){
 ###########################
 function dependenciasPerl(){
 	echo "Instalaremos las dependencias desde $TIPO"
-    #Comentado porque tarda mucho
+    #EINAR Comentado porque tarda mucho
     #aptitude update
-    
+    cpan -i CPAN
     if [ $TIPO = "fuente" ]
     then
 		instalarParaCompilar
-		cpan -i CPAN
 		echo "Primero vamos a configurar cpan para proceder con la instlalación de los distintos paquetes,"
 		echo "esto NO es automático, deberá interactuar"
 		echo "Cuando aparezca el shell interactivo debe introducir las siguientes 3 líneas"
 		echo "o conf prerequisites_policy follow"
 		echo "o conf commit"
 		echo "exit"
-		#cpan -i Catalyst::Plugin::Unicode::Encoding
-		cpan -i Catalyst::Plugin::Session::State::Cookie
-		cpan -i Catalyst::Authentication::Realm::SimpleDB
-		#Esto es para los reportes del Cron pero no se cambia el modulo desde el 2007, y ahora los test falla 1, por eso hay q forzarlo
-		cpan -i -f Text::Report
 		cd $LUGAR
 		echo "el lugar es "$LUGAR
 		#Bucar el arbol de directorios del proyecto
@@ -193,24 +195,34 @@ function dependenciasPerl(){
     fi
     if [ $TIPO = "debian" ]
         then
-        
-        aptitude -y install sqlite3 libdbd-sqlite3-perl libcatalyst-perl \
-            libcatalyst-modules-perl libdbix-class-timestamp-perl \
-            libdatetime-format-sqlite-perl libconfig-general-perl \
-            libhtml-formfu-model-dbic-perl libterm-readline-perl-perl \
-            libdbix-class-encodedcolumn-perl libperl6-junction-perl \
-            libtest-pod-perl libgeo-ip-perl libxml-rsslite-perl libgdchart-gd2-noxpm\
-            build-essential nikto nmap w3af smbclient bzip2\
-            libglib2.0-0 libgpgme11 libopenvas3 libpcap0.8 mysql-server\
-            libmysqlclient-dev libpcap0.8-dev libapache2-mod-perl2 apache2-mpm-prefork\
-            libcatalyst-engine-apache-perl apache2 libnet-smtp-ssl-perl libnet-smtp-tls-perl\
-            libapache2-mod-fcgid subversion libmail-sendmail-perl  liburi-find-perl
+        'Text::Report' => 0,
+		'Chart::OFC2'=> 0,
+		
+		aptitude -y install libcatalyst-perl \
+            libcatalyst-modules-perl libcatalyst-engine-apache-perl libcatalyst-plugin-unicode-encoding-perl\
+            libdatetime-perl libxml-rss-perl libdate-calc-perl libtest-pod-perl libgeo-ip-perl
+            libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl\
+			libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl\
+            libxml-rsslite-perl
+            
+            #Esto que esta comentado no se si es necesario inicialmente
+            #~ libcatalyst-engine-apache-perl   sqlite3 libdbd-sqlite3-perl\
+            #~ libdatetime-format-sqlite-perl libconfig-general-perl \
+            #~ libhtml-formfu-model-dbic-perl libterm-readline-perl-perl \
+             #~ libperl6-junction-perl \
+              #~ libgdchart-gd2-noxpm\
+            #~ build-essential nikto nmap w3af smbclient bzip2\
+            #~ libglib2.0-0 libgpgme11 libopenvas3 libpcap0.8 mysql-server\
+            #~ libmysqlclient-dev libpcap0.8-dev libapache2-mod-perl2 apache2-mpm-prefork\
+             #~ apache2 
+            #~ libapache2-mod-fcgid subversion   
        instalarConCpan
     fi     
    ###############################
    #Listo las dependencias de Perl
    ###############################           
 	aptitude clean
+	instalarDependenciasConProblemas
 }
 
 

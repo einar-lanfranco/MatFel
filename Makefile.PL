@@ -1,11 +1,14 @@
 #!/usr/bin/env perl
 # IMPORTANT: if you delete this file your app will not work as
 # expected.  You have been warned.
-use inc::Module::Install;
+# Documentacion de como modificarlo podemos encontrarla en http://search.cpan.org/~adamk/Module-Install-1.06/lib/Module/AutoInstall.pm
 
-name 'Tesis';
-all_from 'lib/Tesis.pm';
-requires 'parent';
+use inc::Module::Install;
+name        'MatFel';
+abstract    'Este es el instalador de MatFel';
+author      'Einar Lanfranco <einar.lanfranco@gmail.com>';
+all_from    'lib/Tesis.pm';
+#~ requires 	'parent';
 #~ requires 'Catalyst::Runtime' => '5.90003';
 #~ requires 'Catalyst::Plugin::ConfigLoader';
 #~ requires 'Catalyst::Plugin::Static::Simple';
@@ -14,9 +17,12 @@ requires 'parent';
                  # See Catalyst::Plugin::ConfigLoader for supported formats
 
 requires (
-		'CPAN' => '1.9',
-		'Config::General'=>'0',
-		'Catalyst::Runtime' => '5.90003',
+		'File::Copy::Recursive'=>'0',
+		'parent'=>'0',
+		'CPAN' => '2.0',
+		'Config::General' => '0',
+		'Text::Report' => '0',
+		'Catalyst::Runtime' => '5.90042',
 		'Catalyst::Plugin::Authentication' => '0',
 		'Catalyst::Plugin::Session' => '0',
 		'Catalyst::Plugin::ConfigLoader' => '0',
@@ -43,8 +49,7 @@ requires (
 		'URI::Find'=> '0',
 		'Date::Manip'=> '0',
 		'XML::RSSLite'=> '0',
-		
-				 );
+		 );
 catalyst;
 install_script glob('script/*.pl');
 auto_install;
