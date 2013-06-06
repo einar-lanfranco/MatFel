@@ -19,11 +19,8 @@ function desarrollo(){
     echo '#!/bin/sh' >/usr/bin/matfel
     echo "perl $LUGAR/script/matfel_server.pl  -d -r  > /dev/null 2>/var/log/matfel/matfel.log &" >>/usr/bin/matfel
     chmod +x /usr/bin/matfel
-
+    echo "El sistema nunca se ejecutará automáticamete, usted tendrá que invocarlo en una consola como /usr/bin/matfel y los logs los podrá visualizar en  /var/log/matfel/matfel.log"
 }
-
-
-
 
 
 function instalarSnort(){
@@ -56,23 +53,9 @@ function firewall(){
 }
 
 function agregarInicio(){
-    #Poner el script para que arranque automaticamente
-    cp $LUGAR/docs/instalador/aux/barnyard2 /etc/init.d/
-    cp $LUGAR/docs/instalador/aux/matfelWeb /etc/init.d/
-    chmod +x /etc/init.d/matfelWeb
-    chmod +x /etc/init.d/barnyard2
-    chmod +x $LUGAR/script/matfel_server.pl
-    update-rc.d matfelWeb defaults
     update-rc.d barnyard2 defaults
-
-    cp $PATH_INSTALL/docs/instalador/monitoreo /etc/apache2/sites-available
-    echo NameVirtualHost *:3000 >> /etc/apache2/ports.conf
-    echo Listen 3000 >> /etc/apache2/ports.conf
-    a2ensite monitoreo
-    a2enmod fcgid
-    /etc/init.d/apache2 restart
-
-
+	cp $LUGAR/docs/instalador/aux/barnyard2 /etc/init.d/
+    chmod +x /etc/init.d/barnyard2
 }
 
 
@@ -112,26 +95,29 @@ function instalarOpenVAS(){
 
 
 function configurarInicio(){
-	
-    
-    agregarInicio
-	if [ $ITIPO = "prod" ]; then
-		echo "Configuraremos el apache para que ejecute todo" 
-    else
-		#Entonces es para desarrollo
-		
-		
-    fi
-	}
+	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema"
+	##ESTO HAT QUE REVISARLO
+	aptitude -y install libapache2-mod-perl2 apache2-mpm-prefork libcatalyst-engine-apache-perl apache2 libapache2-mod-fcgid
+    #cp $LUGAR/docs/instalador/aux/matfelWeb /etc/init.d/
+    #chmod +x /etc/init.d/matfelWeb
+    #chmod +x $LUGAR/script/matfel_server.pl
+    #update-rc.d matfelWeb defaults
+    cp $PATH_INSTALL/docs/instalador/monitoreo /etc/apache2/sites-available
+    echo NameVirtualHost *:3000 >> /etc/apache2/ports.conf
+    echo Listen 3000 >> /etc/apache2/ports.conf
+    a2ensite monitoreo
+    a2enmod fcgid
+    /etc/init.d/apache2 restart
+}
 
 function instalarParaCompilar(){
- apt-get install perl build-essential libexpat1-dev libgeo-ip-perl libssl-dev
+ aptitude install perl build-essential libexpat1-dev libgeo-ip-perl libssl-dev
 }
 
 
 
 function crearBaseDeDatos(){
-    #Crear la base de datos
+    echo "Creamos  la base de datos $BASE en el $HOST_BASE"
     mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS';"
     mysql $BASE --default-character-set=utf8 -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/matfel.sql
     echo "la version actual es ".$VERSION_ACTUAL
@@ -178,8 +164,8 @@ function instalarWapiti(){
 ###########################
 ## Instalar dependencias ##
 ###########################
-function dependencias(){
-    
+function dependenciasPerl(){
+	echo "Instalaremos las dependencias desde $TIPO"
     aptitude update
     
     if [ $TIPO = "fuente" ]
@@ -192,7 +178,6 @@ function dependencias(){
 		echo "o conf prerequisites_policy follow"
 		echo "o conf commit"
 		echo "exit"
-		cpan 
 		cpan -i Catalyst::Plugin::Unicode::Encoding
 		cpan -i Catalyst::Plugin::Session::State::Cookie
 		cpan -i Catalyst::Authentication::Realm::SimpleDB
@@ -219,14 +204,12 @@ function dependencias(){
             libmysqlclient-dev libpcap0.8-dev libapache2-mod-perl2 apache2-mpm-prefork\
             libcatalyst-engine-apache-perl apache2 libnet-smtp-ssl-perl libnet-smtp-tls-perl\
             libapache2-mod-fcgid subversion libmail-sendmail-perl  liburi-find-perl
-
-
-    
-        instalarConCpan
+       instalarConCpan
     fi     
-              
-	aptitude cleansnortbarnyard
-	
+   ###############################
+   #Listo las dependencias de Perl
+   ###############################           
+	aptitude clean
 }
 
 
@@ -237,9 +220,9 @@ then
     echo "FALLO  Utiliza: $(basename $0) directorio_donde_lo_queremos_instalar usuario_de_la_base password_de_la_base"
     exit 1
 else
-    ###############################
-    ##  Variables para el scritp ##
-    ###############################
+    #########################################
+    ##  Seteo las Variables para el scritp ##
+    #########################################
     LUGAR=$1
     USER=$2
     PASSWD=$3
@@ -249,14 +232,18 @@ else
     ARCH=$7
     USUARIOPASS=$8
     USUARIOBASE=$9
-    
     VERSION_ACTUAL=$(cat $LUGAR/version)
-    #dependencias
-
+	####################################
+    ##Instalo las dependencias de Perl##
+    ####################################
+    dependenciasPerl
     #############################
-    ## Agregar configuraciones ##
+    ## Creo la base de datos   ##
     #############################
     crearBaseDeDatos
+    #################################
+    ## Instalamos Msource de Matfel##
+    #################################
     echo "¿Usted quiere instalar MatFel como un sistema en producción o lo va a utilizar para desarrollar sobre el?"
     select sn in "Producción" "Desarrollo"; do
             case $sn in
@@ -269,6 +256,8 @@ else
             esac
         done
     echo "Para cumplimentar su funcionamiento MatFel utiliza OpenVAS y Snort, estas que pueden instalarse locales o remotas."
+    echo "Si las instala remotamente tendrá que modificar la configuración, este script da las armas para hacerlo local"
+    exit
     select sn in "Instalar Snort" "Sin Snort"; do
             case $sn in
                 Instalar\ Snort ) echo "Con Snort";
@@ -294,5 +283,6 @@ else
     
 fi
 
-    
+###KNOWN BUGS
+## No considera que no exista Mysql-client, entonces ni bien arranca falla el script    
 
