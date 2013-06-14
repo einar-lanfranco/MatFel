@@ -31,9 +31,16 @@ do
 	echo "Necesitamos un password para acceder a la base con el usuario $USER."
 	read -p "Ingreselo:" PASSWORD
 	stty echo
+	
 	mysql -u $USER --password=$PASSWORD -e exit
-	if [ $? -ne 0 ]
+	ESTADO=$?
+	if [ $ESTADO -ne 0 ]
 	then
+		if [ $ESTADO -eq 127 ]
+		then
+			echo 'No esta instalado mysql-client'
+			exit
+		fi
 		echo 'No fue posible conecatarse a la base de datos con los datos suministrados'
 	else
 		OK=1
