@@ -33,9 +33,10 @@ do
 	stty echo
 	
 	mysql -u $USER --password=$PASSWORD -e exit
-	if [ $? -ne 0 ]
+	ESTADO=$?
+	if [ $ESTADO -ne 0 ]
 	then
-		if [ $? -eq 127 ]
+		if [ $ESTADO -eq 127 ]
 		then
 			echo 'No esta instalado mysql-client'
 			exit

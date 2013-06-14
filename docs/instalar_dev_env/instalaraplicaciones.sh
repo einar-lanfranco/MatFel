@@ -245,7 +245,7 @@ else
     ## Instalamos Msource de Matfel##
     #################################
     echo "¿Usted quiere instalar MatFel como un sistema en producción o lo va a utilizar para desarrollar sobre el?"
-    select sn in "Producción" "Desarrollo"; do
+     select sn in "Producción" "Desarrollo"; do
             case $sn in
                 Producción ) echo "Ambiente de Producción - Debian";
                         configurarInicio
