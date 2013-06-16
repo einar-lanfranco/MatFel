@@ -1,5 +1,5 @@
 ALTER TABLE `ov_scanresults` ADD `id_scan` INT NOT NULL AFTER `id` ;
-UPDATE `tesis`.`ov_frecuencia` SET `descripcion` = 'Una Vez' WHERE CONVERT( `ov_frecuencia`.`id` USING utf8 ) = 'U' LIMIT 1 ;
+UPDATE `ov_frecuencia` SET `descripcion` = 'Una Vez' WHERE CONVERT( `ov_frecuencia`.`id` USING utf8 ) = 'U' LIMIT 1 ;
 ALTER TABLE `ov_scanresults` CHANGE `id` `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ;
 
 
