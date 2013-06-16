@@ -166,7 +166,8 @@ function instalarWapiti(){
 ###########################
 function dependenciasPerl(){
 	echo "Instalaremos las dependencias desde $TIPO"
-    aptitude update
+    #Comentado porque tarda mucho
+    #aptitude update
     
     if [ $TIPO = "fuente" ]
     then
@@ -178,7 +179,7 @@ function dependenciasPerl(){
 		echo "o conf prerequisites_policy follow"
 		echo "o conf commit"
 		echo "exit"
-		cpan -i Catalyst::Plugin::Unicode::Encoding
+		#cpan -i Catalyst::Plugin::Unicode::Encoding
 		cpan -i Catalyst::Plugin::Session::State::Cookie
 		cpan -i Catalyst::Authentication::Realm::SimpleDB
 		#Esto es para los reportes del Cron pero no se cambia el modulo desde el 2007, y ahora los test falla 1, por eso hay q forzarlo
