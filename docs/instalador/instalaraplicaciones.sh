@@ -205,8 +205,7 @@ function instalarDependenciasConProblemas(){
 ###########################
 function dependenciasPerl(){
 	echo "Instalaremos las dependencias desde $TIPO"
-    #EINAR Comentado porque tarda mucho
-    #aptitude update
+    aptitude update
     cpan -i CPAN
     if [ $TIPO = "fuente" ]
     then
