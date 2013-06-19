@@ -1,0 +1,10 @@
+INSERT INTO `preferencia` (
+`id` ,
+`nombre` ,
+`valor`,
+`descripcion`
+)
+VALUES 
+(
+NULL , 'version', '399', 'la versión actual instalada de MatFel'
+);

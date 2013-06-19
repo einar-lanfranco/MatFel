@@ -1,0 +1,31 @@
+   [% META title = 'ABM de Usuarios' %]
+    
+    [%# Render the HTML::FormFu Form %]
+    [% form %]
+    
+    <table>
+    <tr><th>Nombre</th><th>Alta</th><th>Examinado</th><th>Direccion IP</th><th>Habilitado</th><th>Activo</th><th>Acciones</th></tr>
+    [% # Display each book in a table row %]
+    [% FOREACH servidor IN servidores -%]
+      <tr>
+        <td>[% servidor.nombre %]</td>
+	<td>[% servidor.alta %]</td>
+	<td>[% IF servidor.examinado != "0000-00-00 00:00:00" %]
+            <a href="[% c.uri_for(c.controller.action_for('reportes'), [servidor.id]) %]">Reportes</a>
+	 [% ELSE %]
+	   Sin examinar
+	[% END %]</td>
+	<td>[% servidor.ipv4 %]/[% servidor.mascarav4 %]</td>
+	<td>[% servidor.habilitado %]</td>
+	<td>[% servidor.activo %]</td>
+        <td>
+            <a href="[% c.uri_for(c.controller.action_for('formfu_edit'), [servidor.id]) %]">Editar</a>
+	    <a href="[% c.uri_for(c.controller.action_for('borrar'), [servidor.id]) %]">Borrar</a>
+	    <a href="[% c.uri_for(c.controller.action_for('trafico'), [servidor.id]) %]">Tráfico</a>
+       </td>
+     </tr>
+    [% END -%]
+ </table>
+
+
+    <p><a href="[% c.uri_for(c.controller.action_for('list')) %]">Volver a la lista de Servidores </a></p>

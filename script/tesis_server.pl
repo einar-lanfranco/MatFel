@@ -63,9 +63,9 @@ $| = 1 if $ENV{HARNESS_ACTIVE};
 my $runner = sub {
     # This is require instead of use so that the above environment
     # variables can be set at runtime.
-    require Tesis;
+    require MatFel;
 
-    Tesis->run(
+    MatFel->run(
         $port, $host,
         {
             argv       => \@argv,

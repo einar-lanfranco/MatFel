@@ -1,0 +1,11 @@
+   [% META title = 'ABM de Escaneos' %]
+<div class="renglon">
+    <fieldset>
+    <legend>Escaneos</legend>
+[% escaneo.id_servidor.nombre %] ([% escaneo.id_servidor.ipv4 %]/[% escaneo.id_servidor.mascarav4 %])
+    [% form %]
+    </fieldset>
+<div class="renglon_izquierda" >
+ <p><a href="[% c.uri_for(c.controller.action_for('lista')) %]" title="Volver a la lista de escaneos"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>
+</div>

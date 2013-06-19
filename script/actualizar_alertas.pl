@@ -1,15 +1,15 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use Tesis::Schema;
-use Tesis::Model::DB;
+use MatFel::Schema;
+use MatFel::Model::DB;
 use Fcntl qw(:flock);
 
 
 sub getSchema
 {
-    my $db = Tesis::Model::DB->new();
-    my $schema = Tesis::Schema->connect($db->connect_info->{'dsn'},$db->connect_info->{'user'},$db->connect_info->{'password'});
+    my $db = MatFel::Model::DB->new();
+    my $schema = MatFel::Schema->connect($db->connect_info->{'dsn'},$db->connect_info->{'user'},$db->connect_info->{'password'});
     return $schema;
 }
 

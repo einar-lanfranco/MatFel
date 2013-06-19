@@ -1,0 +1,10 @@
+INSERT INTO `preferencia` (
+`id` ,
+`nombre` ,
+`valor`,
+`descripcion`
+)
+VALUES 
+(
+NULL , 'dias_resumen_de_alertas', '7', 'La cantidad de días en que se muestran alertas'
+);

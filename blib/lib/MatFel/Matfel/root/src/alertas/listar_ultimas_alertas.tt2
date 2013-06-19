@@ -1,0 +1,96 @@
+
+[% META title = 'Listado de Alertas' %]
+
+<script type="text/javascript">
+
+function dec2dot (address) {
+    d = address % 256; 
+        address -= d; 
+        address /= 256;
+    c = address % 256; 
+        address -= c; 
+        address /= 256;
+    b = address % 256; 
+        address -= b; 
+        address /= 256;
+    a = address;
+    dotted=a+'.'+b+'.'+c+'.'+d;
+    return dotted;
+}
+
+function enviarRango(){
+  $('#form_rango').attr("action","[% c.uri_for(c.controller('alertas').action_for('listar_ultimas_alertas')) %]"+"/"+$('#rango').val());
+  return true;
+}
+</script>
+
+<div class="busqueda">
+<form action="?" method="post" id="form_rango" onsubmit="return enviarRango()">
+<p>Alertas registradas en los últimos <input id="rango" type="text" size="4" value="[% rango %]" /> días <input type="submit" class="submit" value="Mostrar" /></p>
+</form>
+</div>
+<div class="renglon">
+<fieldset class="fieldset_izquierda">
+<legend>Alertas de los &uacute;ltimo/s [% rango %] d&iacute;a/s</legend>
+<table class="listaalertas">
+    <thead><tr>
+    <th > Eventos </th>
+    <th > Servidor </th>
+    <th > Ver Alertas </th>
+    </tr></thead>
+
+    <tbody>
+    [% FOREACH alerta IN alertas_entre_logins %]
+     <tr>
+      <td> [% alerta.get_column('cuenta') %]</td>
+      <td> [% alerta.get_column('server_nombre') %] </td>
+      <td><a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [alerta.get_column('id_servidor')],rango,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a> </td>
+     </tr>
+    [% END %]
+    </tbody>
+ </table>
+</fieldset>
+
+<fieldset class="fieldset_derecha">
+<legend>Top 10 eventos por origen en los &uacute;ltimo/s [% rango %] d&iacute;a/s</legend>
+
+<table class="listaalertas" >
+    <thead><tr>
+    <th > Eventos </th>
+    <th > IP Origen</th>
+    </tr></thead>
+
+    <tbody>
+    [% FOREACH top_ip IN top_ip_atacantes %]
+     <tr>
+      <td> [% top_ip.get_column('cuenta') %]</td>
+      <td> 
+ <script type="text/javascript">document.write(dec2dot([% top_ip.get_column('ip_src') %]));</script>
+      </td>
+     </tr>
+    [% END %]
+    </tbody>
+ </table>
+</fieldset>
+<fieldset class="fieldset_derecha">
+<legend>Top 10 eventos por destino en los &uacute;ltimo/s [% rango %] d&iacute;a/s</legend>
+
+<table class="listaalertas" >
+    <thead><tr>
+    <th > Eventos </th>
+    <th > IP Destino</th>
+    </tr></thead>
+
+    <tbody>
+    [% FOREACH top_ip IN top_ip_atacadas %]
+     <tr>
+      <td> [% top_ip.get_column('cuenta') %]</td>
+      <td> 
+ <script type="text/javascript">document.write(dec2dot([% top_ip.get_column('ip_dst') %]));</script>
+      </td>
+     </tr>
+    [% END %]
+    </tbody>
+ </table>
+</fieldset>
+</div>

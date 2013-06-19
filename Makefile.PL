@@ -7,7 +7,7 @@ use inc::Module::Install;
 name        'MatFel';
 abstract    'Este es el instalador de MatFel';
 author      'Einar Lanfranco <einar.lanfranco@gmail.com>';
-all_from    'lib/Tesis.pm';
+all_from    'lib/MatFel.pm';
 #~ requires 	'parent';
 #~ requires 'Catalyst::Runtime' => '5.90003';
 #~ requires 'Catalyst::Plugin::ConfigLoader';
@@ -19,10 +19,10 @@ all_from    'lib/Tesis.pm';
 requires (
 		'File::Copy::Recursive'=>'0',
 		'parent'=>'0',
-		'CPAN' => '2.0',
+		'CPAN' => '1.9',
 		'Config::General' => '0',
 		'Text::Report' => '0',
-		'J/JJ/JJNAPIORK/Catalyst-Runtime-5.90030.tar.gz' => '0',
+		'Catalyst::Runtime' => '5.9',
 		'Catalyst::Plugin::Authentication' => '0',
 		'Catalyst::Plugin::Session' => '0',
 		'Catalyst::Plugin::ConfigLoader' => '0',

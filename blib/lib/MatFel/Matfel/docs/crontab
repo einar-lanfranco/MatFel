@@ -1,0 +1,30 @@
+# m h  dom mon dow   command
+
+#Ejecutar escaneos inmediatos
+* * * * * cd /var/www/tesis/lib/; perl ../script/openvas_cron.pl 2>&1
+
+#Actualizar Alertas
+*/5 * * * * cd /var/www/tesis/lib/; perl ../script/actualizar_alertas.pl 2>&1
+
+#Generar Reglas
+#* * * * * sh /var/www/tesis/otros/actualizar_reglas.sh 2>&1
+
+#Ejecutar escaneos  Diarios
+0 1 * * * cd /var/www/tesis/lib/; perl ../script/openvas_cron_diario.pl 2>&1
+
+#Ejecutar escaneos  Semanales
+0 2 * * 5 cd /var/www/tesis/lib/; perl ../script/openvas_cron_semanal.pl 2>&1
+
+#Ejecutar escaneos  Mensuales
+0 3 1 * * cd /var/www/tesis/lib/; perl ../script/openvas_cron_mensual.pl 2>&1
+
+#Actualizacion del archivo de configuracion de openVAS
+0 0 * * * openvas-nvt-sync&  > /dev/null 2>&1
+5 0 * * * /etc/init.d/openvas-scanner restart&  > /dev/null 2>&1
+
+#Limpiar escaneos que no terminaron en 2 horas
+0 5 * * * wget -q -O /dev/null --no-check-certificate https://127.0.0.1:3000/cron/limpiar_escaneos 2>&1 
+
+#Generar Reporte Diario
+0 6 * * * wget -q -O /dev/null --no-check-certificate https://127.0.0.1:3000/cron/enviar_resumen 2>&1
+

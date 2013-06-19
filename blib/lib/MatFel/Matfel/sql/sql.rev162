@@ -1,0 +1,589 @@
+DROP TABLE IF EXISTS `snort_data`;
+DROP TABLE IF EXISTS `snort_detail`;
+DROP TABLE IF EXISTS `snort_encoding`;
+DROP TABLE IF EXISTS `snort_event`;
+DROP TABLE IF EXISTS `snort_icmphdr`;
+DROP TABLE IF EXISTS `snort_iphdr`;
+DROP TABLE IF EXISTS `snort_opt`;
+DROP TABLE IF EXISTS `snort_reference`;
+DROP TABLE IF EXISTS `snort_reference_system`;
+DROP TABLE IF EXISTS `snort_schema`;
+DROP TABLE IF EXISTS `snort_sensor`;
+DROP TABLE IF EXISTS `snort_sig_class`;
+DROP TABLE IF EXISTS `snort_sig_reference`;
+DROP TABLE IF EXISTS `snort_signature`;
+DROP TABLE IF EXISTS `snort_tcphdr`;
+DROP TABLE IF EXISTS `snort_udphdr`;
+
+
+
+--
+-- Table structure for table `data`
+--
+
+DROP TABLE IF EXISTS `data`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `data` (
+  `sid` int(10) unsigned NOT NULL,
+  `cid` int(10) unsigned NOT NULL,
+  `data_payload` text,
+  PRIMARY KEY  (`sid`,`cid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `data`
+--
+
+LOCK TABLES `data` WRITE;
+/*!40000 ALTER TABLE `data` DISABLE KEYS */;
+INSERT INTO `data` VALUES (1,1,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20360A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20360A506F72742F50726F746F2052616E67653A2032333A333338390A'),(3,1,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20370A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20380A506F72742F50726F746F2052616E67653A2032313A333338390A'),(3,6,'1D80EB944A5294D2816B76205F8F1E347C1E728F271A62B6EA88E929381F3F48313F0F178A08B5080F092A0EB9A5DDA2'),(3,7,'35E6D64B04135C24C1CA47F7E366A060318E1BD781158159C7B703F2D488132C4169D0BFB72F4C44D7AADAFABC01A09F9475E05C935349B4F1577D98325791D08C70CFF7E8B2EAFFE160E1D03939AED3E5AAA8A3804D9554E2AB024175FA2AB968FDFFF2E78787E850743C52B443EF55B6FB3BE9096A2BBE53FB56F3EE40CD6E1966512633982063DCFE96E0FDDFD757'),(3,8,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20360A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20360A506F72742F50726F746F2052616E67653A2032313A333338390A'),(3,13,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20350A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20350A506F72742F50726F746F2052616E67653A2032333A333338390A'),(3,18,'97A51CC0AC8DADEC705A67F3909F2DC45CE4D470D6187261E0A64CFC40E751AFE0ED9F7A4C45F505BC96D0107AEB4BD0'),(3,19,'0F5B50B93E3C0C72002C15CF36CDC7EB1D6A6D0E44E9F76070C6C033BFCBFFAB29C945DB298773E061B3D39EEBF98DDF'),(3,21,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20350A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20350A506F72742F50726F746F2052616E67653A2032313A313732330A'),(3,24,'85F6780A74338C195AB78A406C190F5B03B43FF45ED0B16DC8F37A7E0F8A74B7C159B7E33321B477A27942DB46BA285EFAA2B5DE9574143388043CA093CC062A'),(3,25,'423883F9CEE2CBDF850AB7A5E5D37644515BFB6A2D86B70F3D8FBEF2786088EE28B20C1468D62111F366CF976531578F257100CCC18122B310043D59CCCA85302AFA84E51590728E3528D2C5C4852F57B62275AF00C6251B1AB167CDF2563946'),(3,27,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20370A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20380A506F72742F50726F746F2052616E67653A2032313A333338390A'),(3,32,'1D80EB944A5294D2816B76205F8F1E347C1E728F271A62B6EA88E929381F3F48313F0F178A08B5080F092A0EB9A5DDA2'),(3,33,'35E6D64B04135C24C1CA47F7E366A060318E1BD781158159C7B703F2D488132C4169D0BFB72F4C44D7AADAFABC01A09F9475E05C935349B4F1577D98325791D08C70CFF7E8B2EAFFE160E1D03939AED3E5AAA8A3804D9554E2AB024175FA2AB968FDFFF2E78787E850743C52B443EF55B6FB3BE9096A2BBE53FB56F3EE40CD6E1966512633982063DCFE96E0FDDFD757'),(3,34,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20360A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20360A506F72742F50726F746F2052616E67653A2032313A333338390A'),(3,39,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20350A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20350A506F72742F50726F746F2052616E67653A2032333A333338390A'),(3,44,'97A51CC0AC8DADEC705A67F3909F2DC45CE4D470D6187261E0A64CFC40E751AFE0ED9F7A4C45F505BC96D0107AEB4BD0'),(3,45,'0F5B50B93E3C0C72002C15CF36CDC7EB1D6A6D0E44E9F76070C6C033BFCBFFAB29C945DB298773E061B3D39EEBF98DDF'),(3,47,'5072696F7269747920436F756E743A20350A436F6E6E656374696F6E20436F756E743A20350A495020436F756E743A20310A5363616E6E65722049502052616E67653A203139322E3136382E35362E313A3139322E3136382E35362E310A506F72742F50726F746F20436F756E743A20350A506F72742F50726F746F2052616E67653A2032313A313732330A'),(3,50,'85F6780A74338C195AB78A406C190F5B03B43FF45ED0B16DC8F37A7E0F8A74B7C159B7E33321B477A27942DB46BA285EFAA2B5DE9574143388043CA093CC062A'),(3,51,'423883F9CEE2CBDF850AB7A5E5D37644515BFB6A2D86B70F3D8FBEF2786088EE28B20C1468D62111F366CF976531578F257100CCC18122B310043D59CCCA85302AFA84E51590728E3528D2C5C4852F57B62275AF00C6251B1AB167CDF2563946');
+/*!40000 ALTER TABLE `data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detail`
+--
+
+DROP TABLE IF EXISTS `detail`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `detail` (
+  `detail_type` tinyint(3) unsigned NOT NULL,
+  `detail_text` text NOT NULL,
+  PRIMARY KEY  (`detail_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `detail`
+--
+
+LOCK TABLES `detail` WRITE;
+/*!40000 ALTER TABLE `detail` DISABLE KEYS */;
+INSERT INTO `detail` VALUES (0,'fast'),(1,'full');
+/*!40000 ALTER TABLE `detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `encoding`
+--
+
+DROP TABLE IF EXISTS `encoding`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `encoding` (
+  `encoding_type` tinyint(3) unsigned NOT NULL,
+  `encoding_text` text NOT NULL,
+  PRIMARY KEY  (`encoding_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `encoding`
+--
+
+LOCK TABLES `encoding` WRITE;
+/*!40000 ALTER TABLE `encoding` DISABLE KEYS */;
+INSERT INTO `encoding` VALUES (0,'hex'),(1,'base64'),(2,'ascii');
+/*!40000 ALTER TABLE `encoding` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event`
+--
+
+DROP TABLE IF EXISTS `event`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `event` (
+  `sid` int(10) unsigned NOT NULL,
+  `cid` int(10) unsigned NOT NULL,
+  `signature` int(10) unsigned NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY  (`sid`,`cid`),
+  KEY `sig` (`signature`),
+  KEY `time` (`timestamp`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `event`
+--
+
+LOCK TABLES `event` WRITE;
+/*!40000 ALTER TABLE `event` DISABLE KEYS */;
+INSERT INTO `event` VALUES (1,1,1,'2010-05-26 08:07:21'),(1,2,2,'2010-05-26 08:07:21'),(3,1,3,'2010-06-01 05:42:53'),(3,2,2,'2010-06-01 05:42:53'),(3,3,4,'2010-06-01 05:42:53'),(3,4,4,'2010-06-01 05:50:45'),(3,5,4,'2010-06-01 05:57:14'),(3,6,4,'2010-06-01 05:58:05'),(3,7,4,'2010-06-01 05:58:16'),(3,8,3,'2010-06-01 06:06:03'),(3,9,4,'2010-06-01 06:06:03'),(3,10,4,'2010-06-01 06:06:03'),(3,11,2,'2010-06-01 06:06:32'),(3,12,5,'2010-06-01 06:06:32'),(3,13,3,'2010-06-01 06:07:16'),(3,14,4,'2010-06-01 06:07:16'),(3,15,4,'2010-06-01 06:07:16'),(3,16,2,'2010-06-01 06:07:16'),(3,17,2,'2010-06-01 06:07:48'),(3,18,4,'2010-06-01 06:09:09'),(3,19,4,'2010-06-01 06:10:25'),(3,20,4,'2010-06-01 06:11:19'),(3,21,3,'2010-06-01 06:12:05'),(3,22,4,'2010-06-01 06:12:05'),(3,23,4,'2010-06-01 06:12:05'),(3,24,4,'2010-06-01 06:43:15'),(3,25,4,'2010-06-01 06:43:15'),(3,26,4,'2010-06-01 06:46:23'),(3,27,3,'2010-06-01 05:42:53'),(3,28,2,'2010-06-01 05:42:53'),(3,29,4,'2010-06-01 05:42:53'),(3,30,4,'2010-06-01 05:50:45'),(3,31,4,'2010-06-01 05:57:14'),(3,32,4,'2010-06-01 05:58:05'),(3,33,4,'2010-06-01 05:58:16'),(3,34,3,'2010-06-01 06:06:03'),(3,35,4,'2010-06-01 06:06:03'),(3,36,4,'2010-06-01 06:06:03'),(3,37,2,'2010-06-01 06:06:32'),(3,38,5,'2010-06-01 06:06:32'),(3,39,3,'2010-06-01 06:07:16'),(3,40,4,'2010-06-01 06:07:16'),(3,41,4,'2010-06-01 06:07:16'),(3,42,2,'2010-06-01 06:07:16'),(3,43,2,'2010-06-01 06:07:48'),(3,44,4,'2010-06-01 06:09:09'),(3,45,4,'2010-06-01 06:10:25'),(3,46,4,'2010-06-01 06:11:19'),(3,47,3,'2010-06-01 06:12:05'),(3,48,4,'2010-06-01 06:12:05'),(3,49,4,'2010-06-01 06:12:05'),(3,50,4,'2010-06-01 06:43:15'),(3,51,4,'2010-06-01 06:43:15'),(3,52,4,'2010-06-01 06:46:23');
+/*!40000 ALTER TABLE `event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icmp_code`
+--
+
+DROP TABLE IF EXISTS `icmp_code`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `icmp_code` (
+  `tipo` int(3) NOT NULL,
+  `subtipo` int(3) NOT NULL,
+  `string` varchar(255) NOT NULL,
+  PRIMARY KEY  (`tipo`,`subtipo`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `icmp_code`
+--
+
+LOCK TABLES `icmp_code` WRITE;
+/*!40000 ALTER TABLE `icmp_code` DISABLE KEYS */;
+INSERT INTO `icmp_code` VALUES (3,0,'Network Unreachable'),(3,1,'Host Unreachable'),(3,2,'Protocol Unreachable'),(3,3,'Port Unreachable'),(3,4,'Fragmentation Needed/DF set'),(3,5,'Source Route failed'),(3,6,'Network Unknown'),(3,7,'Host Unknown'),(3,8,'Host Isolated'),(3,9,'Network ANO'),(3,10,'Host ANO'),(3,11,'Network Unreach TOS'),(3,12,'Host Unreach TOS'),(3,13,'Packet Filtered'),(3,14,'Precedence violation'),(3,15,'Precedence cut off'),(5,0,'Redirect datagram for network/subnet'),(5,1,'Redirect datagram for host'),(5,2,'Redirect datagram for ToS and network'),(5,3,'Redirect datagram for Tos and host'),(9,0,'Normal router advertisement'),(9,16,'Does not route common traffic'),(11,0,'TTL exceeded in transit'),(11,1,'Fragment reassembly time exceeded'),(12,0,'Pointer indicates error'),(12,1,'Missing a required option'),(12,2,'Bad length'),(40,0,'Bad SPI'),(40,1,'Authentication failed'),(40,2,'Decompression failed'),(40,3,'Decryption failed'),(40,4,'Need authentication'),(40,5,'Need authorization');
+/*!40000 ALTER TABLE `icmp_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icmp_type`
+--
+
+DROP TABLE IF EXISTS `icmp_type`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `icmp_type` (
+  `id` int(3) NOT NULL,
+  `string` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `icmp_type`
+--
+
+LOCK TABLES `icmp_type` WRITE;
+/*!40000 ALTER TABLE `icmp_type` DISABLE KEYS */;
+INSERT INTO `icmp_type` VALUES (0,'Echo Reply'),(3,'Destination Unreachable'),(4,'Source Quench'),(5,'Redirect'),(8,'Echo Request'),(9,'Router Advertisement'),(10,'Router Solicitation'),(11,'Time Exceeded'),(12,'Parameter Problem'),(13,'Timestamp Request'),(14,'Timestamp Reply'),(15,'Information Request'),(16,'Information Reply'),(17,'Address Mask Request'),(18,'Address Mask Reply'),(19,'Reserved (security)'),(20,'Reserved (robustness)'),(21,'Reserved (robustness)'),(22,'Reserved (robustness)'),(23,'Reserved (robustness)'),(24,'Reserved (robustness)'),(25,'Reserved (robustness)'),(26,'Reserved (robustness)'),(27,'Reserved (robustness)'),(28,'Reserved (robustness)'),(29,'Reserved (robustness)'),(30,'Traceroute'),(31,'Datagram Conversion Error'),(32,'Mobile Host Redirect'),(33,'IPv6 Where-Are-You'),(34,'IPv6 I-Am-Here'),(35,'Mobile Registration Request'),(36,'Mobile Registration Reply'),(37,'Domain Name Request'),(38,'Domain Name Reply'),(39,'SKIP'),(40,'Photuris');
+/*!40000 ALTER TABLE `icmp_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icmphdr`
+--
+
+DROP TABLE IF EXISTS `icmphdr`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `icmphdr` (
+  `sid` int(10) unsigned NOT NULL,
+  `cid` int(10) unsigned NOT NULL,
+  `icmp_type` tinyint(3) unsigned NOT NULL,
+  `icmp_code` tinyint(3) unsigned NOT NULL,
+  `icmp_csum` smallint(5) unsigned default NULL,
+  `icmp_id` smallint(5) unsigned default NULL,
+  `icmp_seq` smallint(5) unsigned default NULL,
+  PRIMARY KEY  (`sid`,`cid`),
+  KEY `icmp_type` (`icmp_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `icmphdr`
+--
+
+LOCK TABLES `icmphdr` WRITE;
+/*!40000 ALTER TABLE `icmphdr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icmphdr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ip_proto`
+--
+
+DROP TABLE IF EXISTS `ip_proto`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `ip_proto` (
+  `id` int(3) NOT NULL,
+  `string` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `ip_proto`
+--
+
+LOCK TABLES `ip_proto` WRITE;
+/*!40000 ALTER TABLE `ip_proto` DISABLE KEYS */;
+INSERT INTO `ip_proto` VALUES (0,'IP'),(1,'ICMP'),(2,'IGMP'),(4,'IPIP tunnels'),(6,'TCP'),(8,'EGP'),(12,'PUP'),(17,'UDP'),(22,'XNS UDP'),(29,'SO TP Class 4'),(41,'IPv6 header'),(43,'IPv6 routing header'),(44,'IPv6 fragmentation header'),(46,'RSVP'),(47,'GRE'),(50,'IPSec ESP'),(51,'IPSec AH'),(58,'ICMPv6'),(59,'IPv6 no next header'),(60,'IPv6 destination options'),(92,'MTP'),(98,'Encapsulation header'),(103,'PIM'),(108,'COMP'),(255,'Raw IP');
+/*!40000 ALTER TABLE `ip_proto` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `iphdr`
+--
+
+DROP TABLE IF EXISTS `iphdr`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `iphdr` (
+  `sid` int(10) unsigned NOT NULL,
+  `cid` int(10) unsigned NOT NULL,
+  `ip_src` int(10) unsigned NOT NULL,
+  `ip_dst` int(10) unsigned NOT NULL,
+  `ip_ver` tinyint(3) unsigned default NULL,
+  `ip_hlen` tinyint(3) unsigned default NULL,
+  `ip_tos` tinyint(3) unsigned default NULL,
+  `ip_len` smallint(5) unsigned default NULL,
+  `ip_id` smallint(5) unsigned default NULL,
+  `ip_flags` tinyint(3) unsigned default NULL,
+  `ip_off` smallint(5) unsigned default NULL,
+  `ip_ttl` tinyint(3) unsigned default NULL,
+  `ip_proto` tinyint(3) unsigned NOT NULL,
+  `ip_csum` smallint(5) unsigned default NULL,
+  PRIMARY KEY  (`sid`,`cid`),
+  KEY `ip_src` (`ip_src`),
+  KEY `ip_dst` (`ip_dst`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `iphdr`
+--
+
+LOCK TABLES `iphdr` WRITE;
+/*!40000 ALTER TABLE `iphdr` DISABLE KEYS */;
+INSERT INTO `iphdr` VALUES (1,1,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(1,2,3232249857,3232249957,4,5,0,60,30440,0,0,64,6,53788),(3,1,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,2,3232249857,3232249957,4,5,0,60,26398,0,0,64,6,57830),(3,3,3232249857,3232249957,4,5,0,60,58280,0,0,64,6,25948),(3,4,3232249857,3232249957,4,5,16,52,50847,0,0,64,6,33373),(3,5,3232249857,3232249957,4,5,16,52,51592,0,0,64,6,32628),(3,6,3232249857,3232249957,4,5,16,100,51917,0,0,64,6,32255),(3,7,3232249957,3232249857,4,5,16,196,7185,0,0,64,6,11356),(3,8,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,9,3232249857,3232249957,4,5,0,44,42336,0,0,38,6,64948),(3,10,3232249957,3232249857,4,5,0,40,0,0,0,64,6,18713),(3,11,3232249857,3232249957,4,5,0,44,54325,0,0,45,6,51167),(3,12,3232249857,3232249957,4,5,0,44,65527,0,0,50,6,38685),(3,13,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,14,3232249857,3232249957,4,5,0,44,26871,0,0,40,6,14366),(3,15,3232249957,3232249857,4,5,0,40,0,0,0,64,6,18713),(3,16,3232249857,3232249957,4,5,0,44,18193,0,0,58,6,18436),(3,17,3232249857,3232249957,4,5,0,44,45605,0,0,39,6,61423),(3,18,3232249857,3232249957,4,5,16,100,53455,0,0,64,6,30717),(3,19,3232249857,3232249957,4,5,16,100,53839,0,0,64,6,30333),(3,20,3232249857,3232249957,4,5,16,52,54159,0,0,64,6,30061),(3,21,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,22,3232249857,3232249957,4,5,0,44,34842,0,0,47,6,4603),(3,23,3232249957,3232249857,4,5,0,40,0,0,0,64,6,18713),(3,24,3232249857,3232249957,4,5,8,116,14457,0,0,64,6,4172),(3,25,3232249957,3232249857,4,5,8,148,6850,0,0,64,6,11747),(3,26,3232249857,3232249957,4,5,0,52,60422,0,0,64,6,23814),(3,27,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,28,3232249857,3232249957,4,5,0,60,26398,0,0,64,6,57830),(3,29,3232249857,3232249957,4,5,0,60,58280,0,0,64,6,25948),(3,30,3232249857,3232249957,4,5,16,52,50847,0,0,64,6,33373),(3,31,3232249857,3232249957,4,5,16,52,51592,0,0,64,6,32628),(3,32,3232249857,3232249957,4,5,16,100,51917,0,0,64,6,32255),(3,33,3232249957,3232249857,4,5,16,196,7185,0,0,64,6,11356),(3,34,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,35,3232249857,3232249957,4,5,0,44,42336,0,0,38,6,64948),(3,36,3232249957,3232249857,4,5,0,40,0,0,0,64,6,18713),(3,37,3232249857,3232249957,4,5,0,44,54325,0,0,45,6,51167),(3,38,3232249857,3232249957,4,5,0,44,65527,0,0,50,6,38685),(3,39,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,40,3232249857,3232249957,4,5,0,44,26871,0,0,40,6,14366),(3,41,3232249957,3232249857,4,5,0,40,0,0,0,64,6,18713),(3,42,3232249857,3232249957,4,5,0,44,18193,0,0,58,6,18436),(3,43,3232249857,3232249957,4,5,0,44,45605,0,0,39,6,61423),(3,44,3232249857,3232249957,4,5,16,100,53455,0,0,64,6,30717),(3,45,3232249857,3232249957,4,5,16,100,53839,0,0,64,6,30333),(3,46,3232249857,3232249957,4,5,16,52,54159,0,0,64,6,30061),(3,47,3232249857,3232249957,4,5,0,160,0,0,0,0,255,34728),(3,48,3232249857,3232249957,4,5,0,44,34842,0,0,47,6,4603),(3,49,3232249957,3232249857,4,5,0,40,0,0,0,64,6,18713),(3,50,3232249857,3232249957,4,5,8,116,14457,0,0,64,6,4172),(3,51,3232249957,3232249857,4,5,8,148,6850,0,0,64,6,11747),(3,52,3232249857,3232249957,4,5,0,52,60422,0,0,64,6,23814);
+/*!40000 ALTER TABLE `iphdr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ipt_code`
+--
+
+DROP TABLE IF EXISTS `ipt_code`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `ipt_code` (
+  `id` varchar(255) NOT NULL,
+  `string` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `ipt_code`
+--
+
+LOCK TABLES `ipt_code` WRITE;
+/*!40000 ALTER TABLE `ipt_code` DISABLE KEYS */;
+INSERT INTO `ipt_code` VALUES ('7','RR'),('0','EOL'),('1','NOP'),('0x44','TS'),('0x82','SEC'),('0x83','LSRR'),('0x84','LSRR_E'),('0x88','SID'),('0x89','SSRR');
+/*!40000 ALTER TABLE `ipt_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `opt`
+--
+
+DROP TABLE IF EXISTS `opt`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `opt` (
+  `sid` int(10) unsigned NOT NULL,
+  `cid` int(10) unsigned NOT NULL,
+  `optid` int(10) unsigned NOT NULL,
+  `opt_proto` tinyint(3) unsigned NOT NULL,
+  `opt_code` tinyint(3) unsigned NOT NULL,
+  `opt_len` smallint(6) default NULL,
+  `opt_data` text,
+  PRIMARY KEY  (`sid`,`cid`,`optid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `opt`
+--
+
+LOCK TABLES `opt` WRITE;
+/*!40000 ALTER TABLE `opt` DISABLE KEYS */;
+INSERT INTO `opt` VALUES (1,2,0,6,2,2,'05B4'),(1,2,1,6,4,0,''),(1,2,2,6,8,8,'001D38EF00000000'),(1,2,3,6,1,0,''),(1,2,4,6,3,1,'06'),(3,2,0,6,2,2,'05B4'),(3,2,1,6,4,0,''),(3,2,2,6,8,8,'000AFFC100000000'),(3,2,3,6,1,0,''),(3,2,4,6,3,1,'06'),(3,3,0,6,2,2,'05B4'),(3,3,1,6,4,0,''),(3,3,2,6,8,8,'000AFFC200000000'),(3,3,3,6,1,0,''),(3,3,4,6,3,1,'06'),(3,4,0,6,1,0,''),(3,4,1,6,1,0,''),(3,4,2,6,8,8,'000CCC55000C0C56'),(3,5,0,6,1,0,''),(3,5,1,6,1,0,''),(3,5,2,6,8,8,'000E4882000D8874'),(3,6,0,6,1,0,''),(3,6,1,6,1,0,''),(3,6,2,6,8,8,'000E7A9C000DBA83'),(3,7,0,6,1,0,''),(3,7,1,6,1,0,''),(3,7,2,6,8,8,'000DC4B6000E84C7'),(3,9,0,6,2,2,'05B4'),(3,11,0,6,2,2,'05B4'),(3,12,0,6,2,2,'05B4'),(3,14,0,6,2,2,'05B4'),(3,16,0,6,2,2,'05B4'),(3,17,0,6,2,2,'05B4'),(3,18,0,6,1,0,''),(3,18,1,6,1,0,''),(3,18,2,6,8,8,'0011037400104340'),(3,19,0,6,1,0,''),(3,19,1,6,1,0,''),(3,19,2,6,8,8,'00114D0F00108CD8'),(3,20,0,6,1,0,''),(3,20,1,6,1,0,''),(3,20,2,6,8,8,'001182290010C1F9'),(3,22,0,6,2,2,'05B4'),(3,24,0,6,1,0,''),(3,24,1,6,1,0,''),(3,24,2,6,8,8,'0018D15B001810E0'),(3,25,0,6,1,0,''),(3,25,1,6,1,0,''),(3,25,2,6,8,8,'001810E10018D15C'),(3,26,0,6,1,0,''),(3,26,1,6,1,0,''),(3,26,2,6,8,8,'001988C80018C845'),(3,28,0,6,2,2,'05B4'),(3,28,1,6,4,0,''),(3,28,2,6,8,8,'000AFFC100000000'),(3,28,3,6,1,0,''),(3,28,4,6,3,1,'06'),(3,29,0,6,2,2,'05B4'),(3,29,1,6,4,0,''),(3,29,2,6,8,8,'000AFFC200000000'),(3,29,3,6,1,0,''),(3,29,4,6,3,1,'06'),(3,30,0,6,1,0,''),(3,30,1,6,1,0,''),(3,30,2,6,8,8,'000CCC55000C0C56'),(3,31,0,6,1,0,''),(3,31,1,6,1,0,''),(3,31,2,6,8,8,'000E4882000D8874'),(3,32,0,6,1,0,''),(3,32,1,6,1,0,''),(3,32,2,6,8,8,'000E7A9C000DBA83'),(3,33,0,6,1,0,''),(3,33,1,6,1,0,''),(3,33,2,6,8,8,'000DC4B6000E84C7'),(3,35,0,6,2,2,'05B4'),(3,37,0,6,2,2,'05B4'),(3,38,0,6,2,2,'05B4'),(3,40,0,6,2,2,'05B4'),(3,42,0,6,2,2,'05B4'),(3,43,0,6,2,2,'05B4'),(3,44,0,6,1,0,''),(3,44,1,6,1,0,''),(3,44,2,6,8,8,'0011037400104340'),(3,45,0,6,1,0,''),(3,45,1,6,1,0,''),(3,45,2,6,8,8,'00114D0F00108CD8'),(3,46,0,6,1,0,''),(3,46,1,6,1,0,''),(3,46,2,6,8,8,'001182290010C1F9'),(3,48,0,6,2,2,'05B4'),(3,50,0,6,1,0,''),(3,50,1,6,1,0,''),(3,50,2,6,8,8,'0018D15B001810E0'),(3,51,0,6,1,0,''),(3,51,1,6,1,0,''),(3,51,2,6,8,8,'001810E10018D15C'),(3,52,0,6,1,0,''),(3,52,1,6,1,0,''),(3,52,2,6,8,8,'001988C80018C845');
+/*!40000 ALTER TABLE `opt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `opt_code`
+--
+
+DROP TABLE IF EXISTS `opt_code`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `opt_code` (
+  `id` int(3) NOT NULL,
+  `string` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `opt_code`
+--
+
+LOCK TABLES `opt_code` WRITE;
+/*!40000 ALTER TABLE `opt_code` DISABLE KEYS */;
+INSERT INTO `opt_code` VALUES (2,'(2) MSS'),(0,'(0) EOL'),(1,'(1) NOP'),(3,'(3) WS'),(5,'(5) SACK'),(4,'(4) SACKOK'),(6,'(6) Echo'),(7,'(7) Echo Reply'),(8,'(8) TS'),(9,'(9) Partial Order Connection Permitted'),(10,'(10) Partial Order Service Profile'),(11,'(11) CC'),(12,'(12) CCNEW'),(13,'(13) CCECHO'),(14,'(14) TCP Alternate Checksum Request'),(15,'(15) TCP Alternate Checksum Data'),(16,'(16) Skeeter'),(17,'(17) Bubba'),(18,'(18) Trailer Checksum Option'),(19,'(19) MD5 Signature'),(20,'(20) SCPS Capabilities'),(21,'(21) Selective Negative Acknowledgements'),(22,'(22) Record Boundaries'),(23,'(23) Corruption Experienced'),(24,'(24) SNAP'),(25,'(25) Unassigned'),(26,'(26) TCP Compression Filter');
+/*!40000 ALTER TABLE `opt_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reference`
+--
+
+DROP TABLE IF EXISTS `reference`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `reference` (
+  `ref_id` int(10) unsigned NOT NULL auto_increment,
+  `ref_system_id` int(10) unsigned NOT NULL,
+  `ref_tag` text NOT NULL,
+  PRIMARY KEY  (`ref_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `reference`
+--
+
+LOCK TABLES `reference` WRITE;
+/*!40000 ALTER TABLE `reference` DISABLE KEYS */;
+INSERT INTO `reference` VALUES (1,1,'2002-0013'),(2,1,'2002-0012'),(3,2,'4132'),(4,2,'4089'),(5,2,'4088');
+/*!40000 ALTER TABLE `reference` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reference_system`
+--
+
+DROP TABLE IF EXISTS `reference_system`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `reference_system` (
+  `ref_system_id` int(10) unsigned NOT NULL auto_increment,
+  `ref_system_name` varchar(20) default NULL,
+  PRIMARY KEY  (`ref_system_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `reference_system`
+--
+
+LOCK TABLES `reference_system` WRITE;
+/*!40000 ALTER TABLE `reference_system` DISABLE KEYS */;
+INSERT INTO `reference_system` VALUES (1,'cve'),(2,'bugtraq');
+/*!40000 ALTER TABLE `reference_system` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `schema`
+--
+
+DROP TABLE IF EXISTS `schema`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `schema` (
+  `vseq` int(10) unsigned NOT NULL,
+  `ctime` datetime NOT NULL,
+  PRIMARY KEY  (`vseq`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `schema`
+--
+
+LOCK TABLES `schema` WRITE;
+/*!40000 ALTER TABLE `schema` DISABLE KEYS */;
+INSERT INTO `schema` VALUES (107,'2010-05-26 07:49:08');
+/*!40000 ALTER TABLE `schema` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sensor`
+--
+
+DROP TABLE IF EXISTS `sensor`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `sensor` (
+  `sid` int(10) unsigned NOT NULL auto_increment,
+  `hostname` text,
+  `interface` text,
+  `filter` text,
+  `detail` tinyint(4) default NULL,
+  `encoding` tinyint(4) default NULL,
+  `last_cid` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`sid`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `sensor`
+--
+
+LOCK TABLES `sensor` WRITE;
+/*!40000 ALTER TABLE `sensor` DISABLE KEYS */;
+INSERT INTO `sensor` VALUES (1,'192.168.56.101','eth0',NULL,1,0,2),(2,'tesis:NULL','NULL',NULL,1,0,0),(3,'tesis:eth0','eth0',NULL,1,0,52);
+/*!40000 ALTER TABLE `sensor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sig_class`
+--
+
+DROP TABLE IF EXISTS `sig_class`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `sig_class` (
+  `sig_class_id` int(10) unsigned NOT NULL auto_increment,
+  `sig_class_name` varchar(60) NOT NULL,
+  PRIMARY KEY  (`sig_class_id`),
+  KEY `sig_class_id` (`sig_class_id`),
+  KEY `sig_class_name` (`sig_class_name`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `sig_class`
+--
+
+LOCK TABLES `sig_class` WRITE;
+/*!40000 ALTER TABLE `sig_class` DISABLE KEYS */;
+INSERT INTO `sig_class` VALUES (1,'attempted-recon'),(2,'attempted-dos');
+/*!40000 ALTER TABLE `sig_class` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sig_reference`
+--
+
+DROP TABLE IF EXISTS `sig_reference`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `sig_reference` (
+  `sig_id` int(10) unsigned NOT NULL,
+  `ref_seq` int(10) unsigned NOT NULL,
+  `ref_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`sig_id`,`ref_seq`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `sig_reference`
+--
+
+LOCK TABLES `sig_reference` WRITE;
+/*!40000 ALTER TABLE `sig_reference` DISABLE KEYS */;
+INSERT INTO `sig_reference` VALUES (2,1,1),(2,2,2),(2,3,3),(2,4,4),(2,5,5),(5,1,1),(5,2,2),(5,3,3),(5,4,4),(5,5,5);
+/*!40000 ALTER TABLE `sig_reference` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `signature`
+--
+
+DROP TABLE IF EXISTS `signature`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `signature` (
+  `sig_id` int(10) unsigned NOT NULL auto_increment,
+  `sig_name` varchar(255) NOT NULL,
+  `sig_class_id` int(10) unsigned NOT NULL,
+  `sig_priority` int(10) unsigned default NULL,
+  `sig_rev` int(10) unsigned default NULL,
+  `sig_sid` int(10) unsigned default NULL,
+  `sig_gid` int(10) unsigned default NULL,
+  PRIMARY KEY  (`sig_id`),
+  KEY `sign_idx` (`sig_name`(20)),
+  KEY `sig_class_id_idx` (`sig_class_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `signature`
+--
+
+LOCK TABLES `signature` WRITE;
+/*!40000 ALTER TABLE `signature` DISABLE KEYS */;
+INSERT INTO `signature` VALUES (1,'(portscan) TCP Portscan',0,3,NULL,1,122),(2,'SNMP request tcp',1,2,11,1418,1),(3,'portscan: TCP Portscan',0,3,NULL,1,122),(4,'Snort Alert [1:100000160:0]',2,2,2,100000160,1),(5,'SNMP AgentX/tcp request ',1,2,11,1421,1);
+/*!40000 ALTER TABLE `signature` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tcphdr`
+--
+
+DROP TABLE IF EXISTS `tcphdr`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `tcphdr` (
+  `sid` int(10) unsigned NOT NULL,
+  `cid` int(10) unsigned NOT NULL,
+  `tcp_sport` smallint(5) unsigned NOT NULL,
+  `tcp_dport` smallint(5) unsigned NOT NULL,
+  `tcp_seq` int(10) unsigned default NULL,
+  `tcp_ack` int(10) unsigned default NULL,
+  `tcp_off` tinyint(3) unsigned default NULL,
+  `tcp_res` tinyint(3) unsigned default NULL,
+  `tcp_flags` tinyint(3) unsigned NOT NULL,
+  `tcp_win` smallint(5) unsigned default NULL,
+  `tcp_csum` smallint(5) unsigned default NULL,
+  `tcp_urp` smallint(5) unsigned default NULL,
+  PRIMARY KEY  (`sid`,`cid`),
+  KEY `tcp_sport` (`tcp_sport`),
+  KEY `tcp_dport` (`tcp_dport`),
+  KEY `tcp_flags` (`tcp_flags`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `tcphdr`
+--
+
+LOCK TABLES `tcphdr` WRITE;
+/*!40000 ALTER TABLE `tcphdr` DISABLE KEYS */;
+INSERT INTO `tcphdr` VALUES (1,2,56185,161,3733868039,0,10,0,2,5840,64956,0),(3,2,34176,161,867080415,0,10,0,2,5840,60670,0),(3,3,49937,5679,861609066,0,10,0,2,5840,5799,0),(3,4,45289,22,3750669354,2453499185,8,0,16,1002,27696,0),(3,5,45289,22,3750687738,2453567729,8,0,16,1002,8273,0),(3,6,45289,22,3750691722,2453590433,8,0,24,1002,58053,0),(3,7,22,45289,2453599809,3750694698,8,0,24,1912,49199,0),(3,9,51820,5713,2415983589,0,6,0,2,3072,11723,0),(3,10,474,51820,0,2415983590,5,0,20,0,26091,0),(3,11,51036,161,1076241404,0,6,0,2,2048,29263,0),(3,12,51036,705,1076241404,0,6,0,2,3072,27695,0),(3,14,50805,32776,3139416386,0,6,0,2,1024,61326,0),(3,15,98,50805,0,3139416387,5,0,20,0,35550,0),(3,16,50805,161,3139416386,0,6,0,2,3072,26358,0),(3,17,35122,161,430469011,0,6,0,2,4096,33632,0),(3,18,45289,22,3750729818,2453701089,8,0,24,1002,2129,0),(3,19,45289,22,3750741754,2453729041,8,0,24,1002,39707,0),(3,20,45289,22,3750749018,2453756129,8,0,16,1002,56778,0),(3,22,46711,555,818676465,0,6,0,2,4096,43535,0),(3,23,1434,46711,0,818676466,5,0,20,0,52809,0),(3,24,55644,22,1102520455,4094734080,8,0,24,1002,55112,0),(3,25,22,55644,4094735872,1102521399,8,0,24,8011,21688,0),(3,26,57652,3000,492070572,3486273500,8,0,16,108,41668,0),(3,28,34176,161,867080415,0,10,0,2,5840,60670,0),(3,29,49937,5679,861609066,0,10,0,2,5840,5799,0),(3,30,45289,22,3750669354,2453499185,8,0,16,1002,27696,0),(3,31,45289,22,3750687738,2453567729,8,0,16,1002,8273,0),(3,32,45289,22,3750691722,2453590433,8,0,24,1002,58053,0),(3,33,22,45289,2453599809,3750694698,8,0,24,1912,49199,0),(3,35,51820,5713,2415983589,0,6,0,2,3072,11723,0),(3,36,474,51820,0,2415983590,5,0,20,0,26091,0),(3,37,51036,161,1076241404,0,6,0,2,2048,29263,0),(3,38,51036,705,1076241404,0,6,0,2,3072,27695,0),(3,40,50805,32776,3139416386,0,6,0,2,1024,61326,0),(3,41,98,50805,0,3139416387,5,0,20,0,35550,0),(3,42,50805,161,3139416386,0,6,0,2,3072,26358,0),(3,43,35122,161,430469011,0,6,0,2,4096,33632,0),(3,44,45289,22,3750729818,2453701089,8,0,24,1002,2129,0),(3,45,45289,22,3750741754,2453729041,8,0,24,1002,39707,0),(3,46,45289,22,3750749018,2453756129,8,0,16,1002,56778,0),(3,48,46711,555,818676465,0,6,0,2,4096,43535,0),(3,49,1434,46711,0,818676466,5,0,20,0,52809,0),(3,50,55644,22,1102520455,4094734080,8,0,24,1002,55112,0),(3,51,22,55644,4094735872,1102521399,8,0,24,8011,21688,0),(3,52,57652,3000,492070572,3486273500,8,0,16,108,41668,0);
+/*!40000 ALTER TABLE `tcphdr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `udphdr`
+--
+
+DROP TABLE IF EXISTS `udphdr`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `udphdr` (
+  `sid` int(10) unsigned NOT NULL,
+  `cid` int(10) unsigned NOT NULL,
+  `udp_sport` smallint(5) unsigned NOT NULL,
+  `udp_dport` smallint(5) unsigned NOT NULL,
+  `udp_len` smallint(5) unsigned default NULL,
+  `udp_csum` smallint(5) unsigned default NULL,
+  PRIMARY KEY  (`sid`,`cid`),
+  KEY `udp_sport` (`udp_sport`),
+  KEY `udp_dport` (`udp_dport`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `udphdr`
+--
+
+LOCK TABLES `udphdr` WRITE;
+/*!40000 ALTER TABLE `udphdr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `udphdr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+-- Dump completed on 2010-06-19 18:07:43

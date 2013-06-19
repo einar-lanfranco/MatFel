@@ -1,0 +1,13 @@
+Para correr el barnyard2 con los archivos de configuarion que estan copiados en este directorio, primero hay que bajar el barnyard2 desde el sitio web (buscar en google), instalar el snort (version 2.8.5.2-2 de squezze) y las librerias de development de mysql.
+
+Configurar el barnyard2 con soporte para mysql, compilar e instalarlo:
+
+cd barnyard2/
+./configure --with-mysql-libraries=/usr/lib/
+make
+make install
+
+Luego ejecutar barnyard2:
+
+barnyard2 -c /etc/barnyard2.conf -d /var/log/snort -f snortunifed2.log -w /var/log/snort/snort.waldo
+

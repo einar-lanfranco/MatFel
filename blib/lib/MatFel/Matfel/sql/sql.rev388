@@ -1,0 +1,25 @@
+ALTER TABLE `trafico_entrada` ADD `comentario` VARCHAR( 255 ) NOT NULL;
+ALTER TABLE `trafico_salida` ADD `comentario` VARCHAR( 255 ) NOT NULL;
+INSERT INTO `preferencia` (
+`id` ,
+`nombre` ,
+`valor`
+)
+VALUES 
+(
+NULL , 'smtp_server', 'mail.linti.unlp.edu.ar'
+), (
+NULL , 'smtp_metodo', 'TLS'
+), (
+NULL , 'port_mail', '25'
+), (
+NULL , 'username_mail', 'matfel'
+), (
+NULL , 'password_mail', 'XXXXXXXX'
+), (
+NULL , 'mail_from', 'matfel@linti.unlp.edu.ar'
+);
+
+ALTER TABLE `servidor` CHANGE `activo` `reporte` TINYINT( 1 ) NOT NULL;
+
+UPDATE preferencia SET descripcion = 'Las opciones son:\r\nPLANO\r\nTLS\r\nSSL\r\nSENDMAIL', valor = 'PLANO' WHERE ( nombre = 'smtp_metodo' );

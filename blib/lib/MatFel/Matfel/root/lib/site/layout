@@ -1,0 +1,11 @@
+
+<div id="content" class="content">
+<div id="header" class="header">[% PROCESS site/header %]</div>
+[%# Status and error messages %]
+        <span class="message">[% status_msg || c.request.params.status_msg %]</span>
+        <span class="error">[% error_msg %]</span>
+[%# This is where TT will stick all of your template's contents. -%]
+[% content %]
+
+<div id="footer" class="footer">[% PROCESS site/footer %]</div>
+

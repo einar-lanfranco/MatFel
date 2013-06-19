@@ -1,0 +1,13 @@
+<fieldset>
+        <legend>Datos Meta</legend>
+            <table>
+            <tr>
+                <th>Timestamp</th>
+                <th>Signature</th>
+            </tr>   
+            <tr>
+                <td> [% linea.evento.timestamp %]</td>
+                <td> [% linea.evento.sig_id.sig_name %] </td>
+            </tr>
+            </table>
+</fieldset>

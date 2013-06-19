@@ -1,0 +1,9 @@
+INSERT INTO `preferencia` (
+`id` ,
+`nombre` ,
+`valor`
+)
+VALUES (
+NULL , 'rss_server', 'http://sl.linti.unlp.edu.ar/feed/rss/'
+);
+

@@ -22,8 +22,8 @@ package OV;
 
 use strict;
 require Exporter;
-use Tesis::Schema;
-use Tesis::Model::DB;
+use MatFel::Schema;
+use MatFel::Model::DB;
 use Date::Manip;
 use DateTime;
 
@@ -43,8 +43,8 @@ use vars qw(@EXPORT @ISA);
 
 sub getSchema
 {
-    my $db = Tesis::Model::DB->new();
-    my $schema = Tesis::Schema->connect($db->connect_info->{'dsn'},$db->connect_info->{'user'},$db->connect_info->{'password'});
+    my $db = MatFel::Model::DB->new();
+    my $schema = MatFel::Schema->connect($db->connect_info->{'dsn'},$db->connect_info->{'user'},$db->connect_info->{'password'});
     return $schema;
 }
 
