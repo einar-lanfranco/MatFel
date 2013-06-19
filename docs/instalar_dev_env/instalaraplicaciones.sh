@@ -115,12 +115,12 @@ function configurarInicioApache(){
 
 function configurarInicioNginx(){
 	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema mediante nginx"
-	aptitude -y install nginx libfgi-procmanager-perl
+	aptitude -y install nginx libfcgi-procmanager-perl
 	echo '#!/bin/bash' > /etc/init.d/matfeFASTCGI
 	echo "perl $LUGAR//script/matfel_fastcgi.pl -l /var/run/matfel.socket -d" >> /etc/init.d/matfeFASTCGI
 	chmod +x /etc/init.d/matfeFASTCGI
     #update-rc.d matfelWeb defaults
-    cp $LUGAR/docs/instalador/aux/matfelNGIX /etc/nginx/sites-available/matfel
+    cp $LUGAR/docs/instalador/aux/nginx /etc/nginx/sites-available/matfel
     ln -s /etc/nginx/sites-available/matfel /etc/nginx/sites-enabled/matfel 
     /etc/init.d/matfeFASTCGI
     /etc/init.d/nginx restart
@@ -192,7 +192,7 @@ function instalarWapiti(){
 #Estas dependencias hay que forzarlas para que instalen#
 ########################################################
 
-function dependenciasConProblemas(){
+function instalarDependenciasConProblemas(){
 	#Esto es para los reportes del Cron pero no se cambia el modulo desde el 2007, y ahora los test falla 1, por eso hay q forzarlo
 	aptitude install make
 	cpan -i -f Text::Report
