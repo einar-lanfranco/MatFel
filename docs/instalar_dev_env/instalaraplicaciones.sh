@@ -19,6 +19,7 @@ function desarrollo(){
     echo "perl $LUGAR/script/matfel_server.pl  -d -r  > /dev/null 2>/var/log/matfel/matfel.log &" >>/usr/bin/matfel
     chmod +x /usr/bin/matfel
     echo "El sistema nunca se ejecutará automáticamete, usted tendrá que invocarlo en una consola como /usr/bin/matfel y los logs los podrá visualizar en  /var/log/matfel/matfel.log"
+    echo "Apunte con un browser al puerto 3000 de este equipo y ya podra utilizar MatFel"
 }
 
 
@@ -93,7 +94,10 @@ function instalarOpenVAS(){
 }
 
 
-function configurarInicio(){
+function configurarInicioApache(){
+	#########################################
+	#####"Hay que revisarlo"#################
+	#########################################
 	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema"
 	##ESTO HAT QUE REVISARLO
 	aptitude -y install libapache2-mod-perl2 apache2-mpm-prefork libcatalyst-engine-apache-perl apache2 libapache2-mod-fcgid
@@ -109,12 +113,39 @@ function configurarInicio(){
     /etc/init.d/apache2 restart
 }
 
-function instalarParaCompilar(){
- aptitude install perl build-essential libexpat1-dev libgeo-ip-perl libssl-dev
+function configurarInicioNginx(){
+	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema mediante nginx"
+	aptitude -y install nginx libfgi-procmanager-perl
+	echo '#!/bin/bash' > /etc/init.d/matfeFASTCGI
+	echo "perl $LUGAR//script/matfel_fastcgi.pl -l /var/run/matfel.socket -d" >> /etc/init.d/matfeFASTCGI
+	chmod +x /etc/init.d/matfeFASTCGI
+    #update-rc.d matfelWeb defaults
+    cp $LUGAR/docs/instalador/aux/matfelNGIX /etc/nginx/sites-available/matfel
+    ln -s /etc/nginx/sites-available/matfel /etc/nginx/sites-enabled/matfel 
+    /etc/init.d/matfeFASTCGI
+    /etc/init.d/nginx restart
 }
 
 
 
+function instalarParaCompilar(){
+ aptitude install perl build-essential libexpat1-dev libgeo-ip-perl libssl-dev
+}
+
+function configurarInicio(){
+echo "Eligiremos el servidor web a utilizar"
+select sn in "Nginx" "Nada"; do
+            case $sn in
+                Nginx ) echo "Configurando Nginx";
+                        configurarInicioNginx
+                        break;;
+                Nada ) ITIPO="des";
+                        echo "No hay nada implementado aun"
+                        break;;
+            esac
+        done
+
+}
 function crearBaseDeDatos(){
     echo "Creamos  la base de datos $BASE en el $HOST_BASE"
     mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS';"
@@ -255,7 +286,7 @@ else
     ## Instalamos Msource de Matfel##
     #################################
     echo "¿Usted quiere instalar MatFel como un sistema en producción o lo va a utilizar para desarrollar sobre el?"
-     select sn in "Producción" "Desarrollo"; do
+    select sn in "Producción" "Desarrollo"; do
             case $sn in
                 Producción ) echo "Ambiente de Producción - Debian";
                         configurarInicio
