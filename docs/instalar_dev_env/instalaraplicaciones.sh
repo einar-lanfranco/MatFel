@@ -8,7 +8,6 @@
 
 function instalarConCpan(){
     #Instalar lo que no esta en paquete de debian
-    cpan -i Catalyst::Plugin::Unicode::Encoding
     cpan -i Chart::OFC2 
 }
 
@@ -164,6 +163,7 @@ function instalarWapiti(){
 
 funcion dependenciasConProblemas(){
 	#Esto es para los reportes del Cron pero no se cambia el modulo desde el 2007, y ahora los test falla 1, por eso hay q forzarlo
+	aptitude install make
 	cpan -i -f Text::Report
 	
 	}
@@ -195,15 +195,12 @@ function dependenciasPerl(){
     fi
     if [ $TIPO = "debian" ]
         then
-        'Text::Report' => 0,
-		'Chart::OFC2'=> 0,
-		
-		aptitude -y install libcatalyst-perl \
-            libcatalyst-modules-perl libcatalyst-engine-apache-perl libcatalyst-plugin-unicode-encoding-perl\
-            libdatetime-perl libxml-rss-perl libdate-calc-perl libtest-pod-perl libgeo-ip-perl
-            libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl\
-			libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl\
-            libxml-rsslite-perl
+        aptitude -y install libcatalyst-perl \
+            libcatalyst-modules-perl libcatalyst-engine-apache-perl libcatalyst-plugin-unicode-encoding-perl \
+            libdatetime-perl libxml-rss-perl libdate-calc-perl libtest-pod-perl libgeo-ip-perl \
+            libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl \
+			libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl \
+            libxml-rsslite-perl libtest-differences-perl libmoosex-strictconstructor-perl
             
             #Esto que esta comentado no se si es necesario inicialmente
             #~ libcatalyst-engine-apache-perl   sqlite3 libdbd-sqlite3-perl\

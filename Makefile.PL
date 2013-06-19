@@ -22,7 +22,7 @@ requires (
 		'CPAN' => '2.0',
 		'Config::General' => '0',
 		'Text::Report' => '0',
-		'Catalyst::Runtime' => '5.90042',
+		'J/JJ/JJNAPIORK/Catalyst-Runtime-5.90030.tar.gz' => '0',
 		'Catalyst::Plugin::Authentication' => '0',
 		'Catalyst::Plugin::Session' => '0',
 		'Catalyst::Plugin::ConfigLoader' => '0',

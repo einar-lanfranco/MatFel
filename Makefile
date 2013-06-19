@@ -21,7 +21,7 @@
 #     NAME => q[MatFel]
 #     NO_META => q[1]
 #     PL_FILES => {  }
-#     PREREQ_PM => { DateTime=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], Net::SMTP::TLS=>q[0], Catalyst::Plugin::Session::Store::FastMmap=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Config::General=>q[0], Text::Report=>q[0], DBIx::Class::EncodedColumn=>q[0], Catalyst::View::TT=>q[0], parent=>q[0], ExtUtils::MakeMaker=>q[6.42], Catalyst::Plugin::Session=>q[0], Date::Calc=>q[0], XML::RSSLite=>q[0], Mail::Sendmail=>q[0], Catalyst::Authentication::Realm::SimpleDB=>q[0], File::Copy::Recursive=>q[0], Date::Manip=>q[0], XML::RSS=>q[0], Catalyst::Controller::HTML::FormFu=>q[0], Chart::OFC2=>q[0], Catalyst::Plugin::Static::Simple=>q[0], Catalyst::Plugin::StackTrace=>q[0], DBIx::Class::TimeStamp=>q[0], Catalyst::Action::RenderView=>q[0], Geo::IP=>q[0], URI::Find=>q[0], Catalyst::Plugin::Unicode::Encoding=>q[0], Catalyst::Plugin::Authentication=>q[0], CPAN=>q[2.0], Catalyst::Runtime=>q[5.90042], Net::SMTP::SSL=>q[0] }
+#     PREREQ_PM => { DateTime=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], Net::SMTP::TLS=>q[0], Catalyst::Plugin::Session::Store::FastMmap=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Config::General=>q[0], Text::Report=>q[0], DBIx::Class::EncodedColumn=>q[0], Catalyst::View::TT=>q[0], parent=>q[0], ExtUtils::MakeMaker=>q[6.42], Catalyst::Plugin::Session=>q[0], Date::Calc=>q[0], XML::RSSLite=>q[0], Mail::Sendmail=>q[0], Catalyst::Authentication::Realm::SimpleDB=>q[0], File::Copy::Recursive=>q[0], Date::Manip=>q[0], XML::RSS=>q[0], Catalyst::Controller::HTML::FormFu=>q[0], Chart::OFC2=>q[0], Catalyst::Plugin::Static::Simple=>q[0], J/JJ/JJNAPIORK/Catalyst-Runtime-5.90030.tar.gz=>q[0], Catalyst::Plugin::StackTrace=>q[0], DBIx::Class::TimeStamp=>q[0], Catalyst::Action::RenderView=>q[0], Geo::IP=>q[0], URI::Find=>q[0], Catalyst::Plugin::Unicode::Encoding=>q[0], Catalyst::Plugin::Authentication=>q[0], CPAN=>q[2.0], Net::SMTP::SSL=>q[0] }
 #     TEST_REQUIRES => {  }
 #     VERSION => q[0.01]
 #     dist => {  }
@@ -1204,7 +1204,6 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::StackTrace" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Static::Simple" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Unicode::Encoding" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Runtime" VERSION="5.90042" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::View::TT" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Chart::OFC2" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Config::General" />' >> $(DISTNAME).ppd
@@ -1216,6 +1215,7 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="ExtUtils::MakeMaker" VERSION="6.42" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="File::Copy::Recursive" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Geo::IP" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="J/JJ/JJNAPIORK/Catalyst-Runtime-5.90030.tar.gz::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Mail::Sendmail" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::SMTP::SSL" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::SMTP::TLS" />' >> $(DISTNAME).ppd
@@ -1313,5 +1313,5 @@ checkdeps ::
 	$(PERL) Makefile.PL --checkdeps
 
 installdeps ::
-	$(PERL) Makefile.PL --config= --installdeps=Text::Report,0,Catalyst::Runtime,5.90042,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Session::Store::FastMmap,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Unicode::Encoding,0,Catalyst::Authentication::Realm::SimpleDB,0,Catalyst::Controller::HTML::FormFu,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::View::TT,0,Chart::OFC2,0,DateTime,0,XML::RSS,0,Text::Report,0,DBIx::Class::TimeStamp,0,DBIx::Class::EncodedColumn,0
+	$(PERL) Makefile.PL --config= --installdeps=J/JJ/JJNAPIORK/Catalyst-Runtime-5.90030.tar.gz,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Session::Store::FastMmap,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Unicode::Encoding,0,Catalyst::Authentication::Realm::SimpleDB,0,Catalyst::Controller::HTML::FormFu,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::View::TT,0,Chart::OFC2,0,DateTime,0,XML::RSS,0,DBIx::Class::TimeStamp,0,DBIx::Class::EncodedColumn,0
 
