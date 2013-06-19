@@ -1,0 +1,23 @@
+   [% META title = 'ABM de Escaneos' %]
+
+<div class="renglon">
+    <fieldset>
+      [% IF servidor %]
+    <legend>Nuevo Escaneo del servidor [% servidor.nombre_dir %]</legend>
+      [% ELSE %]
+    <legend>Nuevo Escaneo</legend>
+      [% END %]
+
+    [% form %]
+    </fieldset>
+
+
+
+      [% IF servidor %]
+    <p><a href="[% c.uri_for(c.controller.action_for('lista_servidor')) %]/[% servidor.id %]" title="Volver a la lista de escaneos del servidor"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+      [% ELSE %]
+    <p><a href="[% c.uri_for(c.controller.action_for('lista')) %]" title="Volver a la lista de escaneos"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+      [% END %]
+
+
+</div>

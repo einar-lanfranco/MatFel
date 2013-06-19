@@ -1,0 +1,57 @@
+   [% META title = 'ABM de Servidores' %]
+    
+    [%# Render the HTML::FormFu Form %]
+<div class="renglon">
+
+<script type="text/javascript">
+
+function changeType( rad ){
+
+    var mascara = document.getElementById("mascarav4");
+
+    //Saco el texto por las dudas
+    var sp1 = document.getElementById("txt_mascara");
+    if(sp1){
+      sp1.parentNode.removeChild(sp1);
+    }
+
+  if (rad.value == "server"){
+    mascara.value="255.255.255.255";
+    mascara.type="hidden";
+
+  //Agrego el texto
+    var sp1 = document.createElement("span");
+    sp1.setAttribute("id", "txt_mascara");
+    var txtNode = document.createTextNode("255.255.255.255"); 
+    sp1.appendChild(txtNode);
+    mascara.parentNode.insertBefore(sp1,mascara);
+  }
+  else{
+    mascara.type="text";
+  }
+}
+
+</script>
+
+    <fieldset style="text-align:center;">
+    <legend>Servidor</legend>	
+    <fieldset style="width:70%;">	
+    <legend>Tipo</legend>
+
+    	<input type="radio" id="tipo" name="tipo" value="server" checked onclick="changeType(this)">
+	<img src="/static/images/server.png" alt="Servidor" />
+	<span style="padding: 100px;"></span>
+	<input type="radio" name="tipo" value="net" onclick="changeType(this)">
+	<img src="/static/images/net.png" alt="Red" />
+
+    </fieldset>
+    [% form %]
+    </fieldset>
+
+<script type="text/javascript">
+   changeType(document.getElementById("tipo"));
+
+</script>
+
+    <p><a href="[% c.uri_for(c.controller.action_for('lista')) %]" title="Volver a la lista de Servidores"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>

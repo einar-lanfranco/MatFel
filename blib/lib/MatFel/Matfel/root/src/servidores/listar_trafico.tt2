@@ -1,0 +1,148 @@
+[% META title = 'Listado de Tráfico Admitido para el servidor' -%]
+
+<div class="renglon">
+<fieldset>
+<legend>Tráfico: [% object.nombre_dir %] 
+           <a href="[% c.uri_for(c.controller('trafico').action_for('listar_trafico'), [object.id]) %]" title="Tráfico"><img src="/static/images/arrow_inout.png" alt="Tráfico" /></a>
+           <a href="[% c.uri_for(c.controller('escaneos').action_for('lista_servidor')) %]/[% object.id %]"  title="Escaneos"><img src="/static/images/bug.png" alt="Escaneos" /></a>
+           <a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [object.id],30,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a>
+</legend>
+
+<div class="renglon">
+<h1>Tráfico Entrante <img src="/static/images/arrow_right.png" alt="Entrante" /></h1>
+<table>
+    <thead>
+      <tr><th class="w10">Protocolo</th><th class="w10">Puerto</th><th class="w15">IP Origen</th><th class="w15">Mascara Origen</th><th class="w30">Estado</th><th  class="w10">Habilitado</th><th class="w10">Accion</th></tr>
+    </thead>
+    <tbody>
+    [% FOREACH linea IN trafico_entrada  -%]
+      <tr title="[% linea.comentario %]">
+        <td>[% linea.protocolo.nombre %]</td>
+        <td>[% linea.puerto %]</td>
+        <td>[% linea.ip_origen %]</td>
+        <td>[% linea.mascara_origen %]</td>
+        <td>[% linea.estado.estado %]</td>
+        <td class="centrado">
+          [% IF linea.habilitado %] 
+              <a href="[% c.uri_for(c.controller('trafico_entrada').action_for('habilitar_entrada'), [linea.id],0) %]" title="Habilitar"> <img src="/static/images/flag_red.gif"  alt="Habilitar" /></a>
+          [% ELSE %]
+              <a href="[% c.uri_for(c.controller('trafico_entrada').action_for('habilitar_entrada'), [linea.id],1) %]" title="Deshabilitar"> <img src="/static/images/flag_green.gif" alt="Deshabilitar" /></a>
+          [% END %]
+        </td>
+        <td class='centrado lista_links'>
+        <ul>
+         <li><a href="[% c.uri_for(c.controller('trafico_entrada').action_for('edit'), [linea.id]) %]" title="Editar"><img src="/static/images/pencil.png" alt="Editar" /></a></li>
+	     <li><a href="[% c.uri_for(c.controller('trafico_entrada').action_for('borrar'), [linea.id]) %]"title="Borrar"><img src="/static/images/delete.png" alt="Borrar" /></a></li>
+        </ul>
+        </td>
+     </tr>
+    [% END -%]
+    [% IF (trafico_entrada.size == 0) -%]
+     <tr><td colspan='7'></td></tr>
+    [% END -%]
+    </tbody>
+ </table>
+<div class="renglon_derecha" >
+<a href="[% c.uri_for(c.controller('trafico_entrada').action_for('create'), [id_servidor]) %]" title="Alta Nuevo Trafico Entrante"><img src="/static/images/add.png" alt="Alta Nuevo Trafico Entrante" /></a>
+</div>
+
+ <h1>Tráfico Saliente <img src="/static/images/arrow_left.png" alt="Saliente" /></h1>
+<table>
+    <thead>
+     <tr><th class="w10">Protocolo</th><th class="w10">Puerto</th><th class="w15">IP Destino</th><th class="w15">Mascara Destino</th><th class="30">Estado</th><th class="w10">Habilitado</th><th class="w10">Accion</th></tr>
+    </thead>
+    <tbody>
+    [% FOREACH linea IN trafico_salida  -%] 
+      <tr>
+        <td>[% linea.protocolo.nombre %]</td>
+        <td>[% linea.puerto %]</td>
+        <td>[% linea.ip_destino %]</td>
+        <td>[% linea.mascara_destino %]</td>
+        <td>[% linea.estado.estado %]</td>
+        <td class="centrado">
+          [% IF linea.habilitado %] 
+              <a href="[% c.uri_for(c.controller('trafico_salida').action_for('habilitar_salida'), [linea.id],0) %]" title="Habilitar"> <img src="/static/images/flag_red.gif" alt="Habilitar" /></a>
+          [% ELSE %]
+              <a href="[% c.uri_for(c.controller('trafico_salida').action_for('habilitar_salida'), [linea.id],1) %]" title="Deshabilitar"> <img src="/static/images/flag_green.gif" alt="Deshabilitar" /></a>
+          [% END %]
+        </td>
+        <td class='centrado lista_links'>
+        <ul>
+          <li><a href="[% c.uri_for(c.controller('trafico_salida').action_for('edit'), [linea.id]) %]" title="Editar"><img src="/static/images/pencil.png" alt="Editar" /></a></li>
+          <li><a href="[% c.uri_for(c.controller('trafico_salida').action_for('borrar'), [linea.id]) %]" title="Borrar"><img src="/static/images/delete.png" alt="Borrar" /></a></li>
+        </ul>
+        </td>
+     </tr>
+    [% END -%]
+    [% IF (trafico_salida.size == 0) -%]
+     <tr><td colspan='7'></td></tr>
+    [% END -%]
+    </tbody>
+ </table>
+
+<div class="renglon_derecha">
+<a href="[% c.uri_for(c.controller('trafico_salida').action_for('create'), [id_servidor]) %]" title="Alta Nuevo Trafico Saliente"><img src="/static/images/add.png" alt="Alta Nuevo Trafico Saliente" /></a>
+</div> 
+
+ <h1>Tráfico Entrante Bloqueado <img src="/static/images/arrow_right.png" alt="Entrante" /><img src="/static/images/action_stop.gif" alt="Bloqueado" /></h1>
+<table>
+    <thead>
+     <tr><th class="w10">Protocolo</th><th class="w10">Puerto</th><th class="w15">IP Origen</th><th class="w15">Mascara Origen</th><th class="w30">Estado</th><th  class="w10">Accion</th></tr>
+    </thead>
+    <tbody>
+    [% FOREACH linea IN trafico_entrada_bloqueado  -%] 
+      <tr>
+        <td>[% linea.protocolo.nombre %]</td>
+        <td>[% linea.puerto %]</td>
+        <td>[% linea.ip_origen %]</td>
+        <td>[% linea.mascara_origen %]</td>
+        <td>[% linea.estado.estado %]</td>
+        <td class='centrado lista_links'>
+        <ul>
+          <li><a href="[% c.uri_for(c.controller('trafico_bloqueado_entrada').action_for('borrar'), [linea.id]) %]" title="Borrar"><img src="/static/images/delete.png" alt="Borrar" /></a></li>
+        </ul>
+        </td>
+     </tr>
+    [% END -%]
+    [% IF (trafico_entrada_bloqueado.size == 0) -%]
+     <tr><td colspan='6'></td></tr>
+    [% END -%]
+    </tbody>
+</table>
+
+ <h1>Tráfico Saliente Bloqueado <img src="/static/images/arrow_left.png" alt="Saliente" /><img src="/static/images/action_stop.gif" alt="Bloqueado" /></h1>
+<table>
+    <thead>
+     <tr>
+    <th class="w10">Protocolo</th><th class="w10">Puerto</th><th class="w15">IP Destino</th><th class="w15">Mascara Destino</th><th class="w30">Estado</th><th  class="w10">Accion</th>
+    </tr>
+    </thead>
+    <tbody>
+    [% FOREACH linea IN trafico_salida_bloqueado  -%] 
+      <tr>
+        <td>[% linea.protocolo.nombre %]</td>
+        <td>[% linea.puerto %]</td>
+        <td>[% linea.ip_destino %]</td>
+        <td>[% linea.mascara_destino %]</td>
+        <td>[% linea.estado.estado %]</td>
+        <td class='centrado lista_links'>
+        <ul>
+          <li><a href="[% c.uri_for(c.controller('trafico_bloqueado_salida').action_for('borrar'), [linea.id]) %]" title="Borrar"><img src="/static/images/delete.png" alt="Borrar" /></a></li>
+        </ul>
+        </td>
+     </tr>
+    [% END -%]
+    [% IF (trafico_salida_bloqueado.size == 0) -%]
+     <tr><td colspan='6'></td></tr>
+    [% END -%]
+     </tbody>
+     
+</table>
+
+</div>
+</fieldset>
+
+<div class="renglon_izquierda" >
+   <p><a href="[% c.uri_for(c.controller('servidores').action_for('lista')) %]" title="Volver a la lista de servidores"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>
+</div>

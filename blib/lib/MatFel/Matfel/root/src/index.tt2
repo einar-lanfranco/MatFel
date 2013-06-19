@@ -1,0 +1,89 @@
+    [% IF c.user_exists %]
+    <div class="left">
+			<h3>Bienvenido</h3>
+			<div class="left_box">
+				<img src="../static/images/bigimage.gif" class="image" alt="Big Image" />
+				<ul> 
+				<li>Bienvenido <strong>[% c.user.first_name %], [% c.user.last_name %]</strong>
+				</li><li><img alt="Ultimo login" src="/static/images/flag_green.gif" /> Última login el [% IF c.user.last_login.timestamp != '' %] <strong>[% c.user.last_login.timestamp %]</strong> desde la IP:<strong> [% c.user.last_login.desde %] </strong> 
+                [% IF c.user.last_login.geo_country.country_code %] 
+                                ([% IF c.user.last_login.geo_country.city %][% c.user.last_login.geo_country.city %], [% END %][% c.user.last_login.geo_country.country_name %] <img src="/static/images/flags/[% c.user.last_login.geo_country.country_code FILTER lower %].png" alt="[% c.user.last_login.country_code3 %]" />)[% END %]
+                 
+                usando <strong> [% c.user.last_login.cliente %] </strong> 
+				</li><li><img alt="Ultimo Logout" src="/static/images/flag_green.gif" />Último logout fue <strong>[% c.user.last_logout.timestamp %]</strong>
+				[% ELSE %] 
+				    NUNCA 
+				[% END %]
+				</li><li><img alt="Ultimo Logout" src="/static/images/flag_green.gif" /> Actualmente conectado desde <strong>[% c.request.address %]</strong>
+                  [% IF geo_login.country_code %] ([% IF geo_login.city %][% geo_login.city %], [% END %][% geo_login.country_name %] <img src="/static/images/flags/[% geo_login.country_code FILTER lower %].png" alt="[% geo_login.country_code3 %]" />)[% END %]
+                  usando <strong>[% c.request.user_agent %] </strong> </li>
+				</ul>
+			</div>
+	
+			<h3>Intentos fallidos de conexión</h3>
+			         <ul>
+			         [% IF c.user.last_bad_logins.size > 0 %]
+			           [% FOREACH bad_login IN c.user.last_bad_logins %]
+				    <li><img alt="Ultimo login" src="/static/images/flag_red.gif" /> El <strong> [% bad_login.timestamp %] </strong> desde la IP:<strong> [% bad_login.desde %] </strong>
+                      [% IF bad_login.geo_country.country_code %] ([% IF bad_login.geo_country.city %][% bad_login.geo_country.city %], [% END %][% bad_login.geo_country.country_name %] <img src="/static/images/flags/[% bad_login.geo_country.country_code FILTER lower %].png" alt="[% bad_login.geo_country.country_code3 %]" />)[% END %]
+                    usando <strong> [% bad_login.cliente %] </strong> 
+				    </li>
+				   [% END %]
+				[% ELSE %]
+				<li>
+				<strong>No hay registros! </strong>
+				</li>
+				[% END %]
+				    
+			         </ul>				
+			<h3>Últimas noticias:</h3>
+			<div class="left_box">
+                        <img src="../static/images/ad.gif" class="image" alt="Big Image" />
+
+                        [% IF alertas_entre_logins.size == 0 %]
+                        	[% IF entre_logins %]
+	                            <p> No hay registros de nuevas alertas desde su último login. </p>
+        	                [%ELSE %]
+                       		    <p> No hay alertas en los ultimos [% rango %] días
+				[% END %]
+
+			[%ELSE %]
+                        	[% IF entre_logins %]
+		                        <p>Desde su último login se registraron:</p>
+        	                [%ELSE %]
+		                        <p>En los últimos [% rango %] días se registraron:</p>
+				[% END %]
+                        	<ul>
+				[% FOREACH alerta IN alertas_entre_logins %]
+        	                 <li> [% alerta.get_column('cuenta') %] eventos sobre [% alerta.get_column('server_nombre') %]  <a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [alerta.get_column('id_servidor')],rango,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a></li>
+				[% END %]
+        	                </ul>
+                        [% END %]
+                          </div>
+		</div>	
+                [% IF rsss.size >0 %]
+                <div class="right">
+                [% FOREACH rss IN rsss %]
+		
+        		<h3>RSS [% rss.channel.title %] ([% rss.channel.link %])</h3>
+			[% FOREACH rs IN rss.items %]
+			<div class="right_articles">
+				<p><img src="../static/images/rss.png" alt="Image" title="Image" class="image" />
+				
+				<strong> [% rs.title FILTER html %] </strong><br />
+				<a href="[% rs.link FILTER html %]"> Leer mas...</a>
+				
+				</p>
+			</div>
+			[% END %]
+                [% END %]
+                </div>	
+                [% ELSE %]
+                <div class="right">
+        		<h3>RSS no disponibles por el momento</h3>
+                </div>
+                [% END %]	
+    [% ELSE %]
+        Te tenes que loguear en la aplicación!
+    [% END %]
+  

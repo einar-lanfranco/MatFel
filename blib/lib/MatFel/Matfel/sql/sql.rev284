@@ -1,0 +1,144 @@
+#Primary keys
+ALTER TABLE `detail` DROP PRIMARY KEY , ADD PRIMARY KEY ( `detail_type` ); 
+ALTER TABLE `alerta` DROP PRIMARY KEY ,ADD PRIMARY KEY ( `id` );
+ALTER TABLE `data` DROP PRIMARY KEY , ADD PRIMARY KEY ( `sid` , `cid` ) ;
+ALTER TABLE `encoding` DROP PRIMARY KEY , ADD PRIMARY KEY ( `encoding_type` ) ;
+ALTER TABLE `estado` DROP PRIMARY KEY , ADD PRIMARY KEY ( `id` ) ;
+
+#Indices
+
+ALTER TABLE `alerta` ADD INDEX ( `id_servidor` );
+ALTER TABLE `ov_scanresults` ADD INDEX ( `id_scan` );
+ALTER TABLE `ov_scan` ADD INDEX ( `id_servidor` );
+ALTER TABLE `ov_scan` ADD INDEX ( `estado` );
+ALTER TABLE `ov_scan` ADD INDEX ( `frecuencia` );
+ALTER TABLE `ov_scanresults` ADD INDEX ( `risk` ) ;
+ALTER TABLE `reference` ADD INDEX ( `ref_system_id` ) ;
+ALTER TABLE `servidor` ADD INDEX ( `user` ) ;
+ALTER TABLE `trafico_entrada` ADD INDEX ( `id_servidor` ) ;
+ALTER TABLE `trafico_entrada` ADD INDEX ( `estado` ) ;
+ALTER TABLE `trafico_entrada_bloqueado` ADD INDEX ( `id_servidor` ) ;
+ALTER TABLE `trafico_entrada_bloqueado` ADD INDEX ( `estado` ) ;
+ALTER TABLE `trafico_salida` ADD INDEX ( `id_servidor` ) ;
+ALTER TABLE `trafico_salida` ADD INDEX ( `estado` ) ;
+ALTER TABLE `trafico_salida_bloqueado` ADD INDEX ( `id_servidor` ) ;
+ALTER TABLE `trafico_salida_bloqueado` ADD INDEX ( `estado` ) ;
+ALTER TABLE `user_accion` ADD INDEX ( `user_id` );
+ALTER TABLE `alerta` ADD INDEX ( `sid` , `cid` ) ;
+ALTER TABLE `trafico_entrada` ADD INDEX ( `protocolo` );
+ALTER TABLE `trafico_salida` ADD INDEX ( `protocolo` );
+ALTER TABLE `trafico_entrada_bloqueado` ADD INDEX ( `protocolo` );
+ALTER TABLE `trafico_salida_bloqueado` ADD INDEX ( `protocolo` );
+ALTER TABLE `sig_reference` ADD INDEX ( `ref_id` ) ;
+ALTER TABLE `opt` ADD INDEX ( `opt_code` ) ;
+ALTER TABLE `iphdr` ADD INDEX ( `ip_proto` ) ;
+ALTER TABLE `user_role` ADD INDEX ( `user_id` );
+ALTER TABLE `sig_reference` ADD INDEX ( `sig_id` ) ;
+ALTER TABLE `opt` ADD INDEX ( `sid` ) ;
+
+# Todo a Innodb o no hay foreing key
+
+ALTER TABLE alerta ENGINE=Innodb;
+ALTER TABLE data ENGINE=Innodb;
+ALTER TABLE detail ENGINE=Innodb;
+ALTER TABLE encoding ENGINE=Innodb;
+ALTER TABLE estado ENGINE=Innodb;
+ALTER TABLE event ENGINE=Innodb;
+ALTER TABLE icmphdr ENGINE=Innodb;
+ALTER TABLE icmp_code ENGINE=Innodb;
+ALTER TABLE icmp_type ENGINE=Innodb;
+ALTER TABLE iphdr ENGINE=Innodb;
+ALTER TABLE ipt_code ENGINE=Innodb;
+ALTER TABLE ip_proto ENGINE=Innodb;
+ALTER TABLE opt ENGINE=Innodb;
+ALTER TABLE opt_code ENGINE=Innodb;
+ALTER TABLE ov_estado ENGINE=Innodb;
+ALTER TABLE ov_frecuencia ENGINE=Innodb;
+ALTER TABLE ov_risk_factor ENGINE=Innodb;
+ALTER TABLE ov_scan ENGINE=Innodb;
+ALTER TABLE ov_scanresults ENGINE=Innodb;
+ALTER TABLE preferencia ENGINE=Innodb;
+ALTER TABLE reference ENGINE=Innodb;
+ALTER TABLE reference_system ENGINE=Innodb;
+ALTER TABLE role ENGINE=Innodb;
+ALTER TABLE `schema` ENGINE=Innodb;
+ALTER TABLE sensor ENGINE=Innodb;
+ALTER TABLE servidor ENGINE=Innodb;
+ALTER TABLE signature ENGINE=Innodb;
+ALTER TABLE sig_class ENGINE=Innodb;
+ALTER TABLE sig_reference ENGINE=Innodb;
+ALTER TABLE tcphdr ENGINE=Innodb;
+ALTER TABLE trafico_entrada ENGINE=Innodb;
+ALTER TABLE trafico_entrada_bloqueado ENGINE=Innodb;
+ALTER TABLE trafico_salida ENGINE=Innodb;
+ALTER TABLE trafico_salida_bloqueado ENGINE=Innodb;
+ALTER TABLE udphdr ENGINE=Innodb;
+ALTER TABLE url_reference ENGINE=Innodb;
+ALTER TABLE user ENGINE=Innodb;
+ALTER TABLE user_accion ENGINE=Innodb;
+ALTER TABLE user_role ENGINE=Innodb;
+
+
+# Foreing keys
+
+ALTER TABLE `alerta` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES `servidor` (`id`) ;
+ALTER TABLE `reference` ADD FOREIGN KEY ( `ref_system_id` ) REFERENCES `reference_system` (`ref_system_id`) ;
+ALTER TABLE `user_role` ADD FOREIGN KEY ( `role_id` ) REFERENCES `role` (`id`)  ;
+ALTER TABLE `ov_scanresults` ADD FOREIGN KEY ( `id_scan` ) REFERENCES  `ov_scan` (`id`);
+ALTER TABLE `ov_scanresults` CHANGE `risk` `risk` TINYINT( 4 ) NOT NULL ;
+ALTER TABLE `ov_scanresults` ADD FOREIGN KEY ( `risk` ) REFERENCES  `ov_risk_factor` (`id`);
+ALTER TABLE `ov_scan` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES  `servidor` (`id`);
+ALTER TABLE `ov_scan` ADD FOREIGN KEY ( `estado` ) REFERENCES  `ov_estado` (`id`);
+ALTER TABLE `ov_frecuencia` CHANGE `id` `id` VARCHAR( 1 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL ;
+ALTER TABLE `ov_scan` ADD FOREIGN KEY ( `frecuencia` ) REFERENCES  `ov_frecuencia` (`id`);
+ALTER TABLE `trafico_entrada` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES  `servidor` (`id`);
+ALTER TABLE `trafico_entrada` ADD FOREIGN KEY ( `estado` ) REFERENCES  `estado` (`id`);
+ALTER TABLE `trafico_salida` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES  `servidor` (`id`);
+ALTER TABLE `trafico_salida` ADD FOREIGN KEY ( `estado` ) REFERENCES  `estado` (`id`);
+ALTER TABLE `trafico_entrada_bloqueado` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES  `servidor` (`id`);
+ALTER TABLE `trafico_entrada_bloqueado` ADD FOREIGN KEY ( `estado` ) REFERENCES  `estado` (`id`);
+ALTER TABLE `trafico_salida_bloqueado` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES  `servidor` (`id`);
+ALTER TABLE `trafico_salida_bloqueado` ADD FOREIGN KEY ( `estado` ) REFERENCES  `estado` (`id`);
+ALTER TABLE `signature` ADD FOREIGN KEY ( `sig_class_id` ) REFERENCES `sig_class` (`sig_class_id`);
+ALTER TABLE `user_accion` ADD FOREIGN KEY ( `user_id` ) REFERENCES `user` (`id`);
+ALTER TABLE `trafico_entrada` ADD FOREIGN KEY ( `protocolo` ) REFERENCES `ip_proto` (`id`);
+ALTER TABLE `trafico_salida` ADD FOREIGN KEY ( `protocolo` ) REFERENCES `ip_proto` (`id`);
+ALTER TABLE `trafico_entrada_bloqueado` ADD FOREIGN KEY ( `protocolo` ) REFERENCES `ip_proto` (`id`);
+ALTER TABLE `trafico_salida_bloqueado` ADD FOREIGN KEY ( `protocolo` ) REFERENCES `ip_proto` (`id`);
+ALTER TABLE `sig_reference` ADD FOREIGN KEY ( `ref_id` ) REFERENCES `reference` (`ref_id`);
+ALTER TABLE `opt_code` CHANGE `id` `id` TINYINT( 3 ) UNSIGNED NOT NULL;
+ALTER TABLE `opt` ADD FOREIGN KEY ( `opt_code` ) REFERENCES `opt_code` (`id`);
+ALTER TABLE `iphdr` CHANGE `ip_proto` `ip_proto` INT( 3 ) NOT NULL ;
+ALTER TABLE `iphdr` ADD FOREIGN KEY ( `ip_proto` ) REFERENCES `ip_proto` (`id`);
+ALTER TABLE `event` ADD FOREIGN KEY ( `signature` ) REFERENCES `signature` (`sig_id`);
+ALTER TABLE `icmp_type` CHANGE `id` `id` TINYINT( 3 ) UNSIGNED NOT NULL ;
+ALTER TABLE `icmphdr` ADD FOREIGN KEY ( `icmp_type` ) REFERENCES `icmp_type` (`id`);
+ALTER TABLE `user_role` ADD FOREIGN KEY ( `user_id` ) REFERENCES `user` (`id`);
+ALTER TABLE `alerta` CHANGE `sid` `sid` INT( 10 ) UNSIGNED NOT NULL ,CHANGE `cid` `cid` INT( 10 ) UNSIGNED NOT NULL ;
+ALTER TABLE `servidor` ADD FOREIGN KEY ( `user` ) REFERENCES `user` (`id`);
+ALTER TABLE `reference_system` CHANGE `ref_system_name` `ref_system_name` VARCHAR( 255 ) NULL DEFAULT NULL ;
+ALTER TABLE `reference_system` ADD INDEX ( `ref_system_name` ) ;
+INSERT INTO `reference_system` (`ref_system_id`, `ref_system_name`) VALUES (NULL, 'mcafee'), (NULL, 'snort'), (NULL, 'icat');
+INSERT INTO `url_reference` (`ref_system_name`, `url`) VALUES ('url', ''), ('arachNIDS', '');
+ALTER TABLE `reference_system` ADD FOREIGN KEY ( `ref_system_name` ) REFERENCES `url_reference` (`ref_system_name`);
+ALTER TABLE `sig_reference` ADD FOREIGN KEY ( `sig_id` ) REFERENCES `signature` (`sig_id`);
+ALTER TABLE `opt` ADD FOREIGN KEY ( `sid` ) REFERENCES `iphdr` (`sid`);
+ALTER TABLE `icmp_code` CHANGE `tipo` `tipo` TINYINT( 3 ) UNSIGNED NOT NULL ;
+ALTER TABLE `icmphdr` ADD INDEX ( `icmp_code` );
+ALTER TABLE `icmp_code` CHANGE `subtipo` `subtipo` TINYINT( 3 ) UNSIGNED NOT NULL;
+ALTER TABLE `sensor` ADD INDEX ( `detail` ) ;
+ALTER TABLE `sensor` ADD INDEX ( `encoding` ) ;
+ALTER TABLE `sensor` CHANGE `detail` `detail` TINYINT( 3 ) UNSIGNED NULL DEFAULT NULL , CHANGE `encoding` `encoding` TINYINT( 3 ) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sensor` ADD FOREIGN KEY ( `detail` ) REFERENCES `detail` (`detail_type`);
+ALTER TABLE `sensor` ADD FOREIGN KEY ( `encoding` ) REFERENCES `encoding` (`encoding_type`);
+ 
+
+#DOBLES
+ALTER TABLE `icmphdr` ADD FOREIGN KEY ( `sid` ) REFERENCES `iphdr` (`sid`);
+ALTER TABLE `iphdr` ADD FOREIGN KEY ( `sid` ) REFERENCES `event` (`sid`);
+ALTER TABLE `data` ADD FOREIGN KEY ( `sid` ) REFERENCES `iphdr` (`sid`);
+ALTER TABLE `tcphdr` ADD FOREIGN KEY ( `sid` ) REFERENCES `iphdr` (`sid`);
+ALTER TABLE `udphdr` ADD FOREIGN KEY ( `sid` ) REFERENCES `iphdr` (`sid`);
+ALTER TABLE `alerta` ADD FOREIGN KEY ( `sid` ) REFERENCES `event` (`sid`);
+ALTER TABLE `event` ADD FOREIGN KEY ( `sid` ) REFERENCES `sensor` (`sid`);
+

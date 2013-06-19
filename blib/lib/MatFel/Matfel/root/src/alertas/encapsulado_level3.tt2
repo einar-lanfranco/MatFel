@@ -1,0 +1,35 @@
+<fieldset>
+        <legend>Datos IP</legend>
+        <fieldset>
+        <legend>Header</legend>
+            <table>
+            <tr>
+                <th>IP Origen</th>
+                <th>IP Destino</th>
+                <th>Ver</th>
+                <th>Hdr Len</th>
+                <th>TOS</th>
+                <th>length</th>
+                <th>ID</th>
+                <th>Fragment</th>
+                <th>Offset</th>
+                <th>TTL</th>
+                <th>Checksum</th>
+            </tr>   
+            <tr>
+                <td> [% linea.evento.ip_header.get_ip_src %] ([% linea.evento.ip_header.get_nombre_src %])</td>
+                <td> [% linea.evento.ip_header.get_ip_dst %] ([% linea.evento.ip_header.get_nombre_dst %])</td>
+                <td> [% linea.evento.ip_header.ip_ver %]</td>
+                <td> <script>document.write([% linea.evento.ip_header.ip_hlen %]*4)</script></td>
+                <td> [% linea.evento.ip_header.ip_tos %]</td>
+                <td> [% linea.evento.ip_header.ip_len %]</td>
+                <td> [% linea.evento.ip_header.ip_id %]</td>
+                <td> [% auxiliar= linea.evento.ip_header.ip_flags FILTER format('%03b') %]
+                    [% auxiliar.substr(2,1)%]</td>
+                <td> [% linea.evento.ip_header.ip_off %]</td>
+                <td> [% linea.evento.ip_header.ip_ttl %]</td>
+                <td> [% linea.evento.ip_header.ip_csum %]</td>
+            </tr>
+            </table>
+        </fieldset>
+</fieldset>

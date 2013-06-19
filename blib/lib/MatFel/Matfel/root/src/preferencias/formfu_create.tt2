@@ -1,0 +1,10 @@
+   [% META title = 'ABM de Preferencias' %]
+    
+    [%# Render the HTML::FormFu Form %]
+<div class="renglon">
+    <fieldset>
+    <legend>Preferencia</legend>
+    [% form %]
+    </fieldset>
+    <p><a href="[% c.uri_for(c.controller.action_for('lista')) %]"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>

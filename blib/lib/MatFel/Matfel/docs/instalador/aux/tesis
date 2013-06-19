@@ -1,0 +1,2 @@
+#!/bin/sh
+perl /var/www/tesis/desarrollo/script/tesis_server.pl  -d -r  > /dev/null 2>/var/log/tesis/tesis.log &

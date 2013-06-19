@@ -1,0 +1,59 @@
+CREATE TABLE ip_proto (
+id INT( 3 ) NOT NULL ,
+string VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = MYISAM ;
+
+insert into ip_proto (id, string) values ("0","IP"),("1","ICMP"),("2","IGMP"),("4","IPIP tunnels"),("6","TCP"),("8","EGP"),("12","PUP"),(" 17","UDP"),("22","XNS UDP"),("29","SO TP Class 4"),("41","IPv6 header"),("43","IPv6 routing header"),("44","IPv6 fragmentation header"),("46","RSVP"),("47","GRE"),("50","IPSec ESP"),("51","IPSec AH"),("58","ICMPv6"),("59","IPv6 no next header"),("60","IPv6 destination options"),("92","MTP"),("98","Encapsulation header"),("103","PIM"),("108","COMP"),("255","Raw IP");
+
+
+CREATE TABLE opt_code (
+id INT( 3 ) NOT NULL ,
+string VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = MYISAM;
+ 
+insert into opt_code values ("2","(2) MSS"),("0","(0) EOL"),("1","(1) NOP"),("3","(3) WS"),("5","(5) SACK"),("4","(4) SACKOK"),("6","(6) Echo"),("7","(7) Echo Reply"),("8","(8) TS"),("9","(9) Partial Order Connection Permitted"),("10","(10) Partial Order Service Profile"),("11","(11) CC"),("12","(12) CCNEW"),("13","(13) CCECHO"),("14","(14) TCP Alternate Checksum Request"),("15","(15) TCP Alternate Checksum Data"),("16","(16) Skeeter"),("17","(17) Bubba"),("18","(18) Trailer Checksum Option"),("19","(19) MD5 Signature"),("20","(20) SCPS Capabilities"),("21","(21) Selective Negative Acknowledgements"),("22","(22) Record Boundaries"),("23","(23) Corruption Experienced"),("24","(24) SNAP"),("25","(25) Unassigned"),("26","(26) TCP Compression Filter");
+
+CREATE TABLE ipt_code (
+id INT( 3 ) NOT NULL ,
+string VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = MYISAM;
+
+ALTER TABLE `ipt_code` CHANGE `id` `id` VARCHAR( 255 ) NOT NULL ; 
+ 
+insert into  ipt_code values ("7","RR"), ("0","EOL"), ("1","NOP"), ("0x44","TS"), ("0x82","SEC"), ("0x83","LSRR"), ("0x84","LSRR_E"), ("0x88","SID"), ("0x89","SSRR");
+
+CREATE TABLE icmp_type (
+id INT( 3 ) NOT NULL ,
+string VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = MYISAM;
+ 
+insert into icmp_type values ("0","Echo Reply"),("3","Destination Unreachable"),("4","Source Quench"),("5","Redirect"),("8","Echo Request"),("9","Router Advertisement"),("10","Router Solicitation"),("11","Time Exceeded"),("12","Parameter Problem"),("13","Timestamp Request"),("14","Timestamp Reply"),("15","Information Request"),("16","Information Reply"),("17","Address Mask Request"),("18","Address Mask Reply"),("19","Reserved (security)"),("20","Reserved (robustness)"),("21","Reserved (robustness)"),("22","Reserved (robustness)"),("23","Reserved (robustness)"),("24","Reserved (robustness)"),("25","Reserved (robustness)"),("26","Reserved (robustness)"),("27","Reserved (robustness)"),("28","Reserved (robustness)"),("29","Reserved (robustness)"),("30","Traceroute"),("31","Datagram Conversion Error"),("32","Mobile Host Redirect"),("33","IPv6 Where-Are-You"),("34","IPv6 I-Am-Here"),("35","Mobile Registration Request"),("36","Mobile Registration Reply"),("37","Domain Name Request"),("38","Domain Name Reply"),("39","SKIP"),("40","Photuris");
+
+
+CREATE TABLE icmp_code (
+tipo INT( 3 ) NOT NULL ,
+subtipo INT( 3 ) NOT NULL ,
+string VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `tipo` )
+) ENGINE = MYISAM;
+
+ALTER TABLE `icmp_code` DROP PRIMARY KEY, ADD PRIMARY KEY(`subtipo`);
+
+ALTER TABLE `icmp_code`
+  DROP PRIMARY KEY,
+   ADD PRIMARY KEY(
+     `tipo`,
+     `subtipo`);
+
+insert into icmp_code values ("3","0" ,"Network Unreachable"),  ("3","1" ,"Host Unreachable"),  ("3","2" ,"Protocol Unreachable"),  ("3","3" ,"Port Unreachable"),  ("3","4" ,"Fragmentation Needed/DF set"),  ("3","5" ,"Source Route failed"),  ("3","6" ,"Network Unknown"),  ("3","7" ,"Host Unknown"),  ("3","8" ,"Host Isolated"),  ("3","9" ,"Network ANO"),  ("3","10" ,"Host ANO"),  ("3","11" ,"Network Unreach TOS"),  ("3","12" ,"Host Unreach TOS"),  ("3","13" ,"Packet Filtered"),  ("3","14" ,"Precedence violation"),  ("3","15" ,"Precedence cut off");
+
+insert into icmp_code values  ("5","0" ,"Redirect datagram for network/subnet"),  ("5","1" ,"Redirect datagram for host"),  ("5","2" ,"Redirect datagram for ToS and network"),  ("5","3" ,"Redirect datagram for Tos and host");
+
+insert into icmp_code values ("9","0"  ,"Normal router advertisement"),   ("9","16"  ,"Does not route common traffic");
+insert into icmp_code values ("11","0"  ,"TTL exceeded in transit"),   ("11","1"  ,"Fragment reassembly time exceeded");
+insert into icmp_code values  ("12","0"  ,"Pointer indicates error"),   ("12", "1"  ,"Missing a required option"),   ("12","2"  ,"Bad length");
+insert into icmp_code  values ("40","0" ,"Bad SPI"),   ("40","1" ,"Authentication failed"),   ("40","2" ,"Decompression failed"),   ("40","3" ,"Decryption failed"),   ("40","4" ,"Need authentication"),   ("40","5" ,"Need authorization");

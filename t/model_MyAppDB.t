@@ -2,5 +2,5 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 
-BEGIN { use_ok 'Tesis::Model::MyAppDB' }
+BEGIN { use_ok 'MatFel::Model::MyAppDB' }
 

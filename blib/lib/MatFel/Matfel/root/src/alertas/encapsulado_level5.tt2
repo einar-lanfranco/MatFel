@@ -1,0 +1,22 @@
+
+<fieldset>
+<legend>Payload</legend>
+<strong>Tamaño del payload:</strong>[% linea.evento.ip_header.data.cantidad_caracteres FILTER format('%.0f') %]</script>
+[% IF linea.evento.ip_header.data.cantidad_caracteres < 10000 %]
+<table>
+<tr>
+<th>Id</th>
+<th colspan="16">Hexadecimal</th>
+<th>Ascii</th>
+</tr>
+<script>document.write(PrintHexPacketPayload("[% linea.evento.ip_header.data.data_payload %]"));</script>
+</table>
+[% ELSE %]
+<div id="ver_igual_[% linea.evento.ip_header.sid %]_[% linea.evento.ip_header.cid %]">
+¡¡¡Demasiados datos para mostrar!!! ¿Está seguro que desea <a href="javascript:ver_igual('ver_igual_[% linea.evento.ip_header.sid %]_[% linea.evento.ip_header.cid %]','[% linea.evento.ip_header.data.data_payload %]');">visalizarlo de todas formas?</a> (esta operación puede demorarse).
+</div>
+
+[% END %]
+
+
+</fieldset>

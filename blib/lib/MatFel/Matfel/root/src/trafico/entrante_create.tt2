@@ -1,0 +1,11 @@
+   [% META title = 'ABM de Trafico' %]
+    
+    [%# Render the HTML::FormFu Form %]
+<div class="renglon">
+    <fieldset>
+    <legend>Trafico Entrante Para el servidor</legend>
+    [% form %]
+    </fieldset>
+
+    <p><a href="[% c.uri_for(c.controller('trafico').action_for('listar_trafico'), [id_servidor]) %]" title="Volver a la lista de Trafico"><img src="/static/images/arrow_left.png"  alt="Volver" /></a></p>
+</div>

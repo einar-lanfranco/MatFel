@@ -1,0 +1,281 @@
+
+[% META title = 'Listado de Alertas generadas para el servidor' %]
+
+<script type="text/javascript">	
+function hexdec (hex_string) {
+    hex_string = (hex_string+'').replace(/[^a-f0-9]/gi, '');
+    return parseInt(hex_string, 16);
+}
+
+// sprintf() for JavaScript 0.6
+// 
+// Copyright (c) Alexandru Marasteanu <alexaholic [at) gmail (dot] com>
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of sprintf() for JavaScript nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL Alexandru Marasteanu BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// 
+// 
+// Changelog:
+// 2007.04.03 - 0.1:
+//  - initial release
+// 2007.09.11 - 0.2:
+//  - feature: added argument swapping
+// 2007.09.17 - 0.3:
+//  - bug fix: no longer throws exception on empty paramenters (Hans Pufal)
+// 2007.10.21 - 0.4:
+//  - unit test and patch (David Baird)
+// 2010.05.09 - 0.5:
+//  - bug fix: 0 is now preceeded with a + sign
+//  - bug fix: the sign was not at the right position on padded results (Kamal Abdali)
+//  - switched from GPL to BSD license
+// 2010.05.22 - 0.6:
+//  - reverted to 0.4 and fixed the bug regarding the sign of the number 0
+//  Note:
+//  Thanks to Raphael Pigulla <raph (at] n3rd [dot) org> (http://www.n3rd.org/)
+//  who warned me about a bug in 0.5, I discovered that the last update was
+//  a regress. I appologize for that.
+// **/
+
+function str_repeat(i, m) {
+	for (var o = []; m > 0; o[--m] = i);
+	return o.join('');
+}
+
+function sprintf() {
+	var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
+	while (f) {
+		if (m = /^[^\x25]+/.exec(f)) {
+			o.push(m[0]);
+		}
+		else if (m = /^\x25{2}/.exec(f)) {
+			o.push('%');
+		}
+		else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f)) {
+			if (((a = arguments[m[1] || i++]) == null) || (a == undefined)) {
+				throw('Too few arguments.');
+			}
+			if (/[^s]/.test(m[7]) && (typeof(a) != 'number')) {
+				throw('Expecting number but found ' + typeof(a));
+			}
+			switch (m[7]) {
+				case 'b': a = a.toString(2); break;
+				case 'c': a = String.fromCharCode(a); break;
+				case 'd': a = parseInt(a); break;
+				case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break;
+				case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break;
+				case 'o': a = a.toString(8); break;
+				case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break;
+				case 'u': a = Math.abs(a); break;
+				case 'x': a = a.toString(16); break;
+				case 'X': a = a.toString(16).toUpperCase(); break;
+			}
+			a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
+			c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
+			x = m[5] - String(a).length - s.length;
+			p = m[5] ? str_repeat(c, x) : '';
+			o.push(s + (m[4] ? a + p : p + a));
+		}
+		else {
+			throw('Huh ?!');
+		}
+		f = f.substring(m[0].length);
+	}
+	return o.join('');
+}
+
+
+function PrintPayloadChar(char) {
+   if (( char >= 32 && char <= 127 )&&(char.length=2)){
+      return String.fromCharCode(char);} 
+   else
+   { return '.';}
+   }
+function PrintHexPacketPayload(encoded_payload){
+     encoded_payload = encoded_payload.replace("\n", "");
+     payload = encoded_payload;
+     len = payload.length;
+     if (len %2 ==1){ payload=payload+" ";}
+     s = "";
+    //Este for imprime las primeras lineas del payload en plano!
+     for (i = 0; i < len; i += 2 )
+     {
+          if ( i % 32 == 0 )
+          { 
+             /* dump the ASCII characters */
+             if ( i != 0 )
+             {
+                s = s+'<td>';
+                for (j = i-32; j < i; j+=2 )
+                {
+                    t = hexdec(payload[j]+payload[j+1]);
+                    s = s+PrintPayloadChar(t);
+                }
+                s = s+'</td>';
+             }
+             s = s+sprintf("<tr><td>%03x :</td> ", i/2);
+          }
+          s = s+sprintf("<td>%s%s</td>", payload[i], payload[i+1] );
+     }
+     /* space through to align end of hex dump */
+     if ( i % 32 ){
+          for ( j = 0; j < 32 - (i % 32); j+=2){ s = s+'<td></td>';}
+          }
+//        s = s+'<td></td>';
+
+     /* print the ASCII decode */
+     
+     if ( i % 32 )
+        start = len - (i % 32);
+     else
+        start = len - 32;
+     s = s+'<td>';
+     for ( j = start; j < i; j+=2 )
+     {
+        t = hexdec(payload[j]+payload[j+1]);
+        s = s+PrintPayloadChar(t);
+     }
+     s = s+'</td>';
+//alert ("listo3");
+     return s;
+}
+
+function ver_igual(donde,quecosa){
+    var tabla='<table> <tr> <th>Id</th> <th colspan="16">Hexadecimal</th> <th>Ascii</th> </tr>'+ PrintHexPacketPayload(quecosa) +'</table>';
+    document.getElementById(donde).innerHTML=tabla;
+}
+
+function cambiarRango(){
+  $('#form_rango').attr("action","[% c.uri_for(c.action,[id_servidor],rango,quinto) %]/"+ $('#rows').val()+"/"+"[% pages %]"); 
+  return true;
+}
+
+</script>
+
+<table class="listaalertas">
+   <caption>Resultado de Escaneo <br> [% ultimo_dia %]</caption>
+    <thead>
+    <tr>
+    <th width="10%">Registrado</th>
+    <th width="40%">Signature</th>
+    <th width="15%">Origen</th>
+    <th width="15%">Destino</th>
+    <th width="10%">Categoría</th>
+    <th width="5%">Acción</th>
+    <th width="5%">Más</th>
+    </tr>
+    </thead>
+    <TFOOT>
+    <tr>
+    <th colspan="7">
+    <table class="paginador"><tbody><tr> 
+    <td width="25%">[% IF pages > 1 %] <a class="paginador" href="[% c.uri_for(c.action,[id_servidor],rango,quinto,rows,(pages+(-1))) %]"><img src="/static/images/arrow_left.png" alt="Anterior" /></a> [% ELSE %] [% END %]</td><td width="45%">
+    <form action="?" method="post" id="form_rango" onSubmit="return cambiarRango()">Resultados por hoja: <input id="rows" type="text" size="4" 
+value="[% rows %]"> <input type="submit" class="submit" value="Mostrar"> </td><td width="25%">
+[% IF alertas.size == rows %] <a class="paginador" href="[% c.uri_for(c.action,[id_servidor],rango,quinto,rows,(pages+1)) %]"><img src="/static/images/arrow_right.png" alt="Siguiente" /> </a>[% ELSE %] [% END %]
+    </form></td>
+    </tr>
+    </tbody></table>
+    </TFOOT>
+
+    <tbody>
+    [% FOREACH linea IN alertas %]
+      <tr class="prioridad-[% linea.evento.sig_id.sig_priority %]">
+        <td>[% linea.evento.timestamp %]</td>
+        <td>[% linea.evento.sig_id.sig_name %]
+        [% linea.evento.sig_id.map_sig_referencia.size %]
+        [% FOREACH ref IN linea.evento.sig_id.map_sig_referencia %]
+          [% IF ref.obtener_link != '' %] <a href="[% ref.obtener_link %]"> [% ref.id_link %]</a>[% END %]
+        [% END%]
+        </td>
+        <td>[% linea.evento.ip_header.get_ip_src %]</td>
+        <td>[% linea.evento.ip_header.get_ip_dst %]</td>
+        <td>[% IF linea.evento.sig_id.map_class_id.sig_class_name == '' %] SIN CLASIFICAR [% ELSE %] [% linea.evento.sig_id.map_class_id.sig_class_name %] [% END %] 
+        </td>
+        <td>
+          [% IF linea.evento.sig_id.sig_priority <= 2 && linea.evento.ip_header.ip_proto.firewall %]
+
+             [% IF linea.id_servidor.ipv4 == linea.evento.ip_header.get_ip_src %]
+                  [% IF linea.alerta_saliente_bloqueada %]
+                    <a href="[% c.uri_for(c.controller('trafico_bloqueado_salida').action_for('borrar'), [linea.alerta_saliente_bloqueada]) %]" id='go-[% linea.id %]'  title="Desloquear Tr&aacute;fico Saliente">
+                    <img src="/static/images/go.png" alt="Desbloquear Tr&aacute;fico Saliente" />
+                    </a>
+                  [% ELSE %]
+                    <a href="[% c.uri_for(c.controller('trafico').action_for('bloquear_trafico_ip_saliente'), [ linea.id_servidor.id ], linea.evento.ip_header.ip_dst ,linea.evento.ip_header.get_port_src , linea.evento.ip_header.ip_proto.nombre) %]" id='stop-[% linea.id %]'  title="Bloquear Tr&aacute;fico Saliente">
+                    <img src="/static/images/stop.png" alt="Bloquear Tr&aacute;fico Saliente" />
+                    </a>
+                  [% END %]         
+             [% ELSE %]
+                  [% IF linea.alerta_entrante_bloqueada %]
+                    <a href="[% c.uri_for(c.controller('trafico_bloqueado_entrada').action_for('borrar'), [linea.alerta_entrante_bloqueada]) %]" id='go-[% linea.id %]'  title="Desloquear Tr&aacute;fico Entrante">
+                    <img src="/static/images/go.png" alt="Desbloquear Tr&aacute;fico Entrante" />
+                    </a>
+                  [% ELSE %]
+                    <a href="[% c.uri_for(c.controller('trafico').action_for('bloquear_trafico_ip_entrante'), [ linea.id_servidor.id ], linea.evento.ip_header.ip_src ,linea.evento.ip_header.get_port_dst , linea.evento.ip_header.ip_proto.nombre) %]" id='stop-[% linea.id %]'  title="Bloquear Tr&aacute;fico Entrante">
+                    <img src="/static/images/stop.png" alt="Bloquear Tr&aacute;fico Entrante" />
+                    </a>
+                  [% END %]
+             [% END %]
+          [% END %]
+        </td>
+  	<td>
+	<a href="#" id='mas-[% linea.id %]'>+</a>
+	<a href="#" id='menos-[% linea.id %]'>-</a>
+	</td>
+     </tr>
+    <tr id='informacion-[% linea.id %]' class='description' style="display:none">
+    <td colspan='7'>
+       
+        [% PROCESS alertas/encapsulado_level3.tt2 %]
+        [% PROCESS alertas/encapsulado_level4.tt2 %]
+        [% PROCESS alertas/encapsulado_level5.tt2 %]
+        
+    <script lang='javascript'>
+	    $(document).ready(function() {
+		  $('#informacion-[% linea.id %]').hide();
+		  $('a#menos-[% linea.id %]').hide();
+
+		  $('a#mas-[% linea.id %]').click(
+		    function() {
+		      $('#informacion-[% linea.id %]').show();
+		      $('a#menos-[% linea.id %]').show();
+		      $('a#mas-[% linea.id %]').hide();
+		      return false;
+		    }
+		  );
+
+		  $('a#menos-[% linea.id %]').click(
+		    function() {
+		      $('#informacion-[% linea.id %]').hide();
+		      $('a#mas-[% linea.id %]').show();
+		      $('a#menos-[% linea.id %]').hide();
+		      return false;		    }
+		  );
+	    });
+  </script>
+    </td>
+    </tr>
+    [% END %]
+    
+    </tbody>
+    
+ </table>

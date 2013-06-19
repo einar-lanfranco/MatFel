@@ -1,0 +1,29 @@
+ALTER TABLE `ov_scanresults` DROP FOREIGN KEY `ov_scanresults_ibfk_2` ;
+ALTER TABLE `ov_scanresults` ADD FOREIGN KEY ( `id_scan` ) REFERENCES `ov_scan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `ov_scan` DROP FOREIGN KEY `ov_scan_ibfk_1` ;
+ALTER TABLE `ov_scan` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `trafico_entrada` DROP FOREIGN KEY `trafico_entrada_ibfk_1` ;
+ALTER TABLE `trafico_entrada` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `trafico_entrada_bloqueado` DROP FOREIGN KEY `trafico_entrada_bloqueado_ibfk_1` ;
+ALTER TABLE `trafico_entrada_bloqueado` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `trafico_salida` DROP FOREIGN KEY `trafico_salida_ibfk_1` ;
+ALTER TABLE `trafico_salida` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `trafico_salida_bloqueado` DROP FOREIGN KEY `trafico_salida_bloqueado_ibfk_1` ;
+ALTER TABLE `trafico_salida_bloqueado` ADD FOREIGN KEY ( `id_servidor` ) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `servidor` DROP FOREIGN KEY `servidor_ibfk_1` ;
+ALTER TABLE `servidor` ADD FOREIGN KEY ( `user` ) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `user_accion` DROP FOREIGN KEY `user_accion_ibfk_1` ;
+ALTER TABLE `user_accion` ADD FOREIGN KEY ( `user_id` ) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `user_role` DROP FOREIGN KEY `user_role_ibfk_2` ;
+ALTER TABLE `user_role` ADD FOREIGN KEY ( `user_id` ) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE alerta DROP FOREIGN KEY `alerta_ibfk_1` ;
+ALTER TABLE alerta ADD FOREIGN KEY ( `id_servidor` ) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;

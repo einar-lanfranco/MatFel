@@ -1,0 +1,97 @@
+[% META title = 'Lista de Escaneos' -%]
+<script>
+function cambiarRango(){
+  $('#form_rango').attr("action","[% c.uri_for(c.action) %]/"+ $('#rows').val()+"/"+"[% pages %]"); 
+  return true;
+}
+</script>
+<div class="renglon">
+
+[% IF servidor %]
+<fieldset>
+<legend>
+Escaneos del servidor: [% servidor.nombre_dir %] 
+           <a href="[% c.uri_for(c.controller('trafico').action_for('listar_trafico'), [servidor.id]) %]" title="Tráfico"><img src="/static/images/arrow_inout.png" alt="Tráfico" /></a>
+           <a href="[% c.uri_for(c.controller('escaneos').action_for('lista_servidor')) %]/[% servidor.id %]"  title="Escaneos"><img src="/static/images/bug.png" alt="Escaneos" /></a>
+           <a href="[% c.uri_for(c.controller('alertas').action_for('resumen_alertas'), [servidor.id],30,12) %]" title="Alertas"><img src="/static/images/exclamation.png" alt="Alertas" /></a>
+</legend>
+[% END %]
+
+<table>
+   <caption>Escaneos</caption>
+    <thead>
+    <tr>
+    <th>Servidor</th><th>Frecuencia</th><th>Estado</th><th  width='25%' >Resultados</th><th>Acciones</th>
+    </tr>
+    </thead>
+
+<TFOOT>
+    <tr>
+    <th colspan="5">
+    <table class="paginador"><tbody><tr> 
+    <td width="25%">[% IF rows %] 
+    [% IF pages > 1 %] <a class="paginador" href="[% c.uri_for(c.action,rows,(pages+(-1))) %]"><img src="/static/images/arrow_left.png" alt="Anterior" /></a> [% ELSE %]  [% END %]</td><td width="45%">
+    <form action="?" method="post" id="form_rango" onSubmit="return cambiarRango()">Resultados por hoja: <input id="rows" type="text" size="4" 
+value="[% rows %]"> <input type="submit" class="submit" value="Mostrar"> </td><td width="25%">
+[% IF escaneos.size == rows %] <a class="paginador" href="[% c.uri_for(c.action,rows,(pages+1)) %]"><img src="/static/images/arrow_right.png" alt="Siguiente" /> </a>[% ELSE %]  [% END %]
+    </form>
+[% END %]</td>
+    </tr>
+    </tbody></table>
+    </TFOOT>
+
+    [% # Display each book in a table row %]
+    <tbody>
+    [% FOREACH escaneo IN escaneos -%]
+      <tr>
+        <td>[% escaneo.id_servidor.nombre_dir %]</td>
+        <td style="text-align:center;">[% escaneo.frecuencia.descripcion %]</td>
+        <td style="text-align:center;">[% escaneo.estado.descripcion %]</td>
+	<td class='centrado lista_links'>
+	  [% IF escaneo.hay_resultados %]
+	<ul>
+	    [% FOREACH estado IN escaneo.estado_actual -%]
+	  <li>  <img src="/static/images/severity/[% estado.key %].png"  alt="[% estado.key %]" /> [% estado.value %]</li>
+	    [% END -%]
+	    </ul>
+	    <a href="[% c.uri_for(c.controller.action_for('ultimo_escaneo'), [escaneo.id]) %]">&Uacute;ltimo</a>
+	    <a href="[% c.uri_for(c.controller.action_for('escaneos_historicos'), [escaneo.id],10) %]">Histórico</a>
+	 [% ELSE %]
+	  No hay resultados
+	 [% END %]
+	</td>
+        <td class='centrado lista_links'>
+        <ul>
+          <li><a href="[% c.uri_for(c.controller.action_for('editar'), [escaneo.id]) %]" ><img src="/static/images/bug_edit.png" alt="Editar" /></a></li>
+          <li><a href="[% c.uri_for(c.controller.action_for('borrar'), [escaneo.id]) %]" onclick="return confirm('¿Está seguro? Se eliminarán todos los resultados.');" ><img src="/static/images/bug_delete.png" alt="Borrar" /></a></li>
+        </ul>
+	</td>
+     </tr>
+    [% END -%]
+    </tbody>
+ </table>
+
+[% IF servidor %]
+</fieldset>
+[% END %]
+
+[% IF servidor %]
+<div class="renglon_izquierda" >
+   <p><a href="[% c.uri_for(c.controller('servidor').action_for('lista')) %]" title="Volver a la lista de servidores"><img src="/static/images/arrow_left.png" alt="Volver" /></a></p>
+</div>
+[% END %]
+
+<div class="renglon_derecha" >
+[% IF servidor %]
+<a href="[% c.uri_for(c.controller.action_for('formfu_create')) %]/[% servidor.id %]">
+[% ELSE %]
+<a href="[% c.uri_for(c.controller.action_for('formfu_create'),0) %]" >
+[% END %]
+<img src="/static/images/bug_add.png" alt="Alta Nuevos Escaneo" /></a>
+
+</div>
+
+ </div>
+
+
+

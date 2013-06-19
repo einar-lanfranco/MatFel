@@ -1,0 +1,29 @@
+ALTER TABLE `trafico_entrada` CHANGE `bloqueado` `habilitado` TINYINT( 1 ) NOT NULL;
+ALTER TABLE `trafico_salida` CHANGE `bloqueado` `habilitado` TINYINT( 1 ) NOT NULL;
+
+
+
+CREATE TABLE IF NOT EXISTS `trafico_entrada_bloqueado` (
+  `id` int(11) NOT NULL auto_increment,
+  `id_servidor` int(11) NOT NULL,
+  `protocolo` int(11) NOT NULL,
+  `puerto` int(11) NOT NULL,
+  `ip_origen` varchar(255) default NULL,
+  `mascara_origen` varchar(255) default NULL,
+  `estado` int(11) NOT NULL,
+  `habilitado` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE IF NOT EXISTS `trafico_salida_bloqueado` (
+  `id` int(11) NOT NULL auto_increment,
+  `id_servidor` int(11) NOT NULL,
+  `protocolo` int(11) NOT NULL,
+  `puerto` int(11) NOT NULL,
+  `ip_destino` varchar(255) default NULL,
+  `mascara_destino` varchar(255) default NULL,
+  `estado` int(11) NOT NULL,
+  `habilitado` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;

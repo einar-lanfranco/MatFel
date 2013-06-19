@@ -6,9 +6,9 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Tesis;
+use MatFel;
 
-Tesis->run;
+MatFel->run;
 
 1;
 

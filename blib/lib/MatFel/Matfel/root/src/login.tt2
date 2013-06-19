@@ -1,0 +1,17 @@
+[% META title = 'Login' %]
+    
+    [% IF c.user_exists %]
+    <p>Estimado [% c.user.username %], ya se encuentra logueado en el sistema <a href="[% c.uri_for('/logout') %]">Salir</a> </p>
+    [% ELSE %]
+    <!-- Login form -->
+
+    <form method="post" action="[% c.uri_for('/login') %]">
+    <div class="search_field">
+    Usuario: <br/> <input class="login" type="text" name="username" size="40" title="Username" /> <br/> 
+    Contraseña: <br/>  <input class="login" type="password" name="password" size="40" title="Contraseña" /><br/> 
+    </div>
+    <div class="search_field">
+   <input class="submit" type="submit" name="submit" value="Entrar" />
+    </div>
+    </form>
+    [% END %]
