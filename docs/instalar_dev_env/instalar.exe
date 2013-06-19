@@ -41,7 +41,7 @@ do
 			echo 'No esta instalado mysql-client'
 			exit
 		fi
-		echo 'No fue posible conecatarse a la base de datos con los datos suministrados'
+		echo 'No fue posible conecatarse a la base de datos con los datos suministrados. Verifique el error puede ocurrir que falte el servidor no este disponible o el usuario no sea v�lido'
 	else
 		OK=1
 	fi
@@ -80,15 +80,15 @@ echo "Vas a instalar para producción o ambiente de desarrollo?"
 #################Bajar el arbol
 if [ -d $PATH_INSTALL ]
 	then
-		echo "exite"
-		#mv $PATH_INSTALL $PATH_INSTALL$FECHA
+		echo "Hay una instalacion previa"
+		mv $PATH_INSTALL $PATH_INSTALL$FECHA
 	fi
-#mkdir -p $PATH_INSTALL
+mkdir -p $PATH_INSTALL
 
 git --version
 GIT_IS_AVAILABLE=$?
 if [ $GIT_IS_AVAILABLE -eq 0 ]; then
-	echo "HAY QUE DESCOMENTAR ESTO: git clone https://github.com/einar-lanfranco/MatFel.git  $PATH_INSTALL"
+	git clone https://github.com/einar-lanfranco/MatFel.git  $PATH_INSTALL
 	bash instalaraplicaciones.sh $PATH_INSTALL $USER $PASSWORD $HOST_BASE $BASE $TIPO $(uname -m) $USUARIOPASS $USUARIOBASE
 else
 	echo "Imposible obtener el código, no esta instalado git, instalalo y reintenta"

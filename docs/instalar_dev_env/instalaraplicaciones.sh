@@ -192,7 +192,7 @@ function instalarWapiti(){
 #Estas dependencias hay que forzarlas para que instalen#
 ########################################################
 
-funcion dependenciasConProblemas(){
+function dependenciasConProblemas(){
 	#Esto es para los reportes del Cron pero no se cambia el modulo desde el 2007, y ahora los test falla 1, por eso hay q forzarlo
 	aptitude install make
 	cpan -i -f Text::Report
@@ -326,4 +326,4 @@ fi
 
 ###KNOWN BUGS
 ## No considera que no exista Mysql-client, entonces ni bien arranca falla el script    
-
+## No diferencia entre que falle la conexion a la base porque no esta la base de que no sirvan las credenciales al momento de la creacion
