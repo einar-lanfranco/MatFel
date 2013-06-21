@@ -1,0 +1,70 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          application-catalyst-MatFel
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts the FastCGI app server for the "MatFel" site
+# Description:       The FastCGI application server for the "MatFel" site
+### END INIT INFO
+
+NAME=matfelfcgi
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+SITE_HOME=LUGAR
+DAEMON=$SITE_HOME/script/matfel_fastcgi.pl
+DESC="Este script levanta matfel como fastcgi"
+USER=www-data
+SOCKET="/tmp/matfel.socket"
+OPTS="-l $SOCKET -d  -p /var/run/$NAME.pid"
+
+test -e $DAEMON || exit 0
+
+
+set -e
+
+start_daemon()
+{
+ echo -n "Starting $DESC: "
+start-stop-daemon --start --quiet -d $SITE_HOME \
+ --exec /usr/bin/perl --startas $DAEMON -- $OPTS
+ echo "$NAME."
+}
+
+stop_daemon()
+{
+ echo -n "Stopping $DESC: "
+ start-stop-daemon --stop --signal TERM --pidfile /var/run/$NAME.pid
+ echo "$NAME."
+}
+
+reload_daemon()
+{
+ echo -n "Reloading $DESC: "
+ start-stop-daemon --stop --signal HUP --pidfile /var/run/$NAME.pid
+ echo "$NAME."
+}
+
+case "$1" in
+ start)
+ start_daemon
+ ;;
+ stop)
+ stop_daemon
+ ;;
+ reload)
+ reload_daemon
+ ;;
+ restart|force-reload)
+ stop_daemon
+ sleep 5
+ start_daemon
+ ;;
+ *)
+ N=/etc/init.d/$NAME
+ echo "Usage: $N {start|stop|reload|restart|force-reload}" >&2
+ exit 1
+ ;;
+esac
+
+exit 0

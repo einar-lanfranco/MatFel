@@ -1,2 +1,0 @@
-#!/bin/bash
-perl LUGARMATFEL/script/matfel_fastcgi.pl -l /var/run/matfel.socket -d

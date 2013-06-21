@@ -101,29 +101,27 @@ function configurarInicioApache(){
 	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema"
 	##ESTO HAT QUE REVISARLO
 	aptitude -y install libapache2-mod-perl2 apache2-mpm-prefork libcatalyst-engine-apache-perl apache2 libapache2-mod-fcgid
-    #cp $LUGAR/docs/instalador/aux/matfelWeb /etc/init.d/
-    #chmod +x /etc/init.d/matfelWeb
-    #chmod +x $LUGAR/script/matfel_server.pl
-    #update-rc.d matfelWeb defaults
-    cp $PATH_INSTALL/docs/instalador/monitoreo /etc/apache2/sites-available
-    echo NameVirtualHost *:3000 >> /etc/apache2/ports.conf
-    echo Listen 3000 >> /etc/apache2/ports.conf
-    a2ensite monitoreo
-    a2enmod fcgid
-    /etc/init.d/apache2 restart
+	#cp $LUGAR/docs/instalador/aux/matfelWeb /etc/init.d/
+    	#chmod +x /etc/init.d/matfelWeb
+    	#chmod +x $LUGAR/script/matfel_server.pl
+    	#update-rc.d matfelWeb defaults
+	cp $PATH_INSTALL/docs/instalador/monitoreo /etc/apache2/sites-available
+	echo NameVirtualHost *:3000 >> /etc/apache2/ports.conf
+	echo Listen 3000 >> /etc/apache2/ports.conf
+	a2ensite monitoreo
+	a2enmod fcgid
+	/etc/init.d/apache2 restart
 }
 
 function configurarInicioNginx(){
 	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema mediante nginx"
 	aptitude -y install nginx libfcgi-procmanager-perl
-	echo '#!/bin/bash' > /etc/init.d/matfeFASTCGI
-	echo "perl $LUGAR//script/matfel_fastcgi.pl -l /var/run/matfel.socket -d" >> /etc/init.d/matfeFASTCGI
-	chmod +x /etc/init.d/matfeFASTCGI
-    #update-rc.d matfelWeb defaults
-    cp $LUGAR/docs/instalador/aux/nginx /etc/nginx/sites-available/matfel
-    ln -s /etc/nginx/sites-available/matfel /etc/nginx/sites-enabled/matfel 
-    /etc/init.d/matfeFASTCGI
-    /etc/init.d/nginx restart
+	sed "s%LUGAR%$LUGAR%g" $LUGAR/aux/matfelfcgi > /etc/init.d/matfelcgi
+	insserv matfelfcgi
+        cp $LUGAR/docs/instalador/aux/nginx /etc/nginx/sites-available/matfel
+	ln -s /etc/nginx/sites-available/matfel /etc/nginx/sites-enabled/matfel 
+    	/etc/init.d/matfelfcgi
+	/etc/init.d/nginx restart
 }
 
 
@@ -204,52 +202,47 @@ function instalarDependenciasConProblemas(){
 ## Instalar dependencias ##
 ###########################
 function dependenciasPerl(){
-	echo "Instalaremos las dependencias desde $TIPO"
-    aptitude update
-    cpan -i CPAN
-    if [ $TIPO = "fuente" ]
-    then
-		instalarParaCompilar
-		echo "Primero vamos a configurar cpan para proceder con la instlalación de los distintos paquetes,"
-		echo "esto NO es automático, deberá interactuar"
-		echo "Cuando aparezca el shell interactivo debe introducir las siguientes 3 líneas"
-		echo "o conf prerequisites_policy follow"
-		echo "o conf commit"
-		echo "exit"
-		cd $LUGAR
-		echo "el lugar es "$LUGAR
-		#Bucar el arbol de directorios del proyecto
-		perl Makefile.PL
-		make installdeps
-    	exit 1
-    fi
-    if [ $TIPO = "debian" ]
-        then
-        aptitude -y install libcatalyst-perl \
-            libcatalyst-modules-perl libcatalyst-engine-apache-perl libcatalyst-plugin-unicode-encoding-perl \
-            libdatetime-perl libxml-rss-perl libdate-calc-perl libtest-pod-perl libgeo-ip-perl \
-            libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl \
-			libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl \
-            libxml-rsslite-perl libtest-differences-perl libmoosex-strictconstructor-perl
-            
-            #Esto que esta comentado no se si es necesario inicialmente
-            #~ libcatalyst-engine-apache-perl   sqlite3 libdbd-sqlite3-perl\
-            #~ libdatetime-format-sqlite-perl libconfig-general-perl \
-            #~ libhtml-formfu-model-dbic-perl libterm-readline-perl-perl \
-             #~ libperl6-junction-perl \
-              #~ libgdchart-gd2-noxpm\
-            #~ build-essential nikto nmap w3af smbclient bzip2\
-            #~ libglib2.0-0 libgpgme11 libopenvas3 libpcap0.8 mysql-server\
-            #~ libmysqlclient-dev libpcap0.8-dev libapache2-mod-perl2 apache2-mpm-prefork\
-             #~ apache2 
-            #~ libapache2-mod-fcgid subversion   
-       instalarConCpan
-    fi     
-   ###############################
-   #Listo las dependencias de Perl
-   ###############################           
-	aptitude clean
-	instalarDependenciasConProblemas
+		echo "Instalaremos las dependencias desde $TIPO"
+		aptitude update
+		cpan -i CPAN
+		if [ $TIPO = "fuente" ]
+			then
+				instalarParaCompilar
+				echo "Primero vamos a configurar cpan para proceder con la instlalación de los distintos paquetes,"
+				echo "esto NO es automático, deberá interactuar"
+				echo "Cuando aparezca el shell interactivo debe introducir las siguientes 3 líneas"
+				echo "o conf prerequisites_policy follow"
+				echo "o conf commit"
+				echo "exit"
+				cd $LUGAR
+				echo "el lugar es "$LUGAR
+				#Bucar el arbol de directorios del proyecto
+				perl Makefile.PL
+				make installdeps
+				exit 1
+		fi
+		if [ $TIPO = "debian" ]
+		then
+				aptitude -y install libcatalyst-perl \
+				libcatalyst-modules-perl libcatalyst-engine-apache-perl libcatalyst-plugin-unicode-encoding-perl \
+				libdatetime-perl libxml-rss-perl libdate-calc-perl libtest-pod-perl libgeo-ip-perl \
+				libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl \
+				libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl \
+				libxml-rsslite-perl libtest-differences-perl libmoosex-strictconstructor-perl
+       				instalarConCpan
+			        #Esto que esta comentado no se si es necesario inicialmente
+				#~ libcatalyst-engine-apache-perl   sqlite3 libdbd-sqlite3-perl\
+				#~ libdatetime-format-sqlite-perl libconfig-general-perl \
+            			#~ libhtml-formfu-model-dbic-perl libterm-readline-perl-perl \
+				#~ libperl6-junction-perl \
+				#~ libgdchart-gd2-noxpm\
+				# build-essential nikto nmap w3af smbclient bzip2\
+				#~ libglib2.0-0 libgpgme11 libopenvas3 libpcap0.8 mysql-server\
+				#~ libmysqlclient-dev libpcap0.8-dev libapache2-mod-perl2 apache2-mpm-prefork\
+				#~ apache2 libapache2-mod-fcgid subversion   
+	    	fi     
+		aptitude clean
+		instalarDependenciasConProblemas
 }
 
 
@@ -273,7 +266,7 @@ else
     USUARIOPASS=$8
     USUARIOBASE=$9
     VERSION_ACTUAL=$(cat $LUGAR/version)
-	####################################
+    ####################################
     ##Instalo las dependencias de Perl##
     ####################################
     dependenciasPerl

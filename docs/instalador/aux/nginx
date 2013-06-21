@@ -7,18 +7,32 @@ server {
 	root html;
 	index index.html index.htm;
 
-#	ssl on;
-#	ssl_certificate cert.pem;
-#	ssl_certificate_key cert.key;
-#
-#	ssl_session_timeout 5m;
+	ssl on;
+	ssl_certificate ssl/matfelcrt.crt;
+	ssl_certificate_key ssl/matfelpk.pem;
 
-#	ssl_protocols SSLv3 TLSv1;
-#	ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
-#	ssl_prefer_server_ciphers on;
+	ssl_session_timeout 5m;
+
+	ssl_protocols SSLv3 TLSv1;
+	ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
+	ssl_prefer_server_ciphers on;
 
     	location / {
+		proxy_set_header X_FORWARDED_PROTO https;
+		proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header  Host $host;
+		proxy_set_header  X-Url-Scheme $scheme;
+		proxy_redirect    off;
+		proxy_max_temp_file_size 0;
         	include fastcgi_params; # We'll discuss this later
-	        fastcgi_pass  unix:/var/run/matfel.socket;
+	        fastcgi_pass  unix:/tmp/matfel.socket;
     	}
+	location /static {
+    		root /var/www/MatFel/root;
+	    	expires 30d;
+  	}
+	location /login/static {
+    		alias /var/www/MatFel/root/static;
+	    	expires 30d;
+  	}	
 }
