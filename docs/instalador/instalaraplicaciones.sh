@@ -5,34 +5,39 @@
 ## Funciones ##
 ###############
 
-
-function instalarConCpan(){
-    #Instalar lo que no esta en paquete de debian
-    cpan -i Chart::OFC2 
+function configurarInicioApache(){
+	#########################################
+	#####"Hay que revisarlo"#################
+	#########################################
+	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema"
+	##ESTO HAT QUE REVISARLO
+	aptitude -y install libapache2-mod-perl2 apache2-mpm-prefork libcatalyst-engine-apache-perl apache2 libapache2-mod-fcgid
+	#cp $LUGAR/docs/instalador/aux/matfelWeb /etc/init.d/
+    	#chmod +x /etc/init.d/matfelWeb
+    	#chmod +x $LUGAR/script/matfel_server.pl
+    	#update-rc.d matfelWeb defaults
+	cp $PATH_INSTALL/docs/instalador/monitoreo /etc/apache2/sites-available
+	echo NameVirtualHost *:3000 >> /etc/apache2/ports.conf
+	echo Listen 3000 >> /etc/apache2/ports.conf
+	a2ensite monitoreo
+	a2enmod fcgid
+	/etc/init.d/apache2 restart
 }
 
-
-
-function desarrollo(){
-    mkdir /var/log/matfel
-    echo '#!/bin/sh' >/usr/bin/matfel
-    echo "perl $LUGAR/script/matfel_server.pl  -d -r  > /dev/null 2>/var/log/matfel/matfel.log &" >>/usr/bin/matfel
-    chmod +x /usr/bin/matfel
-    echo "El sistema nunca se ejecutará automáticamete, usted tendrá que invocarlo en una consola como /usr/bin/matfel y los logs los podrá visualizar en  /var/log/matfel/matfel.log"
-    echo "Apunte con un browser al puerto 3000 de este equipo y ya podra utilizar MatFel"
-}
 
 
 function instalarSnort(){
-
+    aptitude install snort libpcap-dev build-essential libmysqlclient-dev
     cd /usr/src/
     wget http://www.securixlive.com/download/barnyard2/barnyard2-1.9.tar.gz
     tar xzvf barnyard2-1.9.tar.gz
     cd barnyard2-1.9/
-    ./configure --with-mysql-libraries=/usr/lib/
+    #Ojo aca que esta solo funcionando con 32 bits, si se cambia probablemente haya que dambiar el directorio de las librerias de nysql para compliar..
+    ./configure --with-mysql-libraries=/usr/lib/i386-linux-gnu/ 
     make
     make install
     #Luego configurar y ejecutar barnyard2:
+    #Aca me quede me vo a dormir.....
     cp $LUGAR/docs/instalador/aux/snort.conf /etc/snort/
     cp $LUGAR/docs/instalador/aux/barnyard2.conf /etc/
     mkdir /var/log/barnyard2
@@ -59,11 +64,11 @@ function agregarInicio(){
 }
 
 
-
 ###LO QUE ESTA ABAJO DE ESTA LINEA ESTA LISTO
 
 function instalarOpenVAS(){
     echo "Tener en cuenta que este paso puede tener inconventientes ya que el openvas va cambiando al igual q las versiones disponibles para Debian"    
+    read "AVISO!!! Se instalaran las dependencias de Openvas desde repos de ellos y el nikto que esta en la sección non-free de los repos de debian" ESPERA
     #########################
     ##Montar el repositorio##
     #########################
@@ -71,8 +76,8 @@ function instalarOpenVAS(){
     ######################
     ## Instalar OpenVas ##
     ######################
-	apt-get update
-    apt-get install openvas-scanner openvas-cli libopenvas5 nikto
+	aptitude update
+	aptitude install openvas-scanner openvas-cli libopenvas5 nikto
     ########################
     ## Configurar OpenVas ##
     ########################
@@ -90,29 +95,27 @@ function instalarOpenVAS(){
 
     #Nikto - a web server scanning and testing tool
     nikto -update
-    instalarWapiti
+    #instalarWapiti
 }
 
 
 
-function configurarInicioApache(){
-	#########################################
-	#####"Hay que revisarlo"#################
-	#########################################
-	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema"
-	##ESTO HAT QUE REVISARLO
-	aptitude -y install libapache2-mod-perl2 apache2-mpm-prefork libcatalyst-engine-apache-perl apache2 libapache2-mod-fcgid
-	#cp $LUGAR/docs/instalador/aux/matfelWeb /etc/init.d/
-    	#chmod +x /etc/init.d/matfelWeb
-    	#chmod +x $LUGAR/script/matfel_server.pl
-    	#update-rc.d matfelWeb defaults
-	cp $PATH_INSTALL/docs/instalador/monitoreo /etc/apache2/sites-available
-	echo NameVirtualHost *:3000 >> /etc/apache2/ports.conf
-	echo Listen 3000 >> /etc/apache2/ports.conf
-	a2ensite monitoreo
-	a2enmod fcgid
-	/etc/init.d/apache2 restart
+function instalarConCpan(){
+    #Instalar lo que no esta en paquete de debian
+    cpan -i Chart::OFC2 
 }
+
+
+
+function desarrollo(){
+    mkdir /var/log/matfel
+    echo '#!/bin/sh' >/usr/bin/matfel
+    echo "perl $LUGAR/script/matfel_server.pl  -d -r  > /dev/null 2>/var/log/matfel/matfel.log &" >>/usr/bin/matfel
+    chmod +x /usr/bin/matfel
+    echo "El sistema nunca se ejecutará automáticamete, usted tendrá que invocarlo en una consola como /usr/bin/matfel y los logs los podrá visualizar en  /var/log/matfel/matfel.log"
+    echo "Apunte con un browser al puerto 3000 de este equipo y ya podra utilizar MatFel"
+}
+
 
 function configurarInicioNginx(){
 	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema mediante nginx"
@@ -330,4 +333,4 @@ fi
 ###KNOWN BUGS
 ## No considera que no exista Mysql-client, entonces ni bien arranca falla el script    
 ## No diferencia entre que falle la conexion a la base porque no esta la base de que no sirvan las credenciales al momento de la creacion
-## En el sql.264 esta mal que se apunta a un lugar fijo para obetener un par de variables
+## En el sql.264 esta mal que se apunta a un lugar fijo para obetener un par de variables, hay una que es geoip-db que no tiene mas sentido
