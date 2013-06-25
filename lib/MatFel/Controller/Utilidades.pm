@@ -52,26 +52,14 @@ return 1;
 my $geoip_db=0;
 
 sub get_geo_db {
- my ($c)=@_;
-
-  if (!$geoip_db){
-      my $pref;
-      if($c){
-         $pref= $c->model('DB::Preferencia');
-      }
-      else{
-           my $model = MatFel::Model::DB->new();
-         $pref= $model->resultset('Preferencia');
-      }
-    $geoip_db = $pref->find({nombre => "geoip-db"})->valor;
-  }
-return $geoip_db;
+	my ($c)=@_;
+	my $geoip_db=MatFel->config->{root}."/static/GeoIP/GeoLiteCity.dat";
+	return $geoip_db;
 }
 
 sub get_geo_ip {
  my ($ip,$c)=@_;
-
-  my $record =0;
+ my $record =0;
   if ($ip){
     my $db= get_geo_db($c);
     if($db){

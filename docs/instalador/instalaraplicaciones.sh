@@ -117,7 +117,7 @@ function configurarInicioApache(){
 function configurarInicioNginx(){
 	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema mediante nginx"
 	aptitude -y install nginx libfcgi-procmanager-perl
-	sed "s%LUGAR%$LUGAR%g" $LUGAR/aux/matfelfcgi > /etc/init.d/matfelcgi
+	sed "s%LUGAR%$LUGAR%g" $LUGAR/docs/instalador/aux/matfelfcgi > /etc/init.d/matfelcgi
 	insserv matfelfcgi
     cp $LUGAR/docs/instalador/aux/nginx /etc/nginx/sites-available/matfel
 	ln -s /etc/nginx/sites-available/matfel /etc/nginx/sites-enabled/matfel 
@@ -171,8 +171,8 @@ function actualizarbasededatos(){
     #Actualizar la base de datos
     VERSION_INSTALADA=$(mysql $BASE -h$HOST_BASE -u$USER --password=$PASSWD -e "select valor from preferencia where nombre = 'version'")
     for i in `$VERSION_INSTALADA $VERSION_ACTUAL`; do
-          if [ -e $LUGAR/sql/sql.rev$i ]; then
                 echo "Aplicando sql.rev$i";
+          if [ -e $LUGAR/sql/sql.rev$i ]; then
                 mysql -h$HOST --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;
           fi;
     done;
@@ -239,7 +239,7 @@ function dependenciasPerl(){
 				libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl \
 				libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl \
 				libxml-rsslite-perl libtest-differences-perl libmoosex-strictconstructor-perl
-       				instalarConCpan
+       			instalarConCpan
 			        #Esto que esta comentado no se si es necesario inicialmente
 				#~ libcatalyst-engine-apache-perl   sqlite3 libdbd-sqlite3-perl\
 				#~ libdatetime-format-sqlite-perl libconfig-general-perl \
@@ -253,6 +253,7 @@ function dependenciasPerl(){
 	    	fi     
 		aptitude clean
 		instalarDependenciasConProblemas
+		
 }
 
 
@@ -329,3 +330,4 @@ fi
 ###KNOWN BUGS
 ## No considera que no exista Mysql-client, entonces ni bien arranca falla el script    
 ## No diferencia entre que falle la conexion a la base porque no esta la base de que no sirvan las credenciales al momento de la creacion
+## En el sql.264 esta mal que se apunta a un lugar fijo para obetener un par de variables

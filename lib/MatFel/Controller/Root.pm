@@ -53,6 +53,7 @@ sub index :Path :Args(0) {
     my @today = (localtime)[5,4,3];
     $today[0] += 1900;
     $today[1]++;
+    if (!defined($c->user->last_login->timestamp)) {$c->user->last_login->timestamp="2010-06-25 02:33:29"}
     my ($date, $time) = split(' ', $c->user->last_login->timestamp);
     my @fecha = split('-', $date);
     my $days = Delta_Days(@fecha, @today);
@@ -75,8 +76,10 @@ sub index :Path :Args(0) {
 #$c->stash->{rango}=$days;
     $c->stash->{rango}=$cuantos;
 
-if ($c->request->address){
+if (defined($c->request->address)){
+	
    $c->stash->{geo_login} = MatFel::Controller::Utilidades::get_geo_ip($c->request->address,$c);
+
 }
 
 
