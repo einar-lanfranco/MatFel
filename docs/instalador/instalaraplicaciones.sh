@@ -94,6 +94,7 @@ function instalarOpenVAS(){
 }
 
 
+
 function configurarInicioApache(){
 	#########################################
 	#####"Hay que revisarlo"#################
@@ -118,9 +119,9 @@ function configurarInicioNginx(){
 	aptitude -y install nginx libfcgi-procmanager-perl
 	sed "s%LUGAR%$LUGAR%g" $LUGAR/aux/matfelfcgi > /etc/init.d/matfelcgi
 	insserv matfelfcgi
-        cp $LUGAR/docs/instalador/aux/nginx /etc/nginx/sites-available/matfel
+    cp $LUGAR/docs/instalador/aux/nginx /etc/nginx/sites-available/matfel
 	ln -s /etc/nginx/sites-available/matfel /etc/nginx/sites-enabled/matfel 
-    	/etc/init.d/matfelfcgi
+   	/etc/init.d/matfelfcgi start
 	/etc/init.d/nginx restart
 }
 
@@ -144,6 +145,14 @@ select sn in "Nginx" "Nada"; do
         done
 
 }
+function configurarBDDMatfel()
+{
+	CONFIGURACION="$LUGAR/lib/MatFel/Model/DB.pm"
+	sed "s%dbi:mysql:tesis%dbi:mysql:$BASE%g" $CONFIGURACION > /tmp/DB.pm
+	sed "s%tesis%$USUARIOBASE%g" /tmp/DB.pm > /tmp/DB1.pm
+	sed "s%test%$USUARIOPASS%g" /tmp/DB1.pm > $CONFIGURACION
+}
+
 function crearBaseDeDatos(){
     echo "Creamos  la base de datos $BASE en el $HOST_BASE"
     mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS';"
@@ -155,6 +164,7 @@ function crearBaseDeDatos(){
                 mysql -h$HOST_BASE --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;
           fi;
     done;
+    configurarBDDMatfel
 }
 
 function actualizarbasededatos(){
@@ -287,7 +297,7 @@ else
                         desarrollo
                         break;;
             esac
-        done
+    done
     echo "Para cumplimentar su funcionamiento MatFel utiliza OpenVAS y Snort, estas que pueden instalarse locales o remotas."
     echo "Si las instala remotamente tendrá que modificar la configuración, este script da las armas para hacerlo local"
     exit
