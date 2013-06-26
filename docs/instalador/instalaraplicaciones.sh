@@ -39,7 +39,8 @@ else
     echo "Adicionalmente esta la instalación de los fws clientes de MatFel"
     echo "Este script es genérico y lo asistirá en la instalacion de cualquiera o de todas las partes."
     LOOPEAR=1
-    while [ $LOOPEAR -eq 1 ] do
+    while [ $LOOPEAR -eq 1 ]
+     do
 		select sn in "TODO" "MatFel" "OpenVAS" "Snort" "Firewall" "Salir"; do
 				case $sn in
 					TODO)
@@ -64,7 +65,7 @@ else
 					Salir)
 						LOOPEAR=0
 						break;;
-		     esac
+				esac
         done
     done
       
