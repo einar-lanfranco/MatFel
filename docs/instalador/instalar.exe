@@ -29,7 +29,7 @@ do
 	fi
 	stty -echo
 	echo "Necesitamos un password para acceder a la base con el usuario $USER."
-	read -p "Ingreselo:" PASSWORD
+	read -p "Ingrese el password para $USER:" PASSWORD
 	stty echo
 	
 	mysql -u $USER --password=$PASSWORD -e exit
@@ -54,7 +54,9 @@ if [ -z $USUARIOBASE ]
 	fi
 USUARIOPASSTEMP=$(< /dev/urandom tr -dc A-Za-z0-9_ | head -c8)
 echo "Necesitamos una pass para que $USUARIOBASE se conecte a la base de datos, por defecto ser $USUARIOPASSTEMP."
+stty -echo
 read -p "Ingrese la pass de $USUARIOBASE:" USUARIOPASS
+stty echo
 if [ -z $USUARIOPASS ]
 	then
 		USUARIOPASS=$USUARIOPASSTEMP
