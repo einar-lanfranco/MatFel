@@ -22,7 +22,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Este script levanta el barnyard2"
 NAME=barnyard2
 DAEMON=/usr/local/bin/$NAME
-DAEMON_ARGS="-c /etc/barnyard2.conf -D -d /var/log/snort -f snortunifed2.log -w /var/log/snort/snort.waldo --create-pidfile"
+DAEMON_ARGS="-c /etc/barnyard/barnyard2.conf -D -d /var/log/snort -f snortunifed2.log -w /var/log/snort/snort.waldo --create-pidfile"
 PIDFILE=/var/run/$NAME\_eth0.pid
 SCRIPTNAME=/etc/init.d/$NAME
 # Exit if the package is not installed

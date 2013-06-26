@@ -1,10 +1,11 @@
 #!/bin/sh
-ip6tables -P INPUT DROP
-ip6tables -P FORWARD DROP
-ip6tables -P OUTPUT DROP
-ip6tables -F OUTPUT 
-ip6tables -F INPUT 
-ip6tables -Z OUTPUT 
-ip6tables -Z INPUT 
-ip6tables -I OUTPUT -o lo -j ACCEPT
-ip6tables -I INPUT -i lo -j ACCEPT
+#Reglas recomendadas si no se utiliza IPv6
+#ip6tables -P INPUT DROP
+#ip6tables -P FORWARD DROP
+#ip6tables -P OUTPUT DROP
+#ip6tables -F OUTPUT 
+#ip6tables -F INPUT 
+#ip6tables -Z OUTPUT 
+#ip6tables -Z INPUT 
+#ip6tables -I OUTPUT -o lo -j ACCEPT
+#ip6tables -I INPUT -i lo -j ACCEPT
