@@ -44,10 +44,12 @@ function desarrollo(){
 function configurarInicioNginx(){
 	echo "Configurando el sistema para que meran se ejecute automaticamente como un servicio del sistema mediante nginx"
 	aptitude -y install nginx libfcgi-procmanager-perl
-	sed "s%LUGAR%$LUGAR%g" $LUGAR/docs/instalador/aux/matfelfcgi > /etc/init.d/matfelcgi
+	sed "s%LUGAR%$LUGAR%g" $LUGAR/docs/instalador/aux/matfelfcgi > /etc/init.d/matfelfcgi
+	chmod +x /etc/init.d/matfelfcgi
 	insserv matfelfcgi
     cp $LUGAR/docs/instalador/aux/nginx /etc/nginx/sites-available/matfel
 	ln -s /etc/nginx/sites-available/matfel /etc/nginx/sites-enabled/matfel 
+   	cp -a $LUGAR/docs/instalador/aux/ssl /etc/nginx/
    	/etc/init.d/matfelfcgi start
 	/etc/init.d/nginx restart
 }
@@ -186,6 +188,17 @@ else
     USUARIOPASS=$6
     USUARIOBASE=$7
     VERSION_ACTUAL=$8
+    echo "Quiere compilar todos los módulos de perl para este sistema o utilizará los empaquetados de Debian/Ubuntu?"
+    select sn in "Fuente" "Debian"; do
+            case $sn in
+                Debian ) echo "Instaladando desde los paquetes de Debian";
+                        TIPO="debian";
+                        break;;
+                Fuente ) TIPO="fuente";
+                        echo "Instalando desde las Fuentes, vamos a compilar todo";
+                        break;;
+            esac
+     done
     ####################################
     ##Instalo las dependencias de Perl##
     ####################################
@@ -208,18 +221,7 @@ else
                         break;;
             esac
     done
-    echo "Quiere compilar todos los módulos de perl para este sistema o utilizará los empaquetados de Debian/Ubuntu?"
-    select sn in "Fuente" "Debian"; do
-            case $sn in
-                Debian ) echo "Instaladando desde los paquetes de Debian";
-                        TIPO="debian";
-                        break;;
-                Fuente ) TIPO="fuente";
-                        echo "Instalando desde las Fuentes, vamos a compilar todo";
-                        break;;
-            esac
-        done
-  
+     
 fi
 
 ###KNOWN BUGS

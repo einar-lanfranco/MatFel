@@ -18,9 +18,9 @@ function instalar_Firewall(){
 
 						
 						
-if [ $# -ne 8 ]
+if [ $# -ne 7 ]
 then
-    echo $# $1 $2 $3 $4 $5 $6 $7 $8
+    echo $# $1 $2 $3 $4 $5 $6 $7
     echo "FALLO  Utiliza: $(basename $0) directorio_donde_lo_queremos_instalar usuario_de_la_base password_de_la_base"
     exit 1
 else
