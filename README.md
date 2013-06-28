@@ -20,6 +20,7 @@ En nuestras instalaciones utilizamos MySQL como motor de base de datos y Apache 
 ---------------
 
 MatFel tiene 4 componentes principales: 
+
 1. MatFel es la componente web del sistema que centraliza la inteligencia 
 2. Snort, MatFel lee las alertas que genera el IDS y las parsea para tomar algun comportamiento, para ello lo que hacemos es que Snort a traves del Barnyard escriba en una base de datos que leerá Matfel.
 3. OpenVas, el servidor de Openvas se puede instalar en cualquier lugar Matfel actua como cliente de OpenVas y le pide que realice pruebas, a traves de las respuestas se obtiene la información del usuario.
@@ -32,7 +33,7 @@ MatFel tiene 4 componentes principales:
 ¿Cómo instalarlo?
 -----------------
 
-**EN DESARROLLO y TESTING**
+**INSTALADOR EN ETAPA DESARROLLO y TESTING**
 
 El instalador actual esta siendo para plataformas Debian, para cualquier otra distro solo hay que cambiar la forma en que se invocan las dependencias en los scripts.
 
