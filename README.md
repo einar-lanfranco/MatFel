@@ -23,16 +23,22 @@ MatFel tiene 4 componentes principales:
 3- OpenVas, el servidor de Openvas se puede instalar en cualquier lugar Matfel actua como cliente de OpenVas y le pide que realice pruebas, a traves de las respuestas se obtiene la información del usuario.
 4- Firewalls, MatFel genera las reglas que configuraran los Firewalls
 
-'''
-Los 4 componentes de MatFel pueden instalarse en forma independiente en distintos equipos o en forma centralizada.
-'''
 
-ACTUALIDAD
-En este momento estamos trabajando para liberar un instalador en bash automatico que permita que el usuario 
-instale todo de una manera muy simple desde bash al menos para Debian y Ubuntu. De todas maneras existe 
-documentación en la carpeta docs que puede facilitarle la instalación de todos los componentes y las 
-dependencias que necesita para funcionar.
+**Nota:** Hay que tener en cuenta que los 4 componentes de MatFel pueden instalarse en forma independiente en distintos equipos o en forma centralizada en uno solo, esto dependerá de las necesidades de cada usuario.
 
 
+¿Cómo instalarlo?
+-----------------
 
-Run script/tesis_server.pl to test the application.
+**EN DESARROLLO y TESTING**
+
+El instalador actual esta siendo para plataformas Debian, para cualquier otra distro solo hay que cambiar la forma en que se invocan las dependencias en los scripts.
+
+El aplicativo de instalación tiene 2 dependencias obligatorias que debe instalar el usuario: el cliente MySQL y git, y una opcional que no necesariamente es obligatoria si se usa una base en otro lugar, es el servidor de MySQL
+
+Lo único que debe bajar el usuario es docs/instalador/instalar.exe (** Aclaratoria: el .exe no tiene nada que ver con los ejecutables de MS no se asusten** )
+
+Luego sólo debe ejecutarlo y el proceso lo llevará paso a paso:
+```bash
+bash instalar.exe
+```
