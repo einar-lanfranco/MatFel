@@ -75,7 +75,9 @@ git --version
 GIT_IS_AVAILABLE=$?
 if [ $GIT_IS_AVAILABLE -eq 0 ]; then
 	git clone https://github.com/einar-lanfranco/MatFel.git  $PATH_INSTALL
+	cd $PATH_INSTALL/docs/instalador
 	bash instalaraplicaciones.sh $PATH_INSTALL $USER $PASSWORD $HOST_BASE $BASE $USUARIOPASS $USUARIOBASE
+	cd $OLDPWD
 else
 	echo "Imposible obtener el código, no esta instalado git, instalalo y reintenta"
 fi

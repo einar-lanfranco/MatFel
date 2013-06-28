@@ -13,10 +13,10 @@ function agregarBarnyardAlInicio(){
 function configurarBarnyard(){
 	mkdir /etc/barnyard
 	#Obtengo la placa de la conf de snort
-    PLACA=$(cat aux/snort.debian.conf |grep INTERFACE| sed 's%.*="%%g'|sed 's/"//g)
+    PLACA=$(cat $LUGAR/docs/instalador/aux/snort.debian.conf |grep INTERFACE| sed 's%.*="%%g'|sed 's/"//g')
     sed "s%placaRED%$PLACA%g" $LUGAR/docs/instalador/aux/barnyard2.conf > /etc/barnyard/barnyard2.conf
     echo "output database: alert, mysql, user=$USER password=$PASSWD dbname=$BASE host=$HOST_BASE" >> /etc/barnyard/barnyard2.conf
-    mkdir /var/log/barnyard2
+    mkdir /var/log/barnyard2 
   
 }
 

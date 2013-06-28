@@ -10,10 +10,9 @@ function instalar_OpenVAS(){
 }
 function instalar_Snort(){
 	bash instalarSnort.sh $LUGAR $USER $PASSWD $HOST_BASE $BASE
-
-}
+	}
 function instalar_Firewall(){
-	bash instalarOpenvas.sh $LUGAR
+	bash instalarFirewall.sh $LUGAR
 }
 
 						
@@ -39,6 +38,7 @@ else
     echo "Adicionalmente esta la instalación de los fws clientes de MatFel"
     echo "Este script es genérico y lo asistirá en la instalacion de cualquiera o de todas las partes."
     LOOPEAR=1
+    cd $LUGAR/docs/instalador
     while [ $LOOPEAR -eq 1 ]; do
 		select sn in "TODO" "MatFel" "OpenVAS" "Snort" "Firewall" "Salir"; do
 				case $sn in
@@ -67,7 +67,7 @@ else
 				esac
         done
     done
-      
+    cd $OLDPWD 
 fi
 
 ###KNOWN BUGS

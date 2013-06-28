@@ -5,11 +5,11 @@
 ## Funciones ##
 ###############
 function cron(){
-	read -p "Ingrese la url de acceso a matfel incluyendo protoco y el puerto, Por ejemplo https://localhost:8000" URL
+	read -p "Ingrese la url de acceso a matfel incluyendo protoco y el puerto, Por ejemplo https://localhost:8000   " URL
     sed "s%URLMATFEL%$URL%g" $LUGAR/otros/actualizar_reglas.sh > /usr/bin/actualizar_reglas.sh
     echo "* * * * *   root    bash /usr/bin/actualizar_reglas.sh 2>&1" >>/etc/crontab
 }
-	}
+
 
 function firewall(){
     echo "Configurando FW"
@@ -22,7 +22,7 @@ function firewall(){
     chmod +x /etc/network/if-up.d/iptablesMatFel
 }
 
-$LUGAR
+LUGAR=$1
 echo "Instalaremos el Firewall recuerde que eso solo lo debe instalar en el servidor que lee las reglas de MatFel"
 echo "Una vez instaldo el cron en el firewall tiene que tocar las preferencias del sistema de MatFel para permitir consultas de este equipo"
 firewall

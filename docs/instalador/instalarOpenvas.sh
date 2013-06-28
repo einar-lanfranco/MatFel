@@ -7,11 +7,12 @@
 
 function instalarOpenVAS(){
     echo "Tener en cuenta que este paso puede tener inconventientes ya que el openvas va cambiando al igual q las versiones disponibles para Debian"    
-    read "AVISO!!! Se instalaran las dependencias de Openvas desde repos de ellos y el nikto que esta en la sección non-free de los repos de debian" ESPERA
+    read -p "AVISO!!! Se instalarán las dependencias de Openvas desde repos de ellos y el nikto que esta en la sección non-free de los repos de debian" ESPERA
     #########################
     ##Montar el repositorio##
     #########################
     echo "deb http://download.opensuse.org/repositories/security:/OpenVAS:/UNSTABLE:/v5/Debian_6.0/ ./" > /etc/apt/sources.list.d/openvas5.list
+    echo "deb http://mirror.unlp.edu.ar/debian wheezy non-free" > /etc/apt/sources.list.d/debianon-free.list
     ######################
     ## Instalar OpenVas ##
     ######################
@@ -28,7 +29,7 @@ function instalarOpenVAS(){
     openvas-adduser
 
     #Bajar los plugins
-    read "AVISO!!! Se actualizarán los plugins de openvas, esto puede demorar un buen rato (Presione Enter para continuar)" ESPERA
+    read -p "AVISO!!! Se actualizarán los plugins de openvas, esto puede demorar un buen rato (Presione Enter para continuar)" ESPERA
     openvas-nvt-sync
     
 
@@ -53,7 +54,7 @@ function instalarWapiti(){
 }
 
 
-$LUGAR=$1
+LUGAR=$1
 instalarOpenVAS
 
 ##Bugs conocidos, revisar si openvas-cli es necesario en una arquitectura distribuida
