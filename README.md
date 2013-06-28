@@ -12,8 +12,20 @@ Esta integración esta realizada de manera de poder controlarla mediante una sim
 -------------------
 
 En su mayoría MatFel esta desarrollado utilizando Perl apoyandonos en Catalyst Framework para el desarrollo.
-En nuestras instalaciones utilizamos MySQL como motor de base de datos y Apache como servidor Web.
+En nuestras instalaciones utilizamos MySQL como motor de base de datos y Apache o Nginx o el propio Framework Catalyst como servidor Web.
 
+¿Cómo funciona?
+---------------
+
+MatFel tiene 4 componentes principales: 
+1- MatFel es la componente web del sistema que centraliza la inteligencia 
+2- Snort, MatFel lee las alertas que genera el IDS y las parsea para tomar algun comportamiento, para ello lo que hacemos es que Snort a traves del Barnyard escriba en una base de datos que leerá Matfel.
+3- OpenVas, el servidor de Openvas se puede instalar en cualquier lugar Matfel actua como cliente de OpenVas y le pide que realice pruebas, a traves de las respuestas se obtiene la información del usuario.
+4- Firewalls, MatFel genera las reglas que configuraran los Firewalls
+
+'''
+Los 4 componentes de MatFel pueden instalarse en forma independiente en distintos equipos o en forma centralizada.
+'''
 
 ACTUALIDAD
 En este momento estamos trabajando para liberar un instalador en bash automatico que permita que el usuario 
