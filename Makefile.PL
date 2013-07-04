@@ -49,6 +49,7 @@ requires (
 		'URI::Find'=> '0',
 		'Date::Manip'=> '0',
 		'XML::RSSLite'=> '0',
+		'HTML::FormFu::Model::DBIC' => '0',
 		 );
 catalyst;
 install_script glob('script/*.pl');

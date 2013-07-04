@@ -13,7 +13,7 @@ function agregarBarnyardAlInicio(){
 function configurarBarnyard(){
 	mkdir /etc/barnyard
 	#Obtengo la placa de la conf de snort
-    PLACA=$(cat $LUGAR/docs/instalador/aux/snort.debian.conf |grep INTERFACE| sed 's%.*="%%g'|sed 's/"//g')
+    PLACA=$(cat /etc/snort/snort.debian.conf |grep INTERFACE| sed 's%.*="%%g'|sed 's/"//g')
     sed "s%placaRED%$PLACA%g" $LUGAR/docs/instalador/aux/barnyard2.conf > /etc/barnyard/barnyard2.conf
     echo "output database: alert, mysql, user=$USER password=$PASSWD dbname=$BASE host=$HOST_BASE" >> /etc/barnyard/barnyard2.conf
     mkdir /var/log/barnyard2 
@@ -31,9 +31,17 @@ function compilarBarnyard(){
     make install
 }
 
+function configurarSnortParaBarnyard(){
+	echo "Intentando autoconfigurar Snort para que use unfied2 como salida y desahbilitar el resto de los metodos"
+	echo "Es recomendable verificarlo a mano en /etc/snort/snort.conf sólo debería existir un output"
+	sed "s%output log_tcpdump: tcpdump.log%#output log_tcpdump: tcpdump.log%g" /etc/snort/snort.conf > /tmp/snort.conf
+	sed "s%# output alert_unified2: filename snort.alert, limit 128, nostam%output alert_unified2:  filename snortunifed2.log, limit 128%g" /tmp/snort.conf > /etc/snort/snort.conf
+}
+
 function instalarBarnyard(){
 	compilarBarnyard
 	configurarBarnyard
+	configurarSnortParaBarnyard
 	agregarBarnyardAlInicio
 }
 function instalarSnort(){

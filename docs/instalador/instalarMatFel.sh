@@ -151,7 +151,7 @@ function dependenciasPerl(){
 				libdatetime-perl libxml-rss-perl libdate-calc-perl libtest-pod-perl libgeo-ip-perl \
 				libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl \
 				libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl \
-				libxml-rsslite-perl libtest-differences-perl libmoosex-strictconstructor-perl
+				libxml-rsslite-perl libtest-differences-perl libmoosex-strictconstructor-perl libhtml-formfu-model-dbic-perl
        			instalarConCpan
 			        #Esto que esta comentado no se si es necesario inicialmente
 				#~ libcatalyst-engine-apache-perl   sqlite3 libdbd-sqlite3-perl\
