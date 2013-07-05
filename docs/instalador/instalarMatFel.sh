@@ -85,9 +85,9 @@ function configurarBDDMatfel()
 function crearBaseDeDatos(){
     echo "Creamos  la base de datos $BASE en el $HOST_BASE"
     mysql -h$HOST_BASE -u $USER --password=$PASSWD -e "set names utf8; create database $BASE; GRANT ALL ON $BASE.* to $USUARIOBASE@localhost identified by '$USUARIOPASS';"
-    mysql $BASE --default-character-set=utf8 -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/matfel.sql
+    mysql $BASE --default-character-set=utf8 -h$HOST_BASE -u $USER --password=$PASSWD < $LUGAR/sql/MatFel.sql
     echo "la version actual es ".$VERSION_ACTUAL
-    for i in $(seq 130 $VERSION_ACTUAL); do
+    for i in $(seq 400 $VERSION_ACTUAL); do
           if [ -e $LUGAR/sql/sql.rev$i ]; then
                 echo "Aplicando sql.rev$i";
                 mysql -h$HOST_BASE --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;
@@ -99,7 +99,7 @@ function crearBaseDeDatos(){
 function actualizarbasededatos(){
     #Actualizar la base de datos
     VERSION_INSTALADA=$(mysql $BASE -h$HOST_BASE -u$USER --password=$PASSWD -e "select valor from preferencia where nombre = 'version'")
-    for i in `$VERSION_INSTALADA $VERSION_ACTUAL`; do
+    for i in $(seq $VERSION_INSTALADA $VERSION_ACTUAL); do
                 echo "Aplicando sql.rev$i";
           if [ -e $LUGAR/sql/sql.rev$i ]; then
                 mysql -h$HOST --default-character-set=utf8 $BASE -u$USER --password=$PASSWD < $LUGAR/sql/sql.rev$i;

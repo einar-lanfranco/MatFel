@@ -119,31 +119,32 @@ sub resumen_alertas :Chained('object') :PathPart('resumen_alertas') :Args(2) {
          
 
 
-        #Para las estadisticas por severidad
-        my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_priority as nivel','COUNT(*) as cuenta'],group_by => 'sig_id.sig_priority'});
+    #Para las estadisticas por severidad
+	my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id.sig_priority',{ count => '*'} ],	as =>[qw/ nivel cuenta/],
+	group_by => 'sig_id.sig_priority'});
         my $total_max =0;
         my @niveles=(0,0,0,0);
         while (my $nivel = $alertas_total->next) {
-            @niveles[$nivel->get_column('sig_priority as nivel')]=$nivel->get_column('COUNT(*) as cuenta');
-            $total_max+=$nivel->get_column('COUNT(*) as cuenta');
+            @niveles[$nivel->get_column('sig_priority as nivel')]=$nivel->get_column('cuenta');
+            $total_max+=$nivel->get_column('cuenta');
         }
         $c->stash->{altas}=$niveles[1];
         $c->stash->{medias}=$niveles[2];
         $c->stash->{bajas}=$niveles[3];
         
         #Para las estadisticas por evento
-         my $alertas_total2 =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento'},select => ['COUNT(distinct(signature)) as cuenta']});
-        $c->stash->{eventos_unicos}=$alertas_total2->next->get_column('COUNT(distinct(signature)) as cuenta');
+         my $alertas_total2 =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento'},select => [{count => {distinct=> 'signature'}}], as => [qw/ cuenta/]});
+        $c->stash->{eventos_unicos}=$alertas_total2->next->get_column('cuenta');
         #Para saber la cantidad de ips de las que vieneron los ataques
-        my $alertas_total3 =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_src' =>{'<>',&dot2dec($c->stash->{object}->ipv4) }}, {join => {'evento'=>'ip_header'},select => ['COUNT(distinct(ip_src)) as einar']});
-        $c->stash->{ip_distintas_llegaron}=$alertas_total3->next->get_column('COUNT(distinct(ip_src)) as einar');
+        my $alertas_total3 =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_src' =>{'<>',&dot2dec($c->stash->{object}->ipv4) }}, {join => {'evento'=>'ip_header'},select => [ {count => {distinct => 'ip_header.ip_src'}}], as => [qw/cuentaIPofendedoras/]});
+        $c->stash->{ip_distintas_llegaron}=$alertas_total3->next->get_column('cuentaIPofendedoras');
         #Para saber la cantidad de ips distintas las que ataque
-        my $alertas_total4 =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_dst' =>{'<>',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento'=>'ip_header'},select => ['COUNT(distinct(ip_dst)) as einar']});
-        $c->stash->{ip_distintas_fue}=$alertas_total4->next->get_column('COUNT(distinct(ip_dst)) as einar');
+        my $alertas_total4 =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_dst' =>{'<>',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento'=>'ip_header'},select => [{count => {distinct => 'ip_header.ip_dst'}}], as => [qw/ cuentaIPOfendidas / ]});
+        $c->stash->{ip_distintas_fue}=$alertas_total4->next->get_column('cuentaIPOfendidas');
         #Esto es para la lista agrupadas por signature
-       $c->stash->{resumen_por_tipo} =[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id','sig_priority','sig_name','COUNT(*) as cuenta'],group_by => 'evento.signature',  order_by => { -desc =>'cuenta'}})];
+       $c->stash->{resumen_por_tipo} =[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id.sig_id','sig_id.sig_priority','sig_id.sig_name',{count =>'*', -as=>'cuenta'}],group_by => 'evento.signature',  order_by => { -desc =>'cuenta'}})];
         #Este es para los eventos que genero mi server agrupados por ip destino
-        $c->stash->{alertas_desde_mi}=[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_src' => {'=',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento' =>'ip_header'}, select => [{ count => '*', -as => 'cuenta'},'ip_dst','evento.sid','evento.cid'], as => [qw/
+        $c->stash->{alertas_desde_mi}=[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_header.ip_src' => {'=',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento' =>'ip_header'}, select => [{ count => '*', -as => 'cuenta'},'ip_header.ip_dst','evento.sid','evento.cid'], as => [qw/
       cuenta
       destino
       sid
@@ -151,7 +152,7 @@ sub resumen_alertas :Chained('object') :PathPart('resumen_alertas') :Args(2) {
     /],
 ,group_by => ['ip_header.ip_dst'],  order_by => { -desc =>'cuenta'}}) ];
         #Este es para los eventos que se detectaron hacia mi server agrupados por ip origen!
-        $c->stash->{alertas_hacia_mi} =[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_src' => {'<>',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento' =>'ip_header'}, select => [{ count => '*', -as => 'cuenta'},'ip_src','evento.sid','evento.cid'], as => [qw/
+        $c->stash->{alertas_hacia_mi} =[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_header.ip_src' => {'<>',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento' =>'ip_header'}, select => [{ count => '*', -as => 'cuenta'},'ip_header.ip_src','evento.sid','evento.cid'], as => [qw/
       cuenta
       origen
       sid
