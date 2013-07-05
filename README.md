@@ -50,4 +50,11 @@ wget https://github.com/einar-lanfranco/MatFel/blob/master/docs/instalador/insta
 Ejecutarlo:
 ```bash
 bash instalar.exe
+
 ```
+
+
+¿Como usarlo?
+-------------
+
+Apuntar con un browser a **https://Nombre_o_IP_del_servidor** y allí utilizar usuario: admin  passord:adminMatFel
