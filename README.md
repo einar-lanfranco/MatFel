@@ -41,7 +41,13 @@ El aplicativo de instalación tiene 2 dependencias obligatorias que debe instala
 
 Lo único que debe bajar el usuario es docs/instalador/instalar.exe (** Aclaratoria: el .exe no tiene nada que ver con los ejecutables de MS no se asusten** )
 
-Luego sólo debe ejecutarlo y el proceso lo llevará paso a paso:
+Luego sólo debe bajarlo de github, ejecutarlo y el proceso lo llevará paso a paso:
+
+Bajarlo:
+```bash
+wget https://github.com/einar-lanfranco/MatFel/blob/master/docs/instalador/instalar.exe
+```
+Ejecutarlo:
 ```bash
 bash instalar.exe
 ```
