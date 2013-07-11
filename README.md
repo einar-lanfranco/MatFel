@@ -35,13 +35,13 @@ MatFel tiene 4 componentes principales:
 
 **INSTALADOR EN ETAPA DESARROLLO y TESTING**
 
-El instalador actual esta siendo para plataformas Debian, para cualquier otra distro solo hay que cambiar la forma en que se invocan las dependencias en los scripts.
+El instalador actual esta siendo desarrollado para plataformas Debian, para otra distribución solo hay que cambiar la forma en que se invocan las dependencias en los scripts.
 
 El aplicativo de instalación tiene 2 dependencias obligatorias que debe instalar el usuario: el cliente MySQL y git, y una opcional que no necesariamente es obligatoria si se usa una base en otro lugar, es el servidor de MySQL
 
-Lo único que debe bajar el usuario es docs/instalador/instalar.exe (** Aclaratoria: el .exe no tiene nada que ver con los ejecutables de MS no se asusten** )
+Lo único que debe bajar el usuario es docs/instalador/instalar.exe (** Aclaración: el .exe no tiene nada que ver con los ejecutables de MS no se asusten** )
 
-Luego sólo debe bajarlo de github, ejecutarlo y el proceso lo llevará paso a paso:
+Solo debe descargarlo de github, ejecutarlo y el proceso lo llevará paso a paso:
 
 Bajarlo:
 ```bash
