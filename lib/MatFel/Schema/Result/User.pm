@@ -78,11 +78,12 @@ __PACKAGE__->many_to_many(roles => 'map_user_roles', 'role');
 __PACKAGE__->add_columns(
         'password' => {
             data_type           => "TEXT",
-            size                => undef,
+            size                => 64+10,
             encode_column       => 1,
             encode_class        => 'Digest',
-            encode_args         => {algorithm => 'SHA-1', 
-                                    format => 'hex'
+            encode_args         => {algorithm => 'SHA-512', 
+                                    format => 'hex',
+                                    salt_length => 20
                                     },
             encode_check_method => 'check_password',
         },

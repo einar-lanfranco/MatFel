@@ -7,9 +7,9 @@ __PACKAGE__->config(
     schema_class => 'MatFel::Schema',
     
     connect_info => {
-        dsn => 'dbi:mysql:tesis',
-        user => 'tesis',
-        password => 'test',
+        dsn => 'dbi:mysql:MatFel',
+        user => 'root',
+        password => 'pepe',
     }
 );
 
