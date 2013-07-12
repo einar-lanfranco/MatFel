@@ -4,7 +4,11 @@
 ###############
 ## Funciones ##
 ###############
-
+function setearCron(){
+echo "#Actualizacion del archivo de configuracion de openVAS" >> /etc/crontab
+echo "0 0 * * * openvas-nvt-sync&  > /dev/null 2>&1" >> /etc/crontab
+echo "5 0 * * * /etc/init.d/openvas-scanner restart&  > /dev/null 2>&1" >> /etc/crontab
+}
 function instalarOpenVAS(){
     echo "Tener en cuenta que este paso puede tener inconventientes ya que el openvas va cambiando al igual q las versiones disponibles para Debian"    
     read -p "AVISO!!! Se instalarán las dependencias de Openvas desde repos de ellos y el nikto que esta en la sección non-free de los repos de debian" ESPERA
@@ -56,5 +60,6 @@ function instalarWapiti(){
 
 LUGAR=$1
 instalarOpenVAS
+setearCron
 
 ##Bugs conocidos, revisar si openvas-cli es necesario en una arquitectura distribuida

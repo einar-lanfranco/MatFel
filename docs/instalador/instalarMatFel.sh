@@ -4,6 +4,24 @@
 ###############
 ## Funciones ##
 ###############
+function setearCron(){
+	echo "#Ejecutar escaneos inmediatos" >> /etc/crontab
+	echo "* * * * * cd $LUGAR/lib/; perl ../script/openvas_cron.pl 2>&1" >> /etc/crontab
+	echo "#Actualizar Alertas" >> /etc/crontab
+	echo "*/5 * * * * cd $LUGAR/lib/; perl ../script/actualizar_alertas.pl 2>&1" >> /etc/crontab
+	echo "#Generar Reglas" >> /etc/crontab
+	echo "#* * * * * sh $LUGAR/otros/actualizar_reglas.sh 2>&1" >> /etc/crontab
+	echo "#Ejecutar escaneos  Diarios" >> /etc/crontab
+	echo "0 1 * * * cd $LUGAR/lib/; perl ../script/openvas_cron_diario.pl 2>&1" >> /etc/crontab
+	echo "#Ejecutar escaneos  Semanales" >> /etc/crontab
+	echo "0 2 * * 5 cd $LUGAR/lib/; perl ../script/openvas_cron_semanal.pl 2>&1" >> /etc/crontab
+	echo "#Ejecutar escaneos  Mensuales" >> /etc/crontab
+	echo "0 3 1 * * cd $LUGAR/lib/; perl ../script/openvas_cron_mensual.pl 2>&1" >> /etc/crontab
+	echo "#Limpiar escaneos que no terminaron en 2 horas" >> /etc/crontab
+	echo "0 5 * * * wget -q -O /dev/null --no-check-certificate https://127.0.0.1/cron/limpiar_escaneos 2>&1 " >> /etc/crontab
+	echo "#Generar Reporte Diario" >> /etc/crontab
+	echo "0 6 * * * wget -q -O /dev/null --no-check-certificate https://127.0.0.1/cron/enviar_resumen 2>&1" >> /etc/crontab
+}
 
 function configurarInicioApache(){
 	#########################################
@@ -221,7 +239,7 @@ else
                         break;;
             esac
     done
-     
+	setearCron
 fi
 
 ###KNOWN BUGS
