@@ -57,4 +57,4 @@ bash instalar.exe
 ¿Como usarlo?
 -------------
 
-Apuntar con un browser a **https://Nombre_o_IP_del_servidor** y allí utilizar usuario: **admin**  y password: **adminMatFel**
+Apuntar con un browser a **https://Nombre_o_IP_del_servidor** y allí utilizar usuario: **admin**  y password: **MatFel**
