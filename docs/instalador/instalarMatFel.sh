@@ -5,12 +5,11 @@
 ## Funciones ##
 ###############
 function setearCron(){
+	echo "#Actualizar las Alertas cada 5 minutos" >> /etc/crontab
+	echo "*/5 * * * * cd $LUGAR/lib/; perl ../script/actualizar_alertas.pl 2>&1" >> /etc/crontab
+	
 	echo "#Ejecutar escaneos inmediatos" >> /etc/crontab
 	echo "* * * * * cd $LUGAR/lib/; perl ../script/openvas_cron.pl 2>&1" >> /etc/crontab
-	echo "#Actualizar Alertas" >> /etc/crontab
-	echo "*/5 * * * * cd $LUGAR/lib/; perl ../script/actualizar_alertas.pl 2>&1" >> /etc/crontab
-	echo "#Generar Reglas" >> /etc/crontab
-	echo "#* * * * * sh $LUGAR/otros/actualizar_reglas.sh 2>&1" >> /etc/crontab
 	echo "#Ejecutar escaneos  Diarios" >> /etc/crontab
 	echo "0 1 * * * cd $LUGAR/lib/; perl ../script/openvas_cron_diario.pl 2>&1" >> /etc/crontab
 	echo "#Ejecutar escaneos  Semanales" >> /etc/crontab
