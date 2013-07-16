@@ -120,12 +120,12 @@ sub resumen_alertas :Chained('object') :PathPart('resumen_alertas') :Args(2) {
 
 
     #Para las estadisticas por severidad
-	my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id.sig_priority',{ count => '*'} ],	as =>[qw/ nivel cuenta/],
+	my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id.sig_priority',{ count => '*'} ],	as =>[qw/nivel cuenta/],
 	group_by => 'sig_id.sig_priority'});
         my $total_max =0;
         my @niveles=(0,0,0,0);
         while (my $nivel = $alertas_total->next) {
-            @niveles[$nivel->get_column('sig_priority as nivel')]=$nivel->get_column('cuenta');
+            @niveles[$nivel->get_column('nivel')]=$nivel->get_column('cuenta');
             $total_max+=$nivel->get_column('cuenta');
         }
         $c->stash->{altas}=$niveles[1];
@@ -142,7 +142,13 @@ sub resumen_alertas :Chained('object') :PathPart('resumen_alertas') :Args(2) {
         my $alertas_total4 =$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_dst' =>{'<>',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento'=>'ip_header'},select => [{count => {distinct => 'ip_header.ip_dst'}}], as => [qw/ cuentaIPOfendidas / ]});
         $c->stash->{ip_distintas_fue}=$alertas_total4->next->get_column('cuentaIPOfendidas');
         #Esto es para la lista agrupadas por signature
-       $c->stash->{resumen_por_tipo} =[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id.sig_id','sig_id.sig_priority','sig_id.sig_name',{count =>'*', -as=>'cuenta'}],group_by => 'evento.signature',  order_by => { -desc =>'cuenta'}})];
+        $c->stash->{resumen_por_tipo}=[$c->model('DB::AlertaPorTipo')->search({}, {bind => [$dt->iso8601(),$id_serv]})->all()];
+        
+        
+       #~ $c->stash->{resumen_por_tipo} =[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}},{join => {'evento' =>'sig_id'}})];
+         #~ ,select => [{evento =>{sig_id=>'sig_id'}},{evento =>{sig_id=>'sig_priority'}},{evento =>{sig_id=>'sig_name'}},{count =>'*', -as=>'einar'}],group_by => 'evento.signature',  order_by => { -desc =>'einar'}})];
+       #~ $c->stash->{resumen_por_tipo} =[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id','sig_priority','sig_name','COUNT(*) as cuenta'],group_by => 'evento.signature',  order_by => { -desc =>'cuenta'}})];
+
         #Este es para los eventos que genero mi server agrupados por ip destino
         $c->stash->{alertas_desde_mi}=[$c->model('DB::Alerta')->search({'me.id_servidor' => $id_serv,'evento.timestamp' => {'>=', $dt->iso8601()},'ip_header.ip_src' => {'=',&dot2dec($c->stash->{object}->ipv4)}}, {join => {'evento' =>'ip_header'}, select => [{ count => '*', -as => 'cuenta'},'ip_header.ip_dst','evento.sid','evento.cid'], as => [qw/
       cuenta

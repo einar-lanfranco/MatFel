@@ -1,6 +1,7 @@
+set names utf8;
 -- MySQL dump 10.13  Distrib 5.5.31, for debian-linux-gnu (i686)
 --
--- Host: localhost    Database: MatFel
+-- Host: localhost    Database: pepe
 -- ------------------------------------------------------
 -- Server version	5.5.31-0+wheezy1-log
 
@@ -32,7 +33,7 @@ CREATE TABLE `alerta` (
   KEY `id_servidor` (`id_servidor`),
   KEY `sid` (`sid`,`cid`),
   CONSTRAINT `alerta_ibfk_1` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +57,7 @@ CREATE TABLE `data` (
   `cid` int(10) unsigned NOT NULL,
   `data_payload` text,
   PRIMARY KEY (`sid`,`cid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +80,7 @@ CREATE TABLE `detail` (
   `detail_type` tinyint(3) unsigned NOT NULL,
   `detail_text` text NOT NULL,
   PRIMARY KEY (`detail_type`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +104,7 @@ CREATE TABLE `encoding` (
   `encoding_type` tinyint(3) unsigned NOT NULL,
   `encoding_text` text NOT NULL,
   PRIMARY KEY (`encoding_type`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +129,7 @@ CREATE TABLE `estado` (
   `estado` varchar(100) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +157,7 @@ CREATE TABLE `event` (
   PRIMARY KEY (`sid`,`cid`),
   KEY `sig` (`signature`),
   KEY `time` (`timestamp`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,7 +181,7 @@ CREATE TABLE `icmp_code` (
   `subtipo` tinyint(3) unsigned NOT NULL,
   `string` varchar(255) NOT NULL,
   PRIMARY KEY (`tipo`,`subtipo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +205,7 @@ CREATE TABLE `icmp_type` (
   `id` tinyint(3) unsigned NOT NULL,
   `string` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +236,7 @@ CREATE TABLE `icmphdr` (
   PRIMARY KEY (`sid`,`cid`),
   KEY `icmp_type` (`icmp_type`),
   KEY `icmp_code` (`icmp_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,7 +260,7 @@ CREATE TABLE `ip_proto` (
   `nombre` varchar(255) NOT NULL,
   `firewall` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +299,7 @@ CREATE TABLE `iphdr` (
   KEY `ip_src` (`ip_src`),
   KEY `ip_dst` (`ip_dst`),
   KEY `ip_proto` (`ip_proto`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +322,7 @@ CREATE TABLE `ipt_code` (
   `id` varchar(255) NOT NULL,
   `string` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -352,7 +353,7 @@ CREATE TABLE `opt` (
   PRIMARY KEY (`sid`,`cid`,`optid`),
   KEY `opt_code` (`opt_code`),
   KEY `sid` (`sid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -375,7 +376,7 @@ CREATE TABLE `opt_code` (
   `id` tinyint(3) unsigned NOT NULL,
   `string` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -399,7 +400,7 @@ CREATE TABLE `ov_estado` (
   `id` char(1) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -423,7 +424,7 @@ CREATE TABLE `ov_frecuencia` (
   `id` varchar(1) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -448,7 +449,7 @@ CREATE TABLE `ov_risk_factor` (
   `descripcion` varchar(250) NOT NULL,
   `prioridad` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -482,7 +483,7 @@ CREATE TABLE `ov_scan` (
   CONSTRAINT `ov_scan_ibfk_3` FOREIGN KEY (`frecuencia`) REFERENCES `ov_frecuencia` (`id`),
   CONSTRAINT `ov_scan_ibfk_4` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ov_scan_ibfk_5` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -518,7 +519,7 @@ CREATE TABLE `ov_scanresults` (
   KEY `id_scan` (`id_scan`),
   KEY `risk` (`risk`),
   CONSTRAINT `ov_scanresults_ibfk_1` FOREIGN KEY (`id_scan`) REFERENCES `ov_scan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -543,7 +544,7 @@ CREATE TABLE `preferencia` (
   `valor` varchar(255) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,7 +570,7 @@ CREATE TABLE `reference` (
   `ref_tag` text NOT NULL,
   PRIMARY KEY (`ref_id`),
   KEY `ref_system_id` (`ref_system_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=110 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=110 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -593,7 +594,7 @@ CREATE TABLE `reference_system` (
   `ref_system_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ref_system_id`),
   KEY `ref_system_name` (`ref_system_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -616,7 +617,7 @@ CREATE TABLE `role` (
   `id` int(11) NOT NULL,
   `role` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -640,7 +641,7 @@ CREATE TABLE `schema` (
   `vseq` int(10) unsigned NOT NULL,
   `ctime` datetime NOT NULL,
   PRIMARY KEY (`vseq`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -671,7 +672,7 @@ CREATE TABLE `sensor` (
   PRIMARY KEY (`sid`),
   KEY `detail` (`detail`),
   KEY `encoding` (`encoding`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -705,7 +706,7 @@ CREATE TABLE `servidor` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   CONSTRAINT `servidor_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -730,7 +731,7 @@ CREATE TABLE `sig_class` (
   PRIMARY KEY (`sig_class_id`),
   KEY `sig_class_id` (`sig_class_id`),
   KEY `sig_class_name` (`sig_class_name`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -757,7 +758,7 @@ CREATE TABLE `sig_reference` (
   PRIMARY KEY (`sig_id`,`ref_seq`),
   KEY `ref_id` (`ref_id`),
   KEY `sig_id` (`sig_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -787,7 +788,7 @@ CREATE TABLE `signature` (
   PRIMARY KEY (`sig_id`),
   KEY `sign_idx` (`sig_name`(20)),
   KEY `sig_class_id_idx` (`sig_class_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=193 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -796,7 +797,6 @@ CREATE TABLE `signature` (
 
 LOCK TABLES `signature` WRITE;
 /*!40000 ALTER TABLE `signature` DISABLE KEYS */;
-INSERT INTO `signature` VALUES (1,'(portscan) TCP Portscan',0,3,NULL,1,122),(2,'SNMP request tcp',1,2,11,1418,1),(3,'portscan: TCP Portscan',0,3,NULL,1,122),(4,'Snort Alert [1:100000160:0]',2,2,2,100000160,1),(5,'SNMP AgentX/tcp request ',1,2,11,1421,1),(6,'SNMP trap tcp ',1,2,11,1420,1),(7,'WEB-MISC robots.txt access ',3,2,3,1852,1),(8,'SNMP request udp ',1,2,9,1417,1),(9,'Snort Alert [1:100000159:0]',2,2,2,100000159,1),(10,'Snort Alert [1:100000162:0]',2,2,2,100000162,1),(11,'WEB-MISC Invalid HTTP Version String ',4,2,7,2570,1),(12,'http_inspect: DOUBLE DECODING ATTACK',0,3,1,2,119),(13,'WEB-PHP PHPBB viewforum.php access ',3,2,4,2566,1),(14,'WEB-CGI upload.pl access',1,2,5,891,1),(15,'WEB-PHP viewtopic.php access ',5,1,4,2229,1),(16,'portscan: TCP Portsweep',0,3,NULL,3,122),(17,'http_inspect: IIS UNICODE CODEPOINT ENCODING',0,3,1,7,119),(18,'WEB-MISC PCT Client_Hello overflow attempt ',6,1,13,2515,1),(19,'WEB-CGI calendar access',1,2,5,882,1),(20,'ICMP Destination Unreachable Communication Administratively Prohibited',7,3,4,485,1),(21,'WEB-MISC SSLv3 invalid Client_Hello attempt ',2,2,10,2522,1),(22,'SMTP TLS PCT Client_Hello overflow attempt ',6,1,13,2528,1),(23,'http_inspect: WEBROOT DIRECTORY TRAVERSAL',0,3,1,18,119),(24,'ssh: Protocol mismatch',0,3,1,4,128),(25,'snort_decoder: Bad Traffic Same Src/Dst IP!',4,3,1,151,116),(26,'BAD-TRAFFIC same SRC/DST ',8,2,8,527,1),(27,'DNS zone transfer TCP ',1,2,13,255,1),(28,'ICMP Destination Unreachable Communication with Destination Host is Administratively Prohibited',7,3,4,486,1),(29,'ATTACK-RESPONSES 403 Forbidden',1,2,7,1201,1),(30,'portscan: ICMP Sweep',0,3,NULL,25,122),(31,'ICMP Source Quench',8,2,2,477,1),(32,'Snort Alert [1:100000161:0]',2,2,2,100000161,1),(33,'smtp: Attempted header name buffer overflow',0,3,1,7,124),(34,'WEB-PHP admin.php access ',1,2,11,1301,1),(35,'Snort Alert [1:100000537:0]',5,1,1,100000537,1),(36,'DNS named version attempt ',1,2,9,257,1),(37,'snort_decoder: TCP Window Scale Option Scale Invalid (> 14)',4,3,1,59,116),(38,'SCAN nmap XMAS ',1,2,7,1228,1),(39,'WEB-PHP Mambo upload.php access ',3,2,2,2077,1),(40,'Snort Alert [1:100000187:0]',5,1,2,100000187,1),(41,'WEB-MISC backup access',1,2,5,1213,1),(42,'SMTP TLS SSLv3 invalid data version attempt ',2,2,7,2541,1),(43,'Snort Alert [1:100000928:0]',6,1,1,100000928,1),(44,'WEB-MISC SSLv3 invalid data version attempt ',2,2,9,2505,1),(45,'WEB-FRONTPAGE /_vti_bin/ access ',3,2,8,1288,1),(46,'WEB-MISC http directory traversal ',1,2,5,1113,1),(47,'WEB-MISC /etc/passwd',1,2,5,1122,1),(48,'snort_decoder: WARNING: ICMP Original IP Payload < 64 bits!',4,3,1,253,116),(49,'EXPLOIT SSLv2 Client_Hello with pad Challenge Length overflow attempt',6,1,8,2657,1),(50,'MS-SQL probe response overflow attempt ',9,1,6,2329,1),(51,'WEB-PHP Setup.php access ',3,2,2,2281,1),(52,'WEB-PHP remote include path',5,1,5,2002,1),(53,'Snort Alert [1:100000220:0]',5,1,2,100000220,1),(54,'Snort Alert [1:100000372:0]',5,1,2,100000372,1),(55,'snort_decoder: Experimental TCP options',4,3,1,58,116),(56,'WEB-CGI redirect access ',1,2,7,895,1),(57,'ICMP PING NMAP ',1,2,3,469,1),(58,'http_inspect: BARE BYTE UNICODE ENCODING',0,3,1,4,119),(59,'IMAP PCT Client_Hello overflow attempt ',6,1,13,2517,1),(60,'Snort Alert [1:100000763:0]',3,2,1,100000763,1),(61,'ICMP redirect host ',8,2,4,472,1),(62,'WEB-PHP modules.php access ',3,2,1,2565,1),(63,'Snort Alert [1:100000121:0]',3,2,1,100000121,1),(64,'WEB-MISC login.htm access ',3,2,6,1564,1),(65,'Snort Alert [1:100000186:0]',10,2,2,100000186,1),(66,'WEB-ATTACKS id command attempt',5,1,6,1333,1),(67,'Snort Alert [1:100000380:0]',5,1,2,100000380,1),(68,'Snort Alert [1:100000122:0]',5,1,1,100000122,1),(69,'WEB-CGI /cgi-bin/ access',5,1,6,1668,1),(70,'MISC MS Terminal server request ',11,3,12,1448,1),(71,'MISC MS Terminal Server no encryption session initiation attmept ',2,2,4,2418,1),(72,'MISC rsyncd overflow attempt ',7,3,6,2048,1),(73,'WEB-MISC Phorecast remote code execution attempt ',5,1,7,1391,1),(74,'Snort Alert [1:100000837:0]',5,1,2,100000837,1),(75,'WEB-IIS view source via translate header ',3,2,9,1042,1),(76,'Snort Alert [1:100000219:0]',6,1,1,100000219,1),(77,'WEB-PHP PHP-Nuke remote file include attempt ',5,1,11,1399,1),(78,'Snort Alert [129:15:0]',0,3,1,15,129),(79,'ICMP Echo Reply',7,3,5,408,1),(80,'Snort Alert [129:16:0]',0,3,1,16,129),(81,'ICMP Destination Unreachable Port Unreachable',7,3,8,402,1),(82,'stream5: TCP Small Segment Threshold Exceeded',0,3,1,12,129),(83,'Snort Alert [120:3:0]',0,3,1,3,120),(84,'stream5: Bad segment, overlap adjusted size less than/equal 0',0,3,1,5,129),(85,'Snort Alert [137:1:0]',0,3,1,1,137),(86,'stream5: Limit on number of overlapping TCP packets reached',0,3,1,7,129),(87,'ICMP Destination Unreachable Host Unreachable',7,3,6,399,1),(88,'ICMP Destination Unreachable Fragmentation Needed and DF bit was set',7,3,7,396,1),(89,'ATTACK-RESPONSES 403 Forbidden',1,2,8,1201,1),(90,'Snort Alert [1:17317:0]',6,1,4,17317,1),(91,'SHELLCODE x86 NOOP',12,1,12,1394,1),(92,'ICMP Destination Unreachable Network Unreachable',7,3,6,401,1),(93,'Snort Alert [1:16606:0]',9,1,3,16606,1),(94,'Snort Alert [1:16008:0]',7,3,5,16008,1),(95,'SHELLCODE x86 NOOP ',12,1,10,648,1),(96,'Snort Alert [1:14610:0]',6,1,3,14610,1),(97,'Snort Alert [1:17567:0]',6,1,1,17567,1),(98,'ICMP PING',7,3,5,384,1),(99,'ICMP traceroute ',1,2,4,385,1),(100,'ICMP PING *NIX',7,3,7,366,1),(101,'SHELLCODE x86 inc ebx NOOP',12,1,8,1390,1),(102,'ICMP Timestamp Request',7,3,5,453,1),(103,'Snort Alert [1:12801:0]',12,1,3,12801,1),(104,'ICMP PING BSDtype ',7,3,6,368,1),(105,'Snort Alert [1:11837:0]',9,1,4,11837,1),(106,'Snort Alert [1:12798:0]',12,1,3,12798,1),(107,'ICMP Destination Unreachable Protocol Unreachable',7,3,7,404,1),(108,'Snort Alert [1:17484:0]',2,2,1,17484,1),(109,'Snort Alert [1:17354:0]',2,2,1,17354,1),(110,'WEB-IIS cmd.exe access',5,1,14,1002,1),(111,'Snort Alert [1:12799:0]',12,1,3,12799,1),(112,'Snort Alert [1:12802:0]',12,1,3,12802,1),(113,'ICMP Fragment Reassembly Time Exceeded',7,3,5,410,1),(114,'SHELLCODE x86 setuid 0 ',13,2,10,650,1),(115,'Snort Alert [1:18179:0]',14,3,1,18179,1),(116,'ICMP PING Windows ',7,3,7,382,1),(117,'SHELLCODE x86 setgid 0 ',13,2,10,649,1),(118,'Snort Alert [1:6403:0]',5,1,7,6403,1),(119,'ICMP PING undefined code',7,3,8,365,1),(120,'ICMP Address Mask Request',7,3,5,388,1),(121,'ICMP Information Request',7,3,5,417,1),(122,'WEB-MISC cat%20 access ',1,2,10,1147,1),(123,'POLICY IPSec PGPNet connection attempt',11,3,8,1771,1),(124,'SCAN Amanda client version request',1,2,5,634,1),(125,'Snort Alert [1:3813:0]',9,1,7,3813,1),(126,'Snort Alert [1:5897:0]',7,3,4,5897,1),(127,'Snort Alert [1:8090:0]',5,1,7,8090,1),(128,'P2P BitTorrent transfer',15,1,4,2181,1),(129,'Snort Alert [1:17536:0]',9,1,2,17536,1),(130,'Snort Alert [1:12800:0]',12,1,3,12800,1),(131,'ATTACK-RESPONSES command completed ',8,2,13,494,1),(132,'Snort Alert [1:17648:0]',1,2,1,17648,1),(133,'POLICY PPTP Start Control Request attempt',6,1,5,2044,1),(134,'Snort Alert [1:17487:0]',2,2,2,17487,1),(135,'NETBIOS DOS RFPoison ',11,3,10,529,1),(136,'RPC portmap NFS request TCP',16,2,8,1960,1),(137,'Snort Alert [1:11288:0]',16,2,2,11288,1),(138,'RPC mountd TCP mount request',1,2,7,1951,1),(139,'RPC portmap mountd request UDP ',16,2,10,579,1),(140,'RPC mountd UDP mount request',1,2,7,1952,1),(141,'RPC mountd UDP unmount request',1,2,6,2021,1),(142,'NETBIOS SMB-DS ADMIN$ share unicode access',11,3,7,2475,1),(143,'FINGER 0 query ',1,2,9,332,1),(144,'Snort Alert [1:11816:0]',6,1,1,11816,1),(145,'RPC portmap bootparam request UDP ',16,2,15,577,1),(146,'RPC portmap rusers request TCP ',16,2,15,1271,1),(147,'RPC portmap listing TCP 111 ',16,2,13,598,1),(148,'RPC portmap cachefsd request UDP ',16,2,14,1746,1),(149,'RPC portmap rstatd request TCP ',16,2,12,1270,1),(150,'RPC portmap ypupdated request TCP ',16,2,12,591,1),(151,'Snort Alert [1:15930:0]',2,2,10,15930,1),(152,'RPC portmap yppasswd request UDP ',16,2,9,589,1),(153,'FINGER search query ',1,2,11,322,1),(154,'FINGER remote command pipe execution attempt ',9,1,9,327,1),(155,'ATTACK-RESPONSES Invalid URL ',1,2,10,1200,1),(156,'FINGER version query',1,2,5,1541,1),(157,'Snort Alert [1:3218:0]',6,1,12,3218,1),(158,'NETBIOS SMB-DS C$ share unicode access',11,3,10,2472,1),(159,'NETBIOS SMB-DS D$ share unicode access',11,3,7,2469,1),(160,'Snort Alert [1:12626:0]',16,2,2,12626,1),(161,'RPC portmap sadmind request UDP ',16,2,9,585,1),(162,'Snort Alert [1:3151:0]',1,2,4,3151,1),(163,'FINGER root query ',1,2,6,323,1),(164,'FINGER redirection attempt ',1,2,10,330,1),(165,'FINGER account enumeration attempt ',1,2,6,321,1),(166,'Snort Alert [1:17524:0]',6,1,1,17524,1),(167,'Snort Alert [1:12597:0]',17,2,2,12597,1),(168,'Snort Alert [1:17483:0]',2,2,1,17483,1),(169,'Snort Alert [1:15306:0]',7,3,6,15306,1),(170,'Snort Alert [1:3655:0]',9,1,4,3655,1),(171,'RPC portmap NFS request UDP',16,2,8,1959,1),(172,'Snort Alert [1:17366:0]',9,1,1,17366,1),(173,'ATTACK-RESPONSES command error',8,2,9,495,1),(174,'ATTACK-RESPONSES file copied ok ',8,2,14,497,1),(175,'ATTACK-RESPONSES directory listing',8,2,9,1292,1),(176,'Snort Alert [1:12286:0]',9,1,5,12286,1),(177,'SMTP expn root ',1,2,12,660,1),(178,'SMTP vrfy root',1,2,8,1446,1),(179,'WEB-CLIENT Outlook EML access ',9,1,13,1233,1),(180,'Snort Alert [1:17378:0]',9,1,1,17378,1),(181,'Snort Alert [1:11267:0]',9,1,4,11267,1),(182,'Snort Alert [1:7002:0]',9,1,5,7002,1),(183,'Snort Alert [1:16295:0]',9,1,2,16295,1),(184,'Snort Alert [1:17339:0]',12,1,1,17339,1),(185,'Snort Alert [1:5712:0]',6,1,2,5712,1),(186,'RPC portmap listing UDP 111 ',16,2,11,1280,1),(187,'RPC mountd UDP export request ',1,2,8,1924,1),(188,'FINGER null request ',1,2,7,324,1),(189,'FINGER remote command execution attempt ',9,1,10,326,1),(190,'ICMP Echo Reply undefined code',7,3,7,409,1),(191,'Snort Alert [1:15363:0]',7,3,2,15363,1),(192,'Snort Alert [1:527:0]',8,2,8,527,1);
 /*!40000 ALTER TABLE `signature` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -824,7 +824,7 @@ CREATE TABLE `tcphdr` (
   KEY `tcp_sport` (`tcp_sport`),
   KEY `tcp_dport` (`tcp_dport`),
   KEY `tcp_flags` (`tcp_flags`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -861,7 +861,7 @@ CREATE TABLE `trafico_entrada` (
   CONSTRAINT `trafico_entrada_ibfk_3` FOREIGN KEY (`protocolo`) REFERENCES `ip_proto` (`id`),
   CONSTRAINT `trafico_entrada_ibfk_4` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `trafico_entrada_ibfk_5` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -897,7 +897,7 @@ CREATE TABLE `trafico_entrada_bloqueado` (
   CONSTRAINT `trafico_entrada_bloqueado_ibfk_3` FOREIGN KEY (`protocolo`) REFERENCES `ip_proto` (`id`),
   CONSTRAINT `trafico_entrada_bloqueado_ibfk_4` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `trafico_entrada_bloqueado_ibfk_5` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -934,7 +934,7 @@ CREATE TABLE `trafico_salida` (
   CONSTRAINT `trafico_salida_ibfk_3` FOREIGN KEY (`protocolo`) REFERENCES `ip_proto` (`id`),
   CONSTRAINT `trafico_salida_ibfk_4` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `trafico_salida_ibfk_5` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -970,7 +970,7 @@ CREATE TABLE `trafico_salida_bloqueado` (
   CONSTRAINT `trafico_salida_bloqueado_ibfk_3` FOREIGN KEY (`protocolo`) REFERENCES `ip_proto` (`id`),
   CONSTRAINT `trafico_salida_bloqueado_ibfk_4` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `trafico_salida_bloqueado_ibfk_5` FOREIGN KEY (`id_servidor`) REFERENCES `servidor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -999,7 +999,7 @@ CREATE TABLE `udphdr` (
   PRIMARY KEY (`sid`,`cid`),
   KEY `udp_sport` (`udp_sport`),
   KEY `udp_dport` (`udp_dport`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1022,7 +1022,7 @@ CREATE TABLE `url_reference` (
   `ref_system_name` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   PRIMARY KEY (`ref_system_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1051,7 +1051,7 @@ CREATE TABLE `user` (
   `last_name` text,
   `active` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1060,7 +1060,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','92ccacc15503be6fb8644892cdfd11976890a27b','einar.lanfranco@gmail.com','Super','Vaca',1);
+INSERT INTO `user` VALUES (1,'admin','2d90b0c335cf315f48faa37a8f017bb7cd347041838f23a73c9a0cc272acdfd0e30076679a4a3a5dd8f304019a429e4382ef01b13c65e603fcda3c894afe2719QmfctkWdC3ZYm3Gv7zv/','einar.lanfranco@gmail.com','Super','Vaca',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1081,7 +1081,7 @@ CREATE TABLE `user_accion` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_accion_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1108,7 +1108,7 @@ CREATE TABLE `user_role` (
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1130,4 +1130,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-07-05  4:53:41
+-- Dump completed on 2013-07-13  2:45:46

@@ -124,6 +124,7 @@ swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc
 <fieldset  class="fieldset_completo">
 <legend> Eventos por signature</legend>
 <a name="eventos_unicos"></a>
+
 <table>
 <thead>
 <tr>
@@ -134,13 +135,15 @@ swfobject.embedSWF("[% c.uri_for('/static/chart/open-flash-chart.swf') %]", "ofc
 </tr>
 </thead>
 [% nro_linea = 0 %]
+
+
 [% FOREACH linea IN resumen_por_tipo  %]
     <tr>
-    <td class="centrado">  <img src="/static/images/severity/[% linea.get_column('sig_priority') %].png" alt="Severidad [% linea.get_column('sig_priority') %]" /> </td>
-    <td>  [% linea.get_column('sig_name') %] </td>
-    <td class="centrado">  <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_por_signature'),[id_servidor],rango,linea.get_column('sig_id'),10,1) %]"> [% linea.get_column('cuenta') %]</a> </td>
+    <td class="centrado">  <img src="/static/images/severity/[% linea.get_column('signature_priority') %].png" alt="Severidad [% linea.get_column('signature_priority') %]" /> </td>
+    <td>  [% linea.get_column('signature_name') %] </td>
+    <td class="centrado">  <a href="[%  c.uri_for(c.controller('alertas').action_for('listar_por_signature'),[id_servidor],rango,linea.get_column('signature_id'),10,1) %]"> [% linea.get_column('cuentaEinar') %]</a> </td>
     <td class="centrado" id="percent_bar_[% nro_linea %]">
-       <script type="text/javascript"> drawPercentBar([% (linea.get_column('cuenta')*100)/(altas + medias + bajas) FILTER format('%.2f') %],'','percent_bar_[% nro_linea %]')</script>
+       <script type="text/javascript"> drawPercentBar([% (linea.get_column('cuentaEinar')*100)/(altas + medias + bajas) FILTER format('%.2f') %],'','percent_bar_[% nro_linea %]')</script>
     </td>
      </tr>
 [% nro_linea=nro_linea+1 %]
