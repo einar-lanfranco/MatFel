@@ -241,7 +241,7 @@ sub vulnerabilidades_torta :Chained('base') :PathPart('vulnerabilidades_torta') 
 sub alertas_por_nivel_barras :Chained('base') :PathPart('alertas_por_nivel_barras') :Args(2) {
     my ($self, $c, $id,$rango) = @_;
     my $dt = DateTime->today->subtract( days => $rango );
-    my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_priority as nivel','COUNT(*) as cuenta'],group_by => 'sig_id.sig_priority'});
+    my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id.sig_priority',{ count => '*'}],as => [qw/ nivel cuenta /],group_by => 'sig_id.sig_priority'});
     my @linea_alta=();
     my @linea_media=();
     my @linea_baja=();
@@ -250,8 +250,8 @@ sub alertas_por_nivel_barras :Chained('base') :PathPart('alertas_por_nivel_barra
     while (my $nivel = $alertas_total->next) {
 #     foreach my $nivel (@escaneo_total){    
 #        print $nivel->get_column('sig_priority as nivel');#('nivel');
-        @niveles[$nivel->get_column('sig_priority as nivel')]=$nivel->get_column('COUNT(*) as cuenta');
-        $total_max+=$nivel->get_column('COUNT(*) as cuenta');
+        @niveles[$nivel->get_column('nivel')]=$nivel->get_column('cuenta');
+        $total_max+=$nivel->get_column('cuenta');
     }
     my $escala= 1;
     if ($total_max ne 0){ $escala=int($total_max/10);}
@@ -307,7 +307,7 @@ sub alertas_por_nivel_barras :Chained('base') :PathPart('alertas_por_nivel_barra
 sub alertas_por_nivel_torta :Chained('base') :PathPart('alertas_por_nivel_torta') :Args(2) {
     my ($self, $c, $id,$rango) = @_;
     my $dt = DateTime->today->subtract( days => $rango );
-    my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_priority as nivel','COUNT(*) as cuenta'],group_by => 'sig_id.sig_priority'});
+    my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'},select => ['sig_id.sig_priority',{ count => '*', -as => 'cuenta'}], as => [qw/ nivel cuenta /],group_by => 'sig_id.sig_priority'});
 #     print "HOLA";
     my @linea_alta=();
     my @linea_media=();
@@ -315,8 +315,8 @@ sub alertas_por_nivel_torta :Chained('base') :PathPart('alertas_por_nivel_torta'
     my $total_max =0;
     my @niveles=(0,0,0,0);
     while (my $nivel = $alertas_total->next) {
-        @niveles[$nivel->get_column('sig_priority as nivel')]=$nivel->get_column('COUNT(*) as cuenta');
-        $total_max+=$nivel->get_column('COUNT(*) as cuenta');
+        @niveles[$nivel->get_column('nivel')]=$nivel->get_column('cuenta');
+        $total_max+=$nivel->get_column('cuenta');
     }
     my $escala= 1;
     if ($total_max ne 0){ $escala=int($total_max/10);}
@@ -352,7 +352,7 @@ $chart->add_element($pie);
 sub alertas_historico_barras :Chained('base') :PathPart('alertas_historico_barras') :Args(2) {
     my ($self, $c, $id,$rango_historico) = @_;
     my $dt = DateTime->today->subtract( weeks => $rango_historico );
-    my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'}, select => ['sig_priority',{ count => '*', -as => 'cuenta'},{ week => 'evento.timestamp', -as => 'semana' }], as => [qw/
+    my $alertas_total =$c->model('DB::Alerta')->search({'me.id_servidor' => $id,'evento.timestamp' => {'>=', $dt->iso8601()}}, {join => {'evento' =>'sig_id'}, select => ['sig_id.sig_priority',{ count => '*'},{ week => 'evento.timestamp', -as => 'semana' }], as => [qw/
       sig_priority
       cuenta
       semana
