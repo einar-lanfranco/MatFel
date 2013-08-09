@@ -94,9 +94,9 @@ select sn in "Nginx" "Nada"; do
 function configurarBDDMatfel()
 {
 	CONFIGURACION="$LUGAR/lib/MatFel/Model/DB.pm"
-	sed "s%dbi:mysql:tesis%dbi:mysql:$BASE%g" $CONFIGURACION > /tmp/DB.pm
-	sed "s%tesis%$USUARIOBASE%g" /tmp/DB.pm > /tmp/DB1.pm
-	sed "s%test%$USUARIOPASS%g" /tmp/DB1.pm > $CONFIGURACION
+	sed "s%dbi:mysql:MatFel%dbi:mysql:$BASE%g" $CONFIGURACION > /tmp/DB.pm
+	sed "s%root%$USUARIOBASE%g" /tmp/DB.pm > /tmp/DB1.pm
+	sed "s%pepe%$USUARIOPASS%g" /tmp/DB1.pm > $CONFIGURACION
 }
 
 function crearBaseDeDatos(){
