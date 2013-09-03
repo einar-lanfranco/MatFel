@@ -165,7 +165,7 @@ function dependenciasPerl(){
 		if [ $TIPO = "debian" ]
 		then
 				aptitude -y install libcatalyst-perl \
-				libcatalyst-modules-perl libcatalyst-engine-apache-perl libcatalyst-plugin-unicode-encoding-perl \
+				libcatalyst-modules-perl libcatalyst-plugin-unicode-encoding-perl \
 				libdatetime-perl libxml-rss-perl libdate-calc-perl libtest-pod-perl libgeo-ip-perl \
 				libmail-sendmail-perl libnet-smtp-ssl-perl libnet-smtp-tls-perl liburi-find-perl \
 				libdbix-class-encodedcolumn-perl libdbix-class-timestamp-perl libdate-manip-perl \
@@ -179,8 +179,7 @@ function dependenciasPerl(){
 				#~ libgdchart-gd2-noxpm\
 				# build-essential nikto nmap w3af smbclient bzip2\
 				#~ libglib2.0-0 libgpgme11 libopenvas3 libpcap0.8 mysql-server\
-				#~ libmysqlclient-dev libpcap0.8-dev libapache2-mod-perl2 apache2-mpm-prefork\
-				#~ apache2 libapache2-mod-fcgid subversion   
+				
 	    	fi     
 		aptitude clean
 		instalarDependenciasConProblemas

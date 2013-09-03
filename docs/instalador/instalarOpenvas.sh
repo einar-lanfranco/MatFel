@@ -40,6 +40,10 @@ function instalarOpenVAS(){
     #Nikto - a web server scanning and testing tool
     nikto -update
     #instalarWapiti
+    echo "Tuve que hacer un parche para que el Openvasd encienda por defecto en la maquina donde esta instalado y reinstalar los scripts de inicio en los runlevels 1, 2, 3, y 4"
+    cp $LUGAR/docs/instalador/aux/openvas-scanner /etc/init.d/
+    update-rc.d -f openvas-scanner remove
+    update-rc.d openvas-scanner defaults
 }
 
 
@@ -63,3 +67,4 @@ instalarOpenVAS
 setearCron
 
 ##Bugs conocidos, revisar si openvas-cli es necesario en una arquitectura distribuida
+##El script de inicio de openvas-scanner no anda....hay que modificarlo
