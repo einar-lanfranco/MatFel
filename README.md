@@ -45,7 +45,7 @@ Solo debe descargarlo de github, ejecutarlo y el proceso lo llevará paso a paso
 
 Bajarlo:
 ```bash
-wget https://github.com/einar-lanfranco/MatFel/blob/master/docs/instalador/instalar.exe
+wget https://github.com/einar-lanfranco/MatFel/raw/master/docs/instalador/instalar.exe
 ```
 Ejecutarlo:
 ```bash
