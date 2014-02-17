@@ -22,7 +22,9 @@ function instalarOpenVAS(){
     ######################
     ## Instalar OpenVas ##
     ######################
-    apt-get -y install greenbone-security-assistant openvas-cli openvas-manager openvas-scanner openvas-administrator sqlite3 xsltproc rsync
+    apt-get -y install greenbone-security-assistant openvas-cli openvas-manager openvas-scanner openvas-administrator sqlite3 xsltproc rsync 
+    read -p "AVISO!!! Los siguiente sólo funcionará si están los non-free, sino ignore el error" ESPERA
+    apt-get -y install nikto
 	#############################
     ## Instalar OpenVas Extras ##
     #############################
@@ -46,6 +48,7 @@ function instalarOpenVAS(){
 	/etc/init.d/openvas-scanner stop
 	#Voy a reconstruir el servidor
 	read -p "AVISO!!! Se reconstruiran los archivos del servidor, esto casi seguro puede demorar un buen rato (Presione Enter para continuar)" ESPERA
+	cp -a $LUGAR/docs/instalador/auxiliaresOpenVas/cert /usr/share/openvas/
     openvassd
 	openvasmd --rebuild
 	openvas-scapdata-sync

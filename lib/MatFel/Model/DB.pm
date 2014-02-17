@@ -8,8 +8,8 @@ __PACKAGE__->config(
     
     connect_info => {
         dsn => 'dbi:mysql:MatFel',
-        user => 'root',
-        password => 'pepe',
+        user => 'UserMatFel',
+        password => 'z4jn27Wz',
     }
 );
 
