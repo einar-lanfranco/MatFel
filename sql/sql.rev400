@@ -1,0 +1,13 @@
+CREATE  TABLE direccionv6 (
+  `id` INT NOT NULL ,
+  `id_servidor` INT NULL ,
+  `ip` VARCHAR(128) NULL ,
+  `mask` VARCHAR(128) NULL ,
+  PRIMARY KEY (`id`) );
+CREATE  TABLE direccionv6 (
+  `id` INT NOT NULL ,
+  `id_servidor` INT NULL ,
+  `ip` VARCHAR(128) NULL ,
+  `mask` VARCHAR(128) NULL ,
+  PRIMARY KEY (`id`) );
+ALTER TABLE servidor ADD COLUMN tipo INT NOT NULL DEFAULT '1'  AFTER `mascarav4` , ADD COLUMN `key` TEXT NOT NULL  AFTER `tipo` ;
