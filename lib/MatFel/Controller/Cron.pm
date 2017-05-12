@@ -32,14 +32,14 @@ sub index :Path :Args(0) {
 
 sub generar_regla {
     
-    my($ip_o,$mask_o,$prot,$puerto_o,$ip_d,$mask_d,$puerto_d,$state,$policy)= @_;
+    my($ip_o,$mask_o,$prot,$puerto_o,$ip_d,$mask_d,$puerto_d,$state,$policy,$comentario)= @_;
     if (($puerto_o eq 'any')&&($puerto_d eq 'any')){
-        return ("iptables -A TESIS -s $ip_o/$mask_o -p $prot -m state --state $state -j $policy\n");
+        return ("iptables -A TESIS -s $ip_o/$mask_o -p $prot -m comment --comment '$comentario' -m state --state $state -j $policy\n");
                 }
     elsif($puerto_o eq 'any'){
-        return ("iptables -A TESIS -s $ip_o/$mask_o -d $ip_d/$mask_d -p $prot --dport $puerto_d -m state --state $state -j $policy\n");}
+        return ("iptables -A TESIS -s $ip_o/$mask_o -d $ip_d/$mask_d -m comment --comment '$comentario' -p $prot --dport $puerto_d -m state --state $state -j $policy\n");}
     elsif($puerto_d eq 'any'){
-        return ("iptables -A TESIS -s $ip_o/$mask_o  -d $ip_d/$mask_d -p $prot --sport $puerto_o -m state --state $state -j $policy\n");
+        return ("iptables -A TESIS -s $ip_o/$mask_o  -d $ip_d/$mask_d -m comment --comment '$comentario' -p $prot --sport $puerto_o -m state --state $state -j $policy\n");
     }
     
     
@@ -110,7 +110,7 @@ sub generar_reglas : Local {
               if($trafico_entrada_habilitado->count){
                 $reglas.= "# TRAFICO ENTRANTE \n";
                 while ( my $trafico_entrante = $trafico_entrada_habilitado->next ) {
-                    $reglas=$reglas.generar_regla($trafico_entrante->ip_origen(), $trafico_entrante->mascara_origen,$trafico_entrante->protocolo->nombre(),"any",$servidor->ipv4(), $servidor->mascarav4, $trafico_entrante->puerto(), $trafico_entrante->estado->estado(),'ACCEPT');
+                    $reglas=$reglas.generar_regla($trafico_entrante->ip_origen(), $trafico_entrante->mascara_origen,$trafico_entrante->protocolo->nombre(),"any",$servidor->ipv4(), $servidor->mascarav4, $trafico_entrante->puerto(), $trafico_entrante->estado->estado(),'ACCEPT',$trafico_entrante->comentario());
                 }
               }
 
@@ -118,7 +118,7 @@ sub generar_reglas : Local {
                 $reglas.= "# TRAFICO SALIENTE \n";
                 #por servidor obtener el trafico de salida que se va a asociar
                 while ( my $trafico_saliente = $trafico_salida_habilitado->next ) {
-                    $reglas=$reglas.generar_regla($servidor->ipv4(), $servidor->mascarav4, $trafico_saliente->protocolo->nombre(),"any",$trafico_saliente->ip_destino(), $trafico_saliente->mascara_destino,$trafico_saliente->puerto(), $trafico_saliente->estado->estado(),'ACCEPT');
+                    $reglas=$reglas.generar_regla($servidor->ipv4(), $servidor->mascarav4, $trafico_saliente->protocolo->nombre(),"any",$trafico_saliente->ip_destino(), $trafico_saliente->mascara_destino,$trafico_saliente->puerto(), $trafico_saliente->estado->estado(),'ACCEPT',$trafico_saliente->comentario());
                 }
               }
               
